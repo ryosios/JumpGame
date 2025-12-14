@@ -13,16 +13,22 @@ public class EnemyBase : MonoBehaviour
 
     }
 
+    /// <summary> EnemyCollisionPresenter </summary>
     [SerializeField] private EnemyCollisionPresenter _collision;
 
+    /// <summary>  _enemyImageのSpriteRenderer </summary>
     [SerializeField] private SpriteRenderer _enemyImage;
 
+    /// <summary>  _enemyEffect1のParticleSystem </summary>
     [SerializeField] private ParticleSystem _enemyEffect1;
 
+    /// <summary>  EnemyCollisionEnterのSubject </summary>
     public Subject<Unit> EnemyCollisionEnter = new Subject<Unit>();
 
+    /// <summary>  EnemyCollisionExitのSubject </summary>
     public Subject<Unit> EnemyCollisionExit = new Subject<Unit>();
 
+    /// <summary>  KilledのSubject </summary>
     public Subject<Unit> Killed = new Subject<Unit>();
 
     private void Awake()
@@ -47,6 +53,9 @@ public class EnemyBase : MonoBehaviour
         //画面外にいったら
     }
 
+    /// <summary>
+    /// ステート
+    /// </summary>
     private void SetEnemyBaseState(EnemyBaseState enemyBaseState)
     {
         var state = enemyBaseState;
@@ -69,16 +78,19 @@ public class EnemyBase : MonoBehaviour
                 Killed.OnNext(Unit.Default);
                 _enemyImage.color = new Color(1, 1, 1, 0);
                 _enemyEffect1.Play();
-                DestroyEnemy(this, 1f);
+                StartCoroutine(DestroyEnemy(this, 0f));
 
                 break;
 
         }
     }
 
+    /// <summary>
+    /// 敵削除用
+    /// </summary>
     private IEnumerator DestroyEnemy(EnemyBase enemyBase,float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
-        Destroy(enemyBase);
+        Destroy(enemyBase.gameObject);
     }
 }

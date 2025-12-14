@@ -10,7 +10,6 @@ public class SutaminaSlider : MonoBehaviour
         ValueChange
     }
 
-    public Subject<float> SutaminaValueChange = new Subject<float>();
 
     private float _sutaminaValue;
 

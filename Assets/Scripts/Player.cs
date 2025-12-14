@@ -17,30 +17,42 @@ public class Player : MonoBehaviour
 
     public Subject<Unit> EnemyCollisionExit = new Subject<Unit>();
 
+    /// <summary>  スタミナ変動したときのサブジェクト </summary>
     public Subject<float> SutaminaChange = new Subject<float>();
 
+    /// <summary> _rotationArrowRootTransのTransform </summary>
     [SerializeField] Transform _rotationArrowRootTrans;
 
+    /// <summary> _playerRigidのRigidbody2D </summary>
     [SerializeField] Rigidbody2D _playerRigid;
 
+    /// <summary> _attackCollisionのCircleCollider2D </summary>
     [SerializeField] CircleCollider2D _attackCollision;
 
+    /// <summary> _sutaminaSliderのSutaminaSlider </summary>
     [SerializeField] SutaminaSlider _sutaminaSlider;
 
+    /// <summary> 回転用のシーケンス </summary>
     private Sequence _rotateSequence;
 
+    /// <summary> ジャンプ力 </summary>
     private float _jumpPower = 20f;
 
+    /// <summary>  ジャンプ角度 </summary>
     private float _jumpAngle = 60f;
 
+    /// <summary> 　矢印出てる時間 </summary>
     private float _moveAngleTime = 2f;
 
-
+    /// <summary> Attackコリジョンがオン状態の時間 </summary>
     private float _attackCollOffTime = 0.1f;
+
+    /// <summary> Attackのリキャストタイム </summary>
     private float _attackRecastTime = 0.5f;
 
     private bool _isAttack = false;
 
+    /// <summary> スタミナの値 </summary>
     private float _sutaminaValue = 1f;
 
     private void Start()
@@ -73,6 +85,9 @@ public class Player : MonoBehaviour
        
     }
 
+    /// <summary>
+    /// ステート
+    /// </summary>
     public void SetPlayerState(PlayerState playerState)
     {
         var state = playerState;
@@ -130,6 +145,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 初期化
+    /// </summary>
     private void Initialized()
     {
         _rotationArrowRootTrans.gameObject.SetActive(false);
@@ -139,6 +157,9 @@ public class Player : MonoBehaviour
         _attackCollision.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Jump
+    /// </summary>
     private void SetJump()
     {
         _playerRigid.linearVelocity = Vector2.zero;
@@ -155,6 +176,9 @@ public class Player : MonoBehaviour
         Debug.Log("");
     }
 
+    /// <summary>
+    /// Attack
+    /// </summary>
     private IEnumerator SetAttack()
     {
         _attackCollision.gameObject.SetActive(true);
