@@ -24,13 +24,13 @@ public class EnemyCreater : MonoBehaviour
     private List<EnemyBase> _enemyPrefabs;
 
     /// <summary> Enemyが存在できる上限数 </summary>
-    private int _maxEnemyValue = 15;
+    private int _maxEnemyValue = 20;
 
     /// <summary> Enemy生成範囲の内半径 </summary>
     private float _enemyNewInnerRadius = 6f;
 
     /// <summary> Enemy生成範囲の外半径 </summary>
-    private float _enemyNewOuterRadius = 12f;
+    private float _enemyNewOuterRadius = 15f;
 
     private void Awake()
     {
