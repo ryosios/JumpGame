@@ -1973,7 +1973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _activeEnemyBase: []
   _enemyRoot: {fileID: 1077135056}
-  _enemyCreatePosLocatorTrans: {fileID: 0}
+  _enemyCreatePosLocatorTrans: {fileID: 2004412597}
 --- !u!1 &1104297063
 GameObject:
   m_ObjectHideFlags: 0

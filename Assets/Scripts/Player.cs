@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     private float _jumpPower = 20f;
 
     /// <summary>  ジャンプ角度 </summary>
-    private float _jumpAngle = 60f;
+    private float _jumpAngle = 360f;
 
     /// <summary>  ジャンプに消費するスタミナ </summary>
     private float _jumpSutamina = 0.2f;
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
     private float _sutaminaValue = 1f;
 
     /// <summary> 　矢印出てる時間 </summary>
-    private float _moveAngleTime = 2f;
+    private float _moveAngleTime = 1f;
 
     /// <summary> Attackコリジョンがオン状態の時間 </summary>
     private float _attackCollOffTime = 0.1f;
@@ -60,13 +60,13 @@ public class Player : MonoBehaviour
     {
         SetPlayerState(PlayerState.Default);
 
-        InputController.Instance.LeftClickEnter.Subscribe(_ =>
+        InputController.Instance.LeftClickEnter.Where(_ => _sutaminaValue > _jumpSutamina).Subscribe(_ =>
         {
             SetPlayerState(PlayerState.Direction);
 
         }).AddTo(this);
 
-        InputController.Instance.LeftClickExit.Where(_=>_sutaminaValue>_jumpSutamina).Subscribe(_ =>
+        InputController.Instance.LeftClickExit.Where(_ => _sutaminaValue > _jumpSutamina).Subscribe(_ =>
         {
             SetPlayerState(PlayerState.Jump);
 
@@ -111,10 +111,14 @@ public class Player : MonoBehaviour
                 _rotationArrowRootTrans.gameObject.SetActive(true);
                 _rotationArrowRootTrans.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                 _rotateSequence?.Kill();
-                _rotateSequence = DOTween.Sequence();                
+                _rotateSequence = DOTween.Sequence();
+
+                _rotateSequence.Append(_rotationArrowRootTrans.DOLocalRotate(new Vector3(0, 0, -_jumpAngle), _moveAngleTime,RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLink(gameObject));
+                /*
                 _rotateSequence.Append(_rotationArrowRootTrans.DOLocalRotate(new Vector3(0, 0, _jumpAngle),_moveAngleTime/4*1).SetEase(Ease.Linear).SetLink(gameObject));
                 _rotateSequence.Append(_rotationArrowRootTrans.DOLocalRotate(new Vector3(0, 0, -_jumpAngle), _moveAngleTime / 4 * 2).SetEase(Ease.Linear).SetLink(gameObject));
                 _rotateSequence.Append(_rotationArrowRootTrans.DOLocalRotate(new Vector3(0, 0, 0), _moveAngleTime / 4 * 1).SetEase(Ease.Linear).SetLink(gameObject));
+                */
                 _rotateSequence.OnComplete(()=>
                 {         
                     _rotateSequence?.Kill();
