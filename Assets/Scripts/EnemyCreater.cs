@@ -11,30 +11,33 @@ public class EnemyCreater : MonoBehaviour
         Create
     }
 
-    /// <summary> ƒCƒ“ƒXƒ^ƒ“ƒX‰»Ï‚İ‚ÌEnemyBaseƒŠƒXƒg </summary>
+    /// <summary> ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–æ¸ˆã¿ã®EnemyBaseãƒªã‚¹ãƒˆ </summary>
     [SerializeField] private List<EnemyBase> _activeEnemyBase = new ();
 
-    /// <summary> Enemy‚Ô‚ç‰º‚°‚éRoot </summary>
+    /// <summary> Enemyã¶ã‚‰ä¸‹ã’ã‚‹Root </summary>
     [SerializeField] private Transform _enemyRoot;
 
-    /// <summary> Enemy¶¬—p‚Ì‹N“_ƒIƒuƒWƒFƒNƒg‚ÌTransform </summary>
+    /// <summary> Enemyç”Ÿæˆç”¨ã®èµ·ç‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®Transform </summary>
     [SerializeField] private Transform _enemyCreatePosLocatorTrans;
 
-    /// <summary> EnemyBaseƒvƒŒƒtƒ@ƒu‚ÌƒŠƒ\[ƒX </summary>
+    /// <summary> EnemyBaseãƒ—ãƒ¬ãƒ•ã‚¡ãƒ–ã®ãƒªã‚½ãƒ¼ã‚¹ </summary>
     private List<EnemyBase> _enemyPrefabs;
 
-    /// <summary> Enemy‚ª‘¶İ‚Å‚«‚éãŒÀ” </summary>
+    /// <summary> EnemyãŒå­˜åœ¨ã§ãã‚‹ä¸Šé™æ•° </summary>
     private int _maxEnemyValue = 15;
 
-    /// <summary> Enemy¶¬”ÍˆÍ‚Ì”¼Œa </summary>
-    private float _enemyNewRadius = 12f;
+    /// <summary> Enemyç”Ÿæˆç¯„å›²ã®å†…åŠå¾„ </summary>
+    private float _enemyNewInnerRadius = 6f;
+
+    /// <summary> Enemyç”Ÿæˆç¯„å›²ã®å¤–åŠå¾„ </summary>
+    private float _enemyNewOuterRadius = 12f;
 
     private void Awake()
     {
-        //enemy“Ç‚İ‚İ
+        //enemyèª­ã¿è¾¼ã¿
         _enemyPrefabs = Resources.LoadAll<EnemyBase>("Prefabs/Enemys").ToList();
 
-        //ŠJn¶¬
+        //é–‹å§‹æ™‚ç”Ÿæˆ
         for (int i = 0; i < _maxEnemyValue; i++)
         {
 
@@ -44,7 +47,7 @@ public class EnemyCreater : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒXƒe[ƒg
+    /// ã‚¹ãƒ†ãƒ¼ãƒˆ
     /// </summary>
     private void SetEnemyCreaterState(EnemyCreaterState enemyCreaterState)
     {
@@ -67,7 +70,7 @@ public class EnemyCreater : MonoBehaviour
     }
 
     /// <summary>
-    /// “G¶¬
+    /// æ•µç”Ÿæˆ
     /// </summary>
     private void CreateEnemy()
     {
@@ -76,8 +79,8 @@ public class EnemyCreater : MonoBehaviour
             EnemyBase enemyBase = Instantiate(_enemyPrefabs[0], _enemyRoot).GetComponent<EnemyBase>();
             enemyBase.transform.parent = _enemyRoot;
 
-            //ƒvƒŒƒCƒ„[À•W‚ğ‹N“_‚É‚µ‚Ä“G‚ğ¶¬
-            enemyBase.transform.localPosition = enemyRandomPosReturn(Vector2.zero, _enemyNewRadius);
+            //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åº§æ¨™ã‚’èµ·ç‚¹ã«ã—ã¦æ•µã‚’ç”Ÿæˆ
+            enemyBase.transform.localPosition = GetRandomPosInDonut(_enemyCreatePosLocatorTrans.position, _enemyNewInnerRadius, _enemyNewOuterRadius);
             _activeEnemyBase.Add(enemyBase);
             enemyBase.Killed.Subscribe(_ =>
             {
@@ -90,14 +93,27 @@ public class EnemyCreater : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ‰ƒ“ƒ_ƒ€ˆÊ’u‚ğ•Ô‚·
+    /// ä¸­å¿ƒåº§æ¨™ã‹ã‚‰ãƒ‰ãƒ¼ãƒŠãƒ„å‹ç¯„å›²å†…ã®ãƒ©ãƒ³ãƒ€ãƒ ãªä½ç½®ã‚’è¿”ã™
     /// </summary>
-    /// <param name="center">’†SÀ•W</param>
-    /// <param name="radius">”¼Œa</param>
-    private Vector3 enemyRandomPosReturn(Vector2 center, float radius)
+    /// <param name="center">ä¸­å¿ƒåº§æ¨™</param>
+    /// <param name="minRadius">å†…åŠå¾„</param>
+    /// <param name="maxRadius">å¤–åŠå¾„</param>
+    private Vector3 GetRandomPosInDonut(Vector2 center, float minRadius, float maxRadius)
     {
-        Vector2 random = Random.insideUnitCircle * radius;
-        return center + random;
+        // åŠå¾„ã¯ sqrt ã‚’ä½¿ã£ã¦é¢ç©çš„ã«å‡ç­‰ã«ã™ã‚‹
+        float radius = Mathf.Sqrt(
+            Random.Range(minRadius * minRadius, maxRadius * maxRadius)
+        );
+
+        float angle = Random.Range(0f, Mathf.PI * 2f);
+
+        Vector2 offset = new Vector2(
+            Mathf.Cos(angle),
+            Mathf.Sin(angle)
+        ) * radius;
+
+        return center + offset;
     }
+
 
 }

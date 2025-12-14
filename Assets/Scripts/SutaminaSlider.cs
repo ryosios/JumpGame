@@ -53,9 +53,9 @@ public class SutaminaSlider : MonoBehaviour
     }
 
     /// <summary>
-    /// スライダーに値を代入する
+    /// 繧ｹ繝ｩ繧､繝繝ｼ縺ｫ蛟､繧剃ｻ｣蜈･縺吶ｋ
     /// </summary>
-    /// <param name="value">代入する値</param>
+    /// <param name="value">莉｣蜈･縺吶ｋ蛟､</param>
     private void SetSliderValue(float value)
     {
         _slider.value = value;

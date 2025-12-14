@@ -27,7 +27,7 @@ public class GameMaster : MonoBehaviour
 
     private void Awake()
     {
-        // Ç∑Ç≈Ç…ÉCÉìÉXÉ^ÉìÉXÇ™Ç†ÇÈ Å® îjä¸ÇµÇƒèdï°ÇñhÇÆ
+        // „Åô„Åß„Å´„Ç§„É≥„Çπ„Çø„É≥„Çπ„Åå„ÅÇ„Çã ‚Üí Á†¥Ê£Ñ„Åó„Å¶ÈáçË§á„ÇíÈò≤„Åê
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -36,13 +36,13 @@ public class GameMaster : MonoBehaviour
 
         Instance = this;
 
-        // ÉVÅ[ÉìêÿÇËë÷Ç¶Ç≈Ç‡îjä¸ÇµÇ»Ç¢èÍçá
+        // „Ç∑„Éº„É≥Âàá„ÇäÊõø„Åà„Åß„ÇÇÁ†¥Ê£Ñ„Åó„Å™„ÅÑÂ†¥Âêà
         DontDestroyOnLoad(gameObject);
 
         Observable.EveryUpdate().Subscribe(_ =>
         {
             float dt = Time.deltaTime;
-            // ñàÉtÉåÅ[ÉÄÇÃèàóù
+            // ÊØé„Éï„É¨„Éº„É†„ÅÆÂá¶ÁêÜ
             Vector3 playerPos = _playerTrans.position;
             var updateCameraPos = new Vector3(playerPos.x + 3f, playerPos.y,-20f) ; 
             _cameraTrans.position = updateCameraPos;
@@ -51,7 +51,7 @@ public class GameMaster : MonoBehaviour
 
         GameMaster.Instance.GameStart.Subscribe(_ =>
         {
-            Debug.Log("ÉQÅ[ÉÄÉXÉ^Å[Ég");
+            Debug.Log("„Ç≤„Éº„É†„Çπ„Çø„Éº„Éà");
 
         }).AddTo(this);
 

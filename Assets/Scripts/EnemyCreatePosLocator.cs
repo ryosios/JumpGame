@@ -22,7 +22,7 @@ public class EnemyCreatePosLocator : MonoBehaviour
     }
 
     /// <summary>
-    /// ÉXÉeÅ[Ég
+    /// „Çπ„ÉÜ„Éº„Éà
     /// </summary>
     private void SetEnemyCreatePosLocatorState(EnemyCreatePosLocatorState enemyCreatePosLocatorState)
     {

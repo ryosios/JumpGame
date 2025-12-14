@@ -16,19 +16,19 @@ public class EnemyBase : MonoBehaviour
     /// <summary> EnemyCollisionPresenter </summary>
     [SerializeField] private EnemyCollisionPresenter _collision;
 
-    /// <summary>  _enemyImage‚ÌSpriteRenderer </summary>
+    /// <summary>  _enemyImageã®SpriteRenderer </summary>
     [SerializeField] private SpriteRenderer _enemyImage;
 
-    /// <summary>  _enemyEffect1‚ÌParticleSystem </summary>
+    /// <summary>  _enemyEffect1ã®ParticleSystem </summary>
     [SerializeField] private ParticleSystem _enemyEffect1;
 
-    /// <summary>  EnemyCollisionEnter‚ÌSubject </summary>
+    /// <summary>  EnemyCollisionEnterã®Subject </summary>
     public Subject<Unit> EnemyCollisionEnter = new Subject<Unit>();
 
-    /// <summary>  EnemyCollisionExit‚ÌSubject </summary>
+    /// <summary>  EnemyCollisionExitã®Subject </summary>
     public Subject<Unit> EnemyCollisionExit = new Subject<Unit>();
 
-    /// <summary>  Killed‚ÌSubject </summary>
+    /// <summary>  Killedã®Subject </summary>
     public Subject<Unit> Killed = new Subject<Unit>();
 
     private void Awake()
@@ -37,7 +37,7 @@ public class EnemyBase : MonoBehaviour
 
         _collision.CollisionEnter.Subscribe(_=> 
         {
-            Debug.Log("ƒRƒŠƒWƒ‡ƒ“ŠJn");
+            Debug.Log("ã‚³ãƒªã‚¸ãƒ§ãƒ³é–‹å§‹");
             SetEnemyBaseState(EnemyBaseState.EnemyCollisionEnter);
             SetEnemyBaseState(EnemyBaseState.Killed);
 
@@ -45,16 +45,16 @@ public class EnemyBase : MonoBehaviour
 
         _collision.CollisionExit.Subscribe(_ =>
         {
-            Debug.Log("ƒRƒŠƒWƒ‡ƒ“I—¹");
+            Debug.Log("ã‚³ãƒªã‚¸ãƒ§ãƒ³çµ‚äº†");
             SetEnemyBaseState(EnemyBaseState.EnemyCollisionExit);            
 
         }).AddTo(this);
 
-        //‰æ–ÊŠO‚É‚¢‚Á‚½‚ç
+        //ç”»é¢å¤–ã«ã„ã£ãŸã‚‰
     }
 
     /// <summary>
-    /// ƒXƒe[ƒg
+    /// ã‚¹ãƒ†ãƒ¼ãƒˆ
     /// </summary>
     private void SetEnemyBaseState(EnemyBaseState enemyBaseState)
     {
@@ -85,15 +85,15 @@ public class EnemyBase : MonoBehaviour
     }
 
     /// <summary>
-    /// “Gíœ—p
+    /// æ•µå‰Šé™¤ç”¨
     /// </summary>
     private IEnumerator DestroyEnemy(EnemyBase enemyBase,float delayTime)
     {
-        //“§–¾‚É‚·‚é
+        //é€æ˜ã«ã™ã‚‹
         _enemyImage.color = new Color(1, 1, 1, 0);
-        //ƒGƒtƒFƒNƒgÄ¶
+        //ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿ
         _enemyEffect1.Play();
-        //“–‚½‚è”»’è‚¾‚¯ƒIƒt
+        //å½“ãŸã‚Šåˆ¤å®šã ã‘ã‚ªãƒ•
         _collision.SetCircleColActive(false);
         yield return new WaitForSeconds(delayTime);
         Destroy(enemyBase.gameObject);

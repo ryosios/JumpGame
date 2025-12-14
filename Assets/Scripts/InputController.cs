@@ -33,7 +33,7 @@ public class InputController : MonoBehaviour
 
     private void Awake()
     {
-        // ‚·‚Å‚ÉƒCƒ“ƒXƒ^ƒ“ƒX‚ª‚ ‚é ¨ ”jŠü‚µ‚Äd•¡‚ğ–h‚®
+        // ã™ã§ã«ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒã‚ã‚‹ â†’ ç ´æ£„ã—ã¦é‡è¤‡ã‚’é˜²ã
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -42,7 +42,7 @@ public class InputController : MonoBehaviour
 
         Instance = this;
 
-        // ƒV[ƒ“Ø‚è‘Ö‚¦‚Å‚à”jŠü‚µ‚È‚¢ê‡
+        // ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆã§ã‚‚ç ´æ£„ã—ãªã„å ´åˆ
         DontDestroyOnLoad(gameObject);       
 
     }

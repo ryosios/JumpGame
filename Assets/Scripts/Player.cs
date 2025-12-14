@@ -17,40 +17,40 @@ public class Player : MonoBehaviour
 
     public Subject<Unit> EnemyCollisionExit = new Subject<Unit>();
 
-    /// <summary>  ƒXƒ^ƒ~ƒi•Ï“®‚µ‚½‚Æ‚«‚ÌƒTƒuƒWƒFƒNƒg </summary>
+    /// <summary>  ã‚¹ã‚¿ãƒŸãƒŠå¤‰å‹•ã—ãŸã¨ãã®ã‚µãƒ–ã‚¸ã‚§ã‚¯ãƒˆ </summary>
     public Subject<float> SutaminaChange = new Subject<float>();
 
-    /// <summary> _rotationArrowRootTrans‚ÌTransform </summary>
+    /// <summary> _rotationArrowRootTransã®Transform </summary>
     [SerializeField] Transform _rotationArrowRootTrans;
 
-    /// <summary> _playerRigid‚ÌRigidbody2D </summary>
+    /// <summary> _playerRigidã®Rigidbody2D </summary>
     [SerializeField] Rigidbody2D _playerRigid;
 
-    /// <summary> _attackCollision‚ÌCircleCollider2D </summary>
+    /// <summary> _attackCollisionã®CircleCollider2D </summary>
     [SerializeField] CircleCollider2D _attackCollision;
 
-    /// <summary> ‰ñ“]—p‚ÌƒV[ƒPƒ“ƒX </summary>
+    /// <summary> å›è»¢ç”¨ã®ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ </summary>
     private Sequence _rotateSequence;
 
-    /// <summary> ƒWƒƒƒ“ƒv—Í </summary>
+    /// <summary> ã‚¸ãƒ£ãƒ³ãƒ—åŠ› </summary>
     private float _jumpPower = 20f;
 
-    /// <summary>  ƒWƒƒƒ“ƒvŠp“x </summary>
+    /// <summary>  ã‚¸ãƒ£ãƒ³ãƒ—è§’åº¦ </summary>
     private float _jumpAngle = 60f;
 
-    /// <summary>  ƒWƒƒƒ“ƒv‚ÉÁ”ï‚·‚éƒXƒ^ƒ~ƒi </summary>
+    /// <summary>  ã‚¸ãƒ£ãƒ³ãƒ—ã«æ¶ˆè²»ã™ã‚‹ã‚¹ã‚¿ãƒŸãƒŠ </summary>
     private float _jumpSutamina = 0.2f;
 
-    /// <summary> ƒXƒ^ƒ~ƒi‚Ì’l </summary>
+    /// <summary> ã‚¹ã‚¿ãƒŸãƒŠã®å€¤ </summary>
     private float _sutaminaValue = 1f;
 
-    /// <summary> @–îˆóo‚Ä‚éŠÔ </summary>
+    /// <summary> ã€€çŸ¢å°å‡ºã¦ã‚‹æ™‚é–“ </summary>
     private float _moveAngleTime = 2f;
 
-    /// <summary> AttackƒRƒŠƒWƒ‡ƒ“‚ªƒIƒ“ó‘Ô‚ÌŠÔ </summary>
+    /// <summary> Attackã‚³ãƒªã‚¸ãƒ§ãƒ³ãŒã‚ªãƒ³çŠ¶æ…‹ã®æ™‚é–“ </summary>
     private float _attackCollOffTime = 0.1f;
 
-    /// <summary> Attack‚ÌƒŠƒLƒƒƒXƒgƒ^ƒCƒ€ </summary>
+    /// <summary> Attackã®ãƒªã‚­ãƒ£ã‚¹ãƒˆã‚¿ã‚¤ãƒ  </summary>
     private float _attackRecastTime = 0.5f;
 
     private bool _isAttack = false;   
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒXƒe[ƒg
+    /// ã‚¹ãƒ†ãƒ¼ãƒˆ
     /// </summary>
     public void SetPlayerState(PlayerState playerState)
     {
@@ -139,7 +139,7 @@ public class Player : MonoBehaviour
 
                 if (_isAttack == false)
                 {
-                    _isAttack = true; //ƒAƒ^ƒbƒN‚ÌƒŠƒLƒƒƒXƒg—p
+                    _isAttack = true; //ã‚¢ã‚¿ãƒƒã‚¯ã®ãƒªã‚­ãƒ£ã‚¹ãƒˆç”¨
                     StartCoroutine(SetAttack());
                 }           
 
@@ -149,7 +149,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     private void Initialized()
     {
@@ -188,6 +188,6 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(_attackCollOffTime);
         _attackCollision.gameObject.SetActive(false);
         yield return new WaitForSeconds(_attackRecastTime - _attackCollOffTime);
-        _isAttack = false;//ƒAƒ^ƒbƒN‚ÌƒŠƒLƒƒƒXƒgƒtƒ‰ƒO‚ğ–ß‚·
+        _isAttack = false;//ã‚¢ã‚¿ãƒƒã‚¯ã®ãƒªã‚­ãƒ£ã‚¹ãƒˆãƒ•ãƒ©ã‚°ã‚’æˆ»ã™
     }
 }
