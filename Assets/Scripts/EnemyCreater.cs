@@ -17,11 +17,14 @@ public class EnemyCreater : MonoBehaviour
     /// <summary> Enemyぶら下げるRoot </summary>
     [SerializeField] private Transform _enemyRoot;
 
+    /// <summary> Enemy生成用の起点オブジェクトのTransform </summary>
+    [SerializeField] private Transform _enemyCreatePosLocatorTrans;
+
     /// <summary> EnemyBaseプレファブのリソース </summary>
     private List<EnemyBase> _enemyPrefabs;
 
     /// <summary> Enemyが存在できる上限数 </summary>
-    private int _maxEnemyValue = 10;
+    private int _maxEnemyValue = 15;
 
     /// <summary> Enemy生成範囲の半径 </summary>
     private float _enemyNewRadius = 12f;
@@ -72,6 +75,8 @@ public class EnemyCreater : MonoBehaviour
         {           
             EnemyBase enemyBase = Instantiate(_enemyPrefabs[0], _enemyRoot).GetComponent<EnemyBase>();
             enemyBase.transform.parent = _enemyRoot;
+
+            //プレイヤー座標を起点にして敵を生成
             enemyBase.transform.localPosition = enemyRandomPosReturn(Vector2.zero, _enemyNewRadius);
             _activeEnemyBase.Add(enemyBase);
             enemyBase.Killed.Subscribe(_ =>

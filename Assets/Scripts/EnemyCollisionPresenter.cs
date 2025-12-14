@@ -8,6 +8,8 @@ public class EnemyCollisionPresenter : MonoBehaviour
 
     public Subject<Unit> CollisionExit = new Subject<Unit>();
 
+    [SerializeField]private CircleCollider2D _thisCircleCol;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         CollisionEnter.OnNext(Unit.Default);
@@ -18,6 +20,11 @@ public class EnemyCollisionPresenter : MonoBehaviour
     {
         CollisionExit.OnNext(Unit.Default);
         
+    }
+
+    public void SetCircleColActive(bool isActive)
+    {
+        _thisCircleCol.enabled = isActive;
     }
 
 }

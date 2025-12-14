@@ -76,9 +76,8 @@ public class EnemyBase : MonoBehaviour
 
             case EnemyBaseState.Killed:
                 Killed.OnNext(Unit.Default);
-                _enemyImage.color = new Color(1, 1, 1, 0);
-                _enemyEffect1.Play();
-                StartCoroutine(DestroyEnemy(this, 0f));
+                
+                StartCoroutine(DestroyEnemy(this, 1f));
 
                 break;
 
@@ -90,6 +89,12 @@ public class EnemyBase : MonoBehaviour
     /// </summary>
     private IEnumerator DestroyEnemy(EnemyBase enemyBase,float delayTime)
     {
+        //透明にする
+        _enemyImage.color = new Color(1, 1, 1, 0);
+        //エフェクト再生
+        _enemyEffect1.Play();
+        //当たり判定だけオフ
+        _collision.SetCircleColActive(false);
         yield return new WaitForSeconds(delayTime);
         Destroy(enemyBase.gameObject);
     }

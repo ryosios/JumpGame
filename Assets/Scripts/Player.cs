@@ -29,9 +29,6 @@ public class Player : MonoBehaviour
     /// <summary> _attackCollisionのCircleCollider2D </summary>
     [SerializeField] CircleCollider2D _attackCollision;
 
-    /// <summary> _sutaminaSliderのSutaminaSlider </summary>
-    [SerializeField] SutaminaSlider _sutaminaSlider;
-
     /// <summary> 回転用のシーケンス </summary>
     private Sequence _rotateSequence;
 
@@ -40,6 +37,12 @@ public class Player : MonoBehaviour
 
     /// <summary>  ジャンプ角度 </summary>
     private float _jumpAngle = 60f;
+
+    /// <summary>  ジャンプに消費するスタミナ </summary>
+    private float _jumpSutamina = 0.2f;
+
+    /// <summary> スタミナの値 </summary>
+    private float _sutaminaValue = 1f;
 
     /// <summary> 　矢印出てる時間 </summary>
     private float _moveAngleTime = 2f;
@@ -50,10 +53,8 @@ public class Player : MonoBehaviour
     /// <summary> Attackのリキャストタイム </summary>
     private float _attackRecastTime = 0.5f;
 
-    private bool _isAttack = false;
+    private bool _isAttack = false;   
 
-    /// <summary> スタミナの値 </summary>
-    private float _sutaminaValue = 1f;
 
     private void Start()
     {
@@ -65,7 +66,7 @@ public class Player : MonoBehaviour
 
         }).AddTo(this);
 
-        InputController.Instance.LeftClickExit.Where(_=>_sutaminaValue>0).Subscribe(_ =>
+        InputController.Instance.LeftClickExit.Where(_=>_sutaminaValue>_jumpSutamina).Subscribe(_ =>
         {
             SetPlayerState(PlayerState.Jump);
 
@@ -82,6 +83,8 @@ public class Player : MonoBehaviour
            
 
         }).AddTo(this);
+
+        
        
     }
 
@@ -126,8 +129,8 @@ public class Player : MonoBehaviour
                 _playerRigid.constraints = RigidbodyConstraints2D.None;
                 _playerRigid.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-                _sutaminaValue -= 0.2f;
-                SutaminaChange.OnNext(-0.2f);
+                _sutaminaValue -= _jumpSutamina;
+                SutaminaChange.OnNext(_sutaminaValue);
 
                 SetJump();
                 break;

@@ -30,12 +30,7 @@ public class SutaminaSlider : MonoBehaviour
 
         }).AddTo(this);
     }
-
-    private void SetSliderValue(float value)
-    {
-        var sv = _slider.value;
-        _slider.value = sv + value;
-    }
+  
 
     public void SetSutaminaState(SutaminaState sutaminaState,float changedValue)
     {
@@ -55,5 +50,14 @@ public class SutaminaSlider : MonoBehaviour
                 break;
         }
 
+    }
+
+    /// <summary>
+    /// スライダーに値を代入する
+    /// </summary>
+    /// <param name="value">代入する値</param>
+    private void SetSliderValue(float value)
+    {
+        _slider.value = value;
     }
 }

@@ -24,8 +24,6 @@ public class GameMaster : MonoBehaviour
 
     [SerializeField] Transform _cameraTrans;
 
-   
-
 
     private void Awake()
     {
