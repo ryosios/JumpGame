@@ -11,13 +11,20 @@ public class TimerGauge : MonoBehaviour
     {
         TimerStop,
         TimerStart,
-        TimerUpdate,
+      
 
     }
+
+    public Subject<Unit> Default = new Subject<Unit>();
 
     [SerializeField] private TextMeshProUGUI _countText;
     private float _time = 0f;
     private bool _isRunning = false;
+
+
+    [SerializeField] BuffCardManager _buffCardManager;
+
+    private BuffCard _buffCard;
 
     
 
@@ -26,15 +33,30 @@ public class TimerGauge : MonoBehaviour
         SetTimerValue(30f);
         SetTimerGaugeState(TimerGaugeState.TimerStart);
 
+        _buffCardManager?.CardCreated.Subscribe(buffCard=> 
+        {
+            _buffCard = buffCard;
+
+            _buffCard?.CardSelected.Subscribe(buffBase =>
+            {
+                var buffAddTime = (BuffAddTime)buffBase;
+                SetTimerValueAdd(buffAddTime._addTimeValue);
+            }).AddTo(this);
+
+        }).AddTo(this);
+
+        
        
     }
     private void Start()
     {
         Observable.EveryUpdate().Subscribe(_ =>
         {
-            SetTimerGaugeState(TimerGaugeState.TimerUpdate);
+            TimerUpdate();
 
         }).AddTo(this);
+
+      
     }
 
     /// <summary>
@@ -54,9 +76,7 @@ public class TimerGauge : MonoBehaviour
                 TimerStart();
                 break;
 
-            case TimerGaugeState.TimerUpdate:
-                TimerUpdate();
-                break;
+          
 
         }
     }
@@ -67,6 +87,15 @@ public class TimerGauge : MonoBehaviour
     public void SetTimerValue(float time) 
     {
         _time = time;
+
+    }
+
+    /// <summary>
+    /// ゲージに値を加算
+    /// </summary>
+    public void SetTimerValueAdd(float time)
+    {
+        _time += time;
 
     }
 
