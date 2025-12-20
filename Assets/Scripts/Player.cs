@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
         Direction,
         Jump,
         Attack,
+        SutaminaRecovery
     }
 
     public Subject<Unit> EnemyCollisionEnter = new Subject<Unit>();
@@ -43,6 +44,9 @@ public class Player : MonoBehaviour
 
     /// <summary> スタミナの値 </summary>
     private float _sutaminaValue = 1f;
+
+    /// <summary> スタミナ回復スピード </summary>
+    private float _sutaminaRecoverySpeed = 0.005f;
 
     /// <summary> 　矢印出てる時間 </summary>
     private float _moveAngleTime = 1f;
@@ -84,8 +88,12 @@ public class Player : MonoBehaviour
 
         }).AddTo(this);
 
-        
-       
+        Observable.EveryUpdate().Subscribe(_ =>
+        {
+            SetPlayerState(PlayerState.SutaminaRecovery);
+
+        }).AddTo(this);
+
     }
 
     /// <summary>
@@ -146,6 +154,18 @@ public class Player : MonoBehaviour
                     _isAttack = true; //アタックのリキャスト用
                     StartCoroutine(SetAttack());
                 }           
+
+                break;
+
+            case PlayerState.SutaminaRecovery:
+              
+                if(_sutaminaValue < 1f)
+                {
+                    _sutaminaValue += Time.deltaTime * _sutaminaRecoverySpeed;
+                    SutaminaChange.OnNext(_sutaminaValue);
+
+                }
+                
 
                 break;
 

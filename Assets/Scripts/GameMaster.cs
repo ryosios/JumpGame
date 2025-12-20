@@ -9,20 +9,10 @@ public class GameMaster : MonoBehaviour
 
     public Subject<Unit> GameEnd = new Subject<Unit>();
 
-    public Subject<Unit> DirectionEventStart = new Subject<Unit>();
-
-    public Subject<Unit> DirectionEventEnd = new Subject<Unit>();
-
-    public Subject<Unit> AttackEventStart = new Subject<Unit>();
-
-    public Subject<Unit> AttackEventEnd = new Subject<Unit>();
-
 
     [SerializeField] Player _player;
 
-    [SerializeField] Transform _playerTrans;
 
-    [SerializeField] Transform _cameraTrans;
 
 
     private void Awake()
@@ -39,21 +29,6 @@ public class GameMaster : MonoBehaviour
         // シーン切り替えでも破棄しない場合
         DontDestroyOnLoad(gameObject);
 
-        Observable.EveryUpdate().Subscribe(_ =>
-        {
-            float dt = Time.deltaTime;
-            // 毎フレームの処理
-            Vector3 playerPos = _playerTrans.position;
-            var updateCameraPos = new Vector3(playerPos.x, playerPos.y,-20f) ; 
-            _cameraTrans.position = updateCameraPos;
-
-        }).AddTo(this);
-
-        GameMaster.Instance.GameStart.Subscribe(_ =>
-        {
-            Debug.Log("ゲームスタート");
-
-        }).AddTo(this);
 
     }
     
