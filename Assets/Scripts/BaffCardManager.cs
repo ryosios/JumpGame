@@ -5,6 +5,8 @@ using System.Collections;
 
 public class BaffCardManager : MonoBehaviour
 {
+    //バフカード管理用
+
     public enum BaffCardManagerState
     {
         Default,
