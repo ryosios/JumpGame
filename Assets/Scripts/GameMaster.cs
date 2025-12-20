@@ -44,7 +44,7 @@ public class GameMaster : MonoBehaviour
             float dt = Time.deltaTime;
             // 毎フレームの処理
             Vector3 playerPos = _playerTrans.position;
-            var updateCameraPos = new Vector3(playerPos.x + 3f, playerPos.y,-20f) ; 
+            var updateCameraPos = new Vector3(playerPos.x, playerPos.y,-20f) ; 
             _cameraTrans.position = updateCameraPos;
 
         }).AddTo(this);

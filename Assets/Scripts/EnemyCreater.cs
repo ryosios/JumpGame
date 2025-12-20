@@ -27,10 +27,10 @@ public class EnemyCreater : MonoBehaviour
     private int _maxEnemyValue = 20;
 
     /// <summary> Enemy生成範囲の内半径 </summary>
-    private float _enemyNewInnerRadius = 6f;
+    private float _enemyNewInnerRadius = 1f;
 
     /// <summary> Enemy生成範囲の外半径 </summary>
-    private float _enemyNewOuterRadius = 15f;
+    private float _enemyNewOuterRadius = 14f;
 
     private void Awake()
     {
@@ -79,8 +79,8 @@ public class EnemyCreater : MonoBehaviour
             EnemyBase enemyBase = Instantiate(_enemyPrefabs[0], _enemyRoot).GetComponent<EnemyBase>();
             enemyBase.transform.parent = _enemyRoot;
 
-            //プレイヤー座標を起点にして敵を生成
-            enemyBase.transform.localPosition = GetRandomPosInDonut(_enemyCreatePosLocatorTrans.position, _enemyNewInnerRadius, _enemyNewOuterRadius);
+            //ステージ中心座標を起点にして敵を生成
+            enemyBase.transform.localPosition = GetRandomPosInRectDonut(Vector2.zero, new Vector2(_enemyNewInnerRadius, _enemyNewInnerRadius), new Vector2(_enemyNewOuterRadius, _enemyNewOuterRadius));
             _activeEnemyBase.Add(enemyBase);
             enemyBase.Killed.Subscribe(_ =>
             {
@@ -113,6 +113,55 @@ public class EnemyCreater : MonoBehaviour
         ) * radius;
 
         return center + offset;
+    }
+
+    /// <summary>
+    /// 中心座標から長方形ドーナツ範囲内のランダムな位置を返す
+    /// </summary>
+    /// <param name="center">中心座標</param>
+    /// <param name="innerHalf">内半径</param>
+    /// <param name="outerHalf">外半径</param>
+    private Vector2 GetRandomPosInRectDonut( Vector2 center, Vector2 innerHalf, Vector2 outerHalf)
+    {
+        float topArea = (outerHalf.x * 2) * (outerHalf.y - innerHalf.y);
+        float bottomArea = topArea;
+        float leftArea = innerHalf.y * 2 * (outerHalf.x - innerHalf.x);
+        float rightArea = leftArea;
+
+        float total = topArea + bottomArea + leftArea + rightArea;
+        float r = Random.Range(0f, total);
+
+        if (r < topArea)
+        {
+            return center + new Vector2(
+                Random.Range(-outerHalf.x, outerHalf.x),
+                Random.Range(innerHalf.y, outerHalf.y)
+            );
+        }
+        r -= topArea;
+
+        if (r < bottomArea)
+        {
+            return center + new Vector2(
+                Random.Range(-outerHalf.x, outerHalf.x),
+                Random.Range(-outerHalf.y, -innerHalf.y)
+            );
+        }
+        r -= bottomArea;
+
+        if (r < leftArea)
+        {
+            return center + new Vector2(
+                Random.Range(-outerHalf.x, -innerHalf.x),
+                Random.Range(-innerHalf.y, innerHalf.y)
+            );
+        }
+
+        // right
+        return center + new Vector2(
+            Random.Range(innerHalf.x, outerHalf.x),
+            Random.Range(-innerHalf.y, innerHalf.y)
+        );
     }
 
 
