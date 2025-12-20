@@ -15,9 +15,9 @@ public class TimerGauge : MonoBehaviour
 
     }
 
-    [SerializeField] private TextMeshProUGUI _timerText;
-    private float _time;
-    private bool _isRunning;
+    [SerializeField] private TextMeshProUGUI _countText;
+    private float _time = 0f;
+    private bool _isRunning = false;
 
     
 
@@ -26,12 +26,17 @@ public class TimerGauge : MonoBehaviour
         SetTimerValue(30f);
         SetTimerGaugeState(TimerGaugeState.TimerStart);
 
+       
+    }
+    private void Start()
+    {
         Observable.EveryUpdate().Subscribe(_ =>
         {
             SetTimerGaugeState(TimerGaugeState.TimerUpdate);
 
         }).AddTo(this);
     }
+
     /// <summary>
     /// ステート
     /// </summary>
@@ -56,30 +61,52 @@ public class TimerGauge : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ゲージに値をセット
+    /// </summary>
     public void SetTimerValue(float time) 
     {
         _time = time;
 
     }
+
+    /// <summary>
+    /// タイマー開始
+    /// </summary>
     private void TimerStart()
     {
         _isRunning = true;
     }
+
+    /// <summary>
+    /// タイマーストップ
+    /// </summary>
     private void TimerStop()
     {
         _isRunning = false;
     }
 
+    /// <summary>
+    /// タイマー更新
+    /// </summary>
     private void TimerUpdate()
     {
-        if (!_isRunning) return;
-
-        _time -= Time.deltaTime;
-        if (_time <= 0f)
+        if (_isRunning)
         {
-            _time = 0f;            
-            _isRunning = false;
+            _time -= Time.deltaTime;
+
+            if (_time <= 0f)
+            {
+                _time = 0f;
+                _isRunning = false;
+            }
+            if (_countText != null)
+            {
+                _countText.text = Mathf.FloorToInt(_time).ToString();
+            }
         }
-        _timerText.text = Mathf.FloorToInt(_time).ToString();
+
+       
+        
     }
 }

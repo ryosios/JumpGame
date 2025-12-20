@@ -12,7 +12,11 @@ public class EnemyCreater : MonoBehaviour
     }
 
     /// <summary> インスタンス化済みのEnemyBaseリスト </summary>
-    [SerializeField] private List<EnemyBase> _activeEnemyBase = new ();
+    private List<EnemyBase> _activeEnemyBase = new ();
+
+    /// <summary> 撃破した敵の数 </summary>
+    public ReactiveProperty<int> EnemyKillCount { get; } = new ReactiveProperty<int>(0);
+
 
     /// <summary> Enemyぶら下げるRoot </summary>
     [SerializeField] private Transform _enemyRoot;
@@ -85,6 +89,7 @@ public class EnemyCreater : MonoBehaviour
             enemyBase.Killed.Subscribe(_ =>
             {
                 _activeEnemyBase.Remove(enemyBase);
+                EnemyKillCount.Value += 1;
                 SetEnemyCreaterState(EnemyCreaterState.Create);
             }).AddTo(this);
             SetEnemyCreaterState(EnemyCreaterState.Wait);
