@@ -5,6 +5,8 @@ using System.Collections;
 
 public class Player : MonoBehaviour
 {
+    //プレイヤー用クラス
+
    public enum PlayerState
     {
         Default,
@@ -200,7 +202,7 @@ public class Player : MonoBehaviour
         Vector2 dir = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad),Mathf.Sin(angle * Mathf.Deg2Rad));
         _playerRigid.AddForce(dir * _jumpPower, ForceMode2D.Impulse);
 
-        Debug.Log("");
+       
     }
 
     /// <summary>

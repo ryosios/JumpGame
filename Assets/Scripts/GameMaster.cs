@@ -3,6 +3,8 @@ using UniRx;
 
 public class GameMaster : MonoBehaviour
 {
+    //ゲーム進行管理用クラス
+
     public static GameMaster Instance { get; private set; }
 
     public enum GameMasterState

@@ -7,6 +7,8 @@ using TMPro;
 
 public class TimerGauge : MonoBehaviour
 {
+    //タイマー管理用クラス
+
     public enum TimerGaugeState
     {
         TimerStop,
@@ -36,11 +38,14 @@ public class TimerGauge : MonoBehaviour
         _buffCardManager?.CardCreated.Subscribe(buffCard=> 
         {
             _buffCard = buffCard;
+            
 
-            _buffCard?.CardSelected.Subscribe(buffBase =>
+            _buffCard?.CardSelectedBuffAddTime.Subscribe(buffAddTime =>
             {
-                var buffAddTime = (BuffAddTime)buffBase;
+                
                 SetTimerValueAdd(buffAddTime._addTimeValue);
+               
+                
             }).AddTo(this);
 
         }).AddTo(this);

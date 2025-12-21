@@ -7,6 +7,8 @@ using TMPro;
 
 public class EnemyCountGauge : MonoBehaviour
 {
+    //敵カウント表示用クラス
+
     public enum EnemyCountGaugeState
     {
         Default,

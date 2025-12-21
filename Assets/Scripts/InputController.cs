@@ -5,6 +5,7 @@ using UniRx.Triggers;
 
 public class InputController : MonoBehaviour
 {
+    //入力管理クラス
     private enum InputState
     {
         LeftClickEnter,

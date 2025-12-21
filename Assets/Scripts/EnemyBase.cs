@@ -4,6 +4,8 @@ using System.Collections;
 
 public class EnemyBase : MonoBehaviour
 {
+    //敵クラス
+
     private enum EnemyBaseState 
     {
         EnemyCollisionEnter,

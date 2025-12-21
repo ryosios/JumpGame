@@ -5,6 +5,8 @@ using System.Collections;
 
 public class CameraUpdate : MonoBehaviour
 {
+    //カメラ全般用クラス
+
     public enum CameraState
     {
         Default,

@@ -5,7 +5,7 @@ using System.Linq;
 
 public class EnemyCreater : MonoBehaviour
 {
-    //敵管理全般
+    //敵生成管理全般
 
     private enum EnemyCreaterState
     {

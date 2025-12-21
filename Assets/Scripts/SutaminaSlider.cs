@@ -44,7 +44,7 @@ public class SutaminaSlider : MonoBehaviour
                 break;
 
             case SutaminaState.ValueChange:
-                Debug.Log("sutamina1"+changedValue);
+                
                 SetSliderValue(changedValue);
 
                 break;
