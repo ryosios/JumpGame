@@ -10,22 +10,30 @@ public class GameMaster : MonoBehaviour
     public enum GameMasterState
     {
         GameStart,
+        PlayStart,
         GameEnd,
-        GameTimeChange
+        GameTimeStop,
+        GameTimeStart
 
     }
 
 
     [SerializeField] Player _player;
 
-    /// <summary>  EnemyCollisionEnterのSubject </summary>
-    public Subject<Unit> GameStart = new Subject<Unit>();
+    [SerializeField] private BuffCardManager _buffCardManager;
 
-    /// <summary>  EnemyCollisionEnterのSubject </summary>
+    /// <summary>  PlayStartのSubject </summary>
+    public Subject<Unit> PlayStart = new Subject<Unit>();
+
+    /// <summary>  GameEndのSubject </summary>
     public Subject<Unit> GameEnd = new Subject<Unit>();
 
-    /// <summary>  EnemyCollisionEnterのSubject </summary>
-    public Subject<Unit> GameTimeChange = new Subject<Unit>();
+    /// <summary>  GameTimeStartのSubject </summary>
+    public Subject<Unit> GameTimeStart = new Subject<Unit>();
+
+    /// <summary>  GameTimeStopのSubject </summary>
+    public Subject<Unit> GameTimeStop = new Subject<Unit>();
+
 
 
     private void Awake()
@@ -43,13 +51,33 @@ public class GameMaster : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         SetTimerGaugeState(GameMasterState.GameStart);
+
+        _player.JumpOneTime.Subscribe(_ =>
+        {
+            SetTimerGaugeState(GameMasterState.PlayStart);
+
+        }).AddTo(this);
+
+        _buffCardManager.CardCreateStart.Subscribe(_=> 
+        {
+            SetTimerGaugeState(GameMasterState.GameTimeStop);
+
+        }).AddTo(this);
+
+        _buffCardManager.CardSelectedEnd.Subscribe(_ =>
+        {
+            SetTimerGaugeState(GameMasterState.GameTimeStart);
+
+        }).AddTo(this);
+
+
     }
 
     /// <summary>
     /// ステート
     /// </summary>
     /// <param name="timeScaleValue">タイムスケール変更値</param>
-    public void SetTimerGaugeState(GameMasterState gameMasterState ,float timeScaleValue = 1f)
+    public void SetTimerGaugeState(GameMasterState gameMasterState)
     {
         var state = gameMasterState;
 
@@ -59,12 +87,24 @@ public class GameMaster : MonoBehaviour
 
                 break;
 
+            case GameMasterState.PlayStart:
+                Debug.Log("ここに");
+                GameMaster.Instance.PlayStart.OnNext(Unit.Default);
+
+                break;
+
             case GameMasterState.GameEnd:
                 
                 break;
 
-            case GameMasterState.GameTimeChange:
-                ChangeTimeScale(timeScaleValue);
+            case GameMasterState.GameTimeStart:
+                GameMaster.Instance.GameTimeStart.OnNext(Unit.Default);
+                ChangeTimeScale(1);
+                break;
+
+            case GameMasterState.GameTimeStop:
+                GameMaster.Instance.GameTimeStop.OnNext(Unit.Default);
+                ChangeTimeScale(0);
                 break;
 
         }

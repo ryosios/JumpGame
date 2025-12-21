@@ -33,8 +33,9 @@ public class TimerGauge : MonoBehaviour
     private void Awake()
     {
         SetTimerValue(30f);
-        SetTimerGaugeState(TimerGaugeState.TimerStart);
+        SetTimerGaugeState(TimerGaugeState.TimerStop);
 
+        //各バフカードが全部流れてくる
         _buffCardManager?.CardCreated.Subscribe(buffCard=> 
         {
             _buffCard = buffCard;
@@ -46,12 +47,31 @@ public class TimerGauge : MonoBehaviour
                 SetTimerValueAdd(buffAddTime._addTimeValue);
                
                 
-            }).AddTo(this);
+            }).AddTo(this);            
 
         }).AddTo(this);
 
-        
-       
+        //時間停止と一緒にタイマーも止める
+        GameMaster.Instance.GameTimeStop.Subscribe(_ =>
+        {
+            SetTimerGaugeState(TimerGaugeState.TimerStop);
+
+        }).AddTo(this);
+
+        //解除
+        GameMaster.Instance.GameTimeStart.Subscribe(_ =>
+        {
+            SetTimerGaugeState(TimerGaugeState.TimerStart);
+
+        }).AddTo(this);
+
+        GameMaster.Instance.PlayStart.Subscribe(_ =>
+        {
+            Debug.Log("ここに2");
+            SetTimerGaugeState(TimerGaugeState.TimerStart);
+
+
+        }).AddTo(this);
     }
     private void Start()
     {

@@ -15,28 +15,50 @@ public class BuffCardManager : MonoBehaviour
         CardSelected,
     }
 
+    /// <summary>  バフカードが生成された最初 </summary>
+    public Subject<Unit> CardCreateStart = new Subject<Unit>();
+
+    /// <summary>  各バフカードが生成されたとき </summary>
     public Subject<BuffCard> CardCreated = new Subject<BuffCard>();
-    
+
+    /// <summary>  バフカードが選択されおわったとき </summary>
+    public Subject<Unit> CardSelectedEnd = new Subject<Unit>();
+
+
 
     [SerializeField] private Transform _posRoot;
 
     [SerializeField] private BuffCard _buffCard;
 
+    [SerializeField] private EnemyCreater _enemyCreater;
+
     private int _maxSelectCardValue = 3;
 
     private List<BuffCard> _activeCardsList = new List<BuffCard>();
+
+    /// <summary>  敵カウントがいくつごとにカードイベントが起きるか </summary>
+    private int _cardEventCount = 5;
 
     private void Awake()
     {
         //var buffCards = Resources.LoadAll<BuffCard>("Prefabs/Cards");
         //_buffCardsStock.AddRange(buffCards);
 
+        _enemyCreater.EnemyKillCount.Subscribe(value => 
+        {
+
+            if (value != 0 && value % _cardEventCount == 0)
+            {
+                //カードインスタンス生成（仮）
+                
+                SetBuffCardManagerState(BuffCardManagerState.CardCreate);
+            }
+          
+        
+        }).AddTo(this);
 
 
-
-        //カードインスタンス生成（仮）
        
-        SetBuffCardManagerState(BuffCardManagerState.CardCreate);
           
        
        
@@ -57,12 +79,13 @@ public class BuffCardManager : MonoBehaviour
                 break;
 
             case BuffCardManagerState.CardCreate:
+                CardCreateStart.OnNext(Unit.Default);
                 _activeCardsList?.Clear();
                 _activeCardsList = new List<BuffCard>();
 
                 for (int i = 0; i < _maxSelectCardValue; i++)
                 {
-                    //アクティブになっているカードをすべて取得
+                    //アクティブになっているカードをすべて取得しておく
                     _activeCardsList.Add(CreateCard()); 
                 }
                 
@@ -84,6 +107,8 @@ public class BuffCardManager : MonoBehaviour
                 {
                     Destroy(activeCardsList.gameObject);
                 }
+
+                CardSelectedEnd.OnNext(Unit.Default);
 
                 break;
 

@@ -337,6 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 1407698902}
+  _buffCardManager: {fileID: 1450575841}
 --- !u!4 &143053193
 Transform:
   m_ObjectHideFlags: 0
@@ -1662,7 +1663,7 @@ GameObject:
   - component: {fileID: 525087141}
   - component: {fileID: 525087144}
   m_Layer: 5
-  m_Name: LeftAreaButton
+  m_Name: CenterAreaButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1685,8 +1686,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -480, y: 0}
-  m_SizeDelta: {x: 960, y: 1080}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &525087141
 MonoBehaviour:
@@ -3540,6 +3541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _posRoot: {fileID: 1818604433}
   _buffCard: {fileID: 1752354050}
+  _enemyCreater: {fileID: 1077135057}
 --- !u!1 &1512628922
 GameObject:
   m_ObjectHideFlags: 0
@@ -3959,10 +3961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d3a13578f643f409ebf8a1a5a67a82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _leftAreaButton: {fileID: 525087141}
-  _leftAreaButtonTrigger: {fileID: 525087144}
-  _rightAreaButton: {fileID: 2118077324}
-  _rightAreaButtonTrigger: {fileID: 2118077323}
+  _centerAreaButton: {fileID: 525087141}
 --- !u!1 &1818604432
 GameObject:
   m_ObjectHideFlags: 0
@@ -4876,7 +4875,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2118077322
 RectTransform:
   m_ObjectHideFlags: 0

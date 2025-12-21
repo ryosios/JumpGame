@@ -23,6 +23,9 @@ public class Player : MonoBehaviour
     /// <summary>  スタミナ変動したときのサブジェクト </summary>
     public Subject<float> SutaminaChange = new Subject<float>();
 
+    /// <summary>  最初の一回目のジャンプ </summary>
+    public Subject<Unit> JumpOneTime = new Subject<Unit>();
+
     /// <summary> _rotationArrowRootTransのTransform </summary>
     [SerializeField] Transform _rotationArrowRootTrans;
 
@@ -59,43 +62,37 @@ public class Player : MonoBehaviour
     /// <summary> Attackのリキャストタイム </summary>
     private float _attackRecastTime = 0.5f;
 
-    private bool _isAttack = false;   
+    private bool _isAttack = false;
+
+    /// <summary> 最初の一回目のジャンプフラグ </summary>
+    private bool _isJumpOneTime = false;
 
 
     private void Start()
     {
         SetPlayerState(PlayerState.Default);
 
-        InputController.Instance.LeftClickEnter.Where(_ => _sutaminaValue > _jumpSutamina).Subscribe(_ =>
+        InputController.Instance.CenterAreaButtonEnter.Where(_ => _sutaminaValue > _jumpSutamina).Subscribe(_ =>
         {
             SetPlayerState(PlayerState.Direction);
 
         }).AddTo(this);
 
-        InputController.Instance.LeftClickExit.Where(_ => _sutaminaValue > _jumpSutamina).Subscribe(_ =>
+        InputController.Instance.CenterAreaButtonExit.Where(_ => _sutaminaValue > _jumpSutamina).Subscribe(_ =>
         {
             SetPlayerState(PlayerState.Jump);
 
         }).AddTo(this);
 
-        InputController.Instance.RightClickEnter.Subscribe(_ =>
-        {
-            SetPlayerState(PlayerState.Attack);
 
-        }).AddTo(this);
-
-        InputController.Instance.RightClickExit.Subscribe(_ =>
-        {
-           
-
-        }).AddTo(this);
-
+        //スタミナ自動回復いったんオフ
+        /*
         Observable.EveryUpdate().Subscribe(_ =>
         {
             SetPlayerState(PlayerState.SutaminaRecovery);
 
         }).AddTo(this);
-
+        */
     }
 
     /// <summary>
@@ -147,16 +144,26 @@ public class Player : MonoBehaviour
                 SutaminaChange.OnNext(_sutaminaValue);
 
                 SetJump();
+
+                if(_isJumpOneTime == false)
+                {
+                    _isJumpOneTime = true;
+                    JumpOneTime.OnNext(Unit.Default);
+                }
+                
+
+
                 break;
 
             case PlayerState.Attack:
 
+                /*
                 if (_isAttack == false)
                 {
                     _isAttack = true; //アタックのリキャスト用
                     StartCoroutine(SetAttack());
                 }           
-
+                */
                 break;
 
             case PlayerState.SutaminaRecovery:

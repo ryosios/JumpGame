@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63dfb896b1ad6354dbf724bb65729389, type: 3}
   m_Name: BuffAddTime1
   m_EditorClassIdentifier: 
-  buffName: 
+  buffName: "\u30BF\u30A4\u30DE\u30FC\u304C10\u79D2\u8FFD\u52A0"
   description: 
   icon: {fileID: 0}
   _addTimeValue: 10

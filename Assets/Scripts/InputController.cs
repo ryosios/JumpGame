@@ -8,29 +8,23 @@ public class InputController : MonoBehaviour
     //入力管理クラス
     private enum InputState
     {
-        LeftClickEnter,
-        LeftClickExit,
-        RightClickEnter,
-        RightClickExit,
+        CenterAreaButtonEnter,
+        CenterAreaButtonExit,
+        CenterAreaButtonActiveFalse,
+        CenterAreaButtonActiveTrue
+
+
     }
 
     public static InputController Instance { get; private set; }
 
-    [SerializeField] private Button _leftAreaButton;
+    [SerializeField] private Button _centerAreaButton;
 
-    [SerializeField] private ObservableEventTrigger _leftAreaButtonTrigger;
+    public Subject<Unit> CenterAreaButtonEnter = new Subject<Unit>();
 
-    [SerializeField] private Button _rightAreaButton;
+    public Subject<Unit> CenterAreaButtonExit = new Subject<Unit>();
 
-    [SerializeField] private ObservableEventTrigger _rightAreaButtonTrigger;
-
-    public Subject<Unit> LeftClickEnter = new Subject<Unit>();
-
-    public Subject<Unit> LeftClickExit = new Subject<Unit>();
-
-    public Subject<Unit> RightClickEnter = new Subject<Unit>();
-
-    public Subject<Unit> RightClickExit = new Subject<Unit>();
+  
 
     private void Awake()
     {
@@ -44,12 +38,41 @@ public class InputController : MonoBehaviour
         Instance = this;
 
         // シーン切り替えでも破棄しない場合
-        DontDestroyOnLoad(gameObject);       
+        DontDestroyOnLoad(gameObject);
+
+        // 押した瞬間
+        _centerAreaButton.OnPointerDownAsObservable()
+            .Subscribe(_ =>
+            {
+                SetInputState(InputState.CenterAreaButtonEnter);
+            })
+            .AddTo(this);
+
+        // 離した瞬間
+        _centerAreaButton.OnPointerUpAsObservable()
+            .Subscribe(_ =>
+            {
+                SetInputState(InputState.CenterAreaButtonExit);
+            })
+            .AddTo(this);
+
+        GameMaster.Instance.GameTimeStop.Subscribe(_ =>
+        {
+            SetInputState(InputState.CenterAreaButtonActiveFalse);
+
+        }).AddTo(this);
+
+        GameMaster.Instance.GameTimeStart.Subscribe(_ =>
+        {
+            SetInputState(InputState.CenterAreaButtonActiveTrue);
+
+        }).AddTo(this);
 
     }
 
     private void Update()
     {
+        /*
         if (Input.GetMouseButtonDown(0))
         {
             SetInputState(InputState.LeftClickEnter);
@@ -58,6 +81,8 @@ public class InputController : MonoBehaviour
         {
             SetInputState(InputState.LeftClickExit);
         }
+        */
+         /*
         if (Input.GetMouseButtonDown(1))
         {
             SetInputState(InputState.RightClickEnter);
@@ -66,6 +91,7 @@ public class InputController : MonoBehaviour
         {
             SetInputState(InputState.RightClickExit);
         }
+         */
 
     }
 
@@ -75,25 +101,27 @@ public class InputController : MonoBehaviour
 
         switch (state)
         {
-            case InputState.LeftClickEnter:
-                LeftClickEnter.OnNext(Unit.Default);
+            case InputState.CenterAreaButtonEnter:
+                CenterAreaButtonEnter.OnNext(Unit.Default);
 
                 break;
 
-            case InputState.LeftClickExit:
-                LeftClickExit.OnNext(Unit.Default);
+            case InputState.CenterAreaButtonExit:
+                CenterAreaButtonExit.OnNext(Unit.Default);
 
                 break;
 
-            case InputState.RightClickEnter:
-                RightClickEnter.OnNext(Unit.Default);
+            case InputState.CenterAreaButtonActiveFalse:
+                _centerAreaButton.enabled = false;
 
                 break;
 
-            case InputState.RightClickExit:
-                RightClickExit.OnNext(Unit.Default);
+            case InputState.CenterAreaButtonActiveTrue:
+                _centerAreaButton.enabled = true;
 
                 break;
+
+
 
 
         }
