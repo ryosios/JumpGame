@@ -138,7 +138,7 @@ public class Player : MonoBehaviour
                 _rotateSequence?.Kill();
                 _rotationArrowRootTrans.gameObject.SetActive(false);
                 _playerRigid.constraints = RigidbodyConstraints2D.None;
-                _playerRigid.constraints = RigidbodyConstraints2D.FreezeRotation;
+                //_playerRigid.constraints = RigidbodyConstraints2D.FreezeRotation;
 
                 _sutaminaValue -= _jumpSutamina;
                 SutaminaChange.OnNext(_sutaminaValue);
