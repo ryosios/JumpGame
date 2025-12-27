@@ -54,8 +54,17 @@ public class CameraUpdate : MonoBehaviour
         float dt = Time.deltaTime;
         // 毎フレームの処理
         Vector3 playerPos = _playerTrans.position;
-        var updateCameraPos = new Vector3(playerPos.x, playerPos.y, -20f);
-        this.transform.position = updateCameraPos;
+
+        float clampedX = Mathf.Clamp(playerPos.x, -8f, 8f);
+        float clampedY = Mathf.Clamp(playerPos.y, -10f, 10f);
+
+        transform.position = new Vector3(
+            clampedX,
+            clampedY,
+            -20f
+        );
+
+
     }
 
 }
