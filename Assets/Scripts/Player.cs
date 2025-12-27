@@ -2,18 +2,23 @@ using UnityEngine;
 using UniRx;
 using DG.Tweening;
 using System.Collections;
+using Spine.Unity;
+using Spine;
+using System.Linq;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
     //プレイヤー用クラス
 
-   public enum PlayerState
+    public enum PlayerState
     {
         Default,
         Direction,
         Jump,
         Attack,
-        SutaminaRecovery
+        SutaminaRecovery,
+        Bounce
     }
 
     public Subject<Unit> EnemyCollisionEnter = new Subject<Unit>();
@@ -36,7 +41,7 @@ public class Player : MonoBehaviour
     [SerializeField] CircleCollider2D _attackCollision;
 
     /// <summary> 回転用のシーケンス </summary>
-    private Sequence _rotateSequence;
+    private DG.Tweening.Sequence _rotateSequence;
 
     /// <summary> ジャンプ力 </summary>
     private float _jumpPower = 20f;
@@ -67,6 +72,51 @@ public class Player : MonoBehaviour
     /// <summary> 最初の一回目のジャンプフラグ </summary>
     private bool _isJumpOneTime = false;
 
+    /// <summary> 子のコリジョン取得用 </summary>
+    [SerializeField] PlayerCollisionPresenter _playerCollision;
+
+    //Spine
+    /// <summary> SkeletonAnimation </summary>
+    [SerializeField] private SkeletonAnimation _skeletonAnimation;
+
+    /// <summary> ジャンプで再生したいアニメーションリスト </summary>
+    private string[] _jumpAnimNameTargetStringList = { "jump_1", "jump_2", "jump_3" };
+
+    /// <summary> 取得したアニメリスト </summary>
+    private List<Spine.Animation> _jumpCandidates;
+
+
+    /// <summary> ジャンプで切り替えたいアタッチメントのあるスロット </summary>
+    private string _slotName = "face_1";
+
+    /// <summary> ジャンプで切り替えたいアタッチメントのリスト </summary>
+    private string[] _attachmentNames = { "face_1", "face_2" };
+
+    private List<Attachment> _attachments;
+
+    private Collision2D _bounceCollision;
+
+    private void Awake()
+    {
+        //Spineアニメーション初期設定
+        var skeletonData = _skeletonAnimation.Skeleton.Data;
+
+        _jumpCandidates = skeletonData.Animations
+           .Where(a => _jumpAnimNameTargetStringList.Contains(a.Name))
+           .ToList();
+
+        //Spineアタッチメント名初期設定
+        var slotIndex = skeletonData.FindSlot(_slotName).Index;
+
+        _attachments = new List<Attachment>();
+
+        foreach (var name in _attachmentNames)
+        {
+            var attachment = skeletonData.DefaultSkin.GetAttachment(slotIndex, name);
+            if (attachment != null)
+                _attachments.Add(attachment);
+        }
+    }
 
     private void Start()
     {
@@ -81,6 +131,13 @@ public class Player : MonoBehaviour
         InputController.Instance.CenterAreaButtonExit.Where(_ => _sutaminaValue > _jumpSutamina).Subscribe(_ =>
         {
             SetPlayerState(PlayerState.Jump);
+
+        }).AddTo(this);
+
+        _playerCollision.CollisionExit.Subscribe(collision=> 
+        {      
+            GetBounceCollision(collision);
+            SetPlayerState(PlayerState.Bounce);
 
         }).AddTo(this);
 
@@ -120,7 +177,7 @@ public class Player : MonoBehaviour
                 _rotateSequence?.Kill();
                 _rotateSequence = DOTween.Sequence();
 
-                _rotateSequence.Append(_rotationArrowRootTrans.DOLocalRotate(new Vector3(0, 0, -_jumpAngle), _moveAngleTime,RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLink(gameObject));
+                _rotateSequence.Append(_rotationArrowRootTrans.DOLocalRotate(new Vector3(0, 0, -_jumpAngle), _moveAngleTime,DG.Tweening.RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLink(gameObject));
                 /*
                 _rotateSequence.Append(_rotationArrowRootTrans.DOLocalRotate(new Vector3(0, 0, _jumpAngle),_moveAngleTime/4*1).SetEase(Ease.Linear).SetLink(gameObject));
                 _rotateSequence.Append(_rotationArrowRootTrans.DOLocalRotate(new Vector3(0, 0, -_jumpAngle), _moveAngleTime / 4 * 2).SetEase(Ease.Linear).SetLink(gameObject));
@@ -150,7 +207,10 @@ public class Player : MonoBehaviour
                     _isJumpOneTime = true;
                     JumpOneTime.OnNext(Unit.Default);
                 }
-                
+
+                //アニメーションとアタッチメントをランダム切り替え
+                PlayRandomSpineAnim(_skeletonAnimation, _jumpCandidates, false);
+                ApplyRandomAttachment(_skeletonAnimation, _slotName, _attachments);
 
 
                 break;
@@ -173,8 +233,18 @@ public class Player : MonoBehaviour
                     _sutaminaValue += Time.deltaTime * _sutaminaRecoverySpeed;
                     SutaminaChange.OnNext(_sutaminaValue);
 
-                }
-                
+                }                
+
+                break;
+
+            case PlayerState.Bounce:
+
+                if (_bounceCollision.gameObject.layer == 8)
+                {
+                    PlayRandomSpineAnim(_skeletonAnimation, _jumpCandidates, false);
+                    ApplyRandomAttachment(_skeletonAnimation, _slotName, _attachments);
+                }              
+               
 
                 break;
 
@@ -222,5 +292,41 @@ public class Player : MonoBehaviour
         _attackCollision.gameObject.SetActive(false);
         yield return new WaitForSeconds(_attackRecastTime - _attackCollOffTime);
         _isAttack = false;//アタックのリキャストフラグを戻す
+    }
+
+
+    /// <summary>
+    /// Spineのアニメーションをランダム再生
+    /// </summary>
+    /// <param name="skeletonAnimation">対象のskeletonAnimation</param>
+    /// <param name="candidates">取得したアニメーション一覧</param>
+    /// <param name="candidates">再生するアニメの名前のリスト</param>
+    void PlayRandomSpineAnim(SkeletonAnimation skeletonAnimation, List<Spine.Animation> candidates ,bool isLoop)
+    {
+        if (candidates == null || candidates.Count == 0)
+            return;
+
+        var anim = candidates[Random.Range(0, candidates.Count)];
+        skeletonAnimation.AnimationState.SetAnimation(0, anim,isLoop);
+    }
+
+    /// <summary>
+    /// Spineのアタッチメントをランダム切り替え
+    /// </summary>
+    public void ApplyRandomAttachment(SkeletonAnimation skeletonAnimation,string slotName, List<Attachment> attachments)
+    {
+        if (attachments.Count == 0)
+            return;
+
+        var at = attachments[Random.Range(0, _attachments.Count)];
+        skeletonAnimation.Skeleton.SetAttachment(slotName, at.Name);
+    }
+
+    /// <summary>
+    /// Collision受け渡し用
+    /// </summary>
+    public void GetBounceCollision(Collision2D collision)
+    {
+        _bounceCollision = collision;
     }
 }
