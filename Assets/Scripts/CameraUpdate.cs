@@ -56,7 +56,7 @@ public class CameraUpdate : MonoBehaviour
         Vector3 playerPos = _playerTrans.position;
 
         float clampedX = Mathf.Clamp(playerPos.x, -8f, 8f);
-        float clampedY = Mathf.Clamp(playerPos.y, -10f, 10f);
+        float clampedY = Mathf.Clamp(playerPos.y, -12f, 12f);
 
         transform.position = new Vector3(
             clampedX,
