@@ -61,7 +61,7 @@ public class CameraUpdate : MonoBehaviour
         transform.position = new Vector3(
             clampedX,
             clampedY,
-            -20f
+            -12f
         );
 
 
