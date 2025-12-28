@@ -18,7 +18,8 @@ public class Player : MonoBehaviour
         Jump,
         Attack,
         SutaminaRecovery,
-        Bounce
+        Bounce,
+        BuffLevelUp
     }
 
     public Subject<Unit> EnemyCollisionEnter = new Subject<Unit>();
@@ -67,13 +68,25 @@ public class Player : MonoBehaviour
     /// <summary> Attackのリキャストタイム </summary>
     private float _attackRecastTime = 0.5f;
 
-    private bool _isAttack = false;
+    private bool _isAttack = false;    
 
     /// <summary> 最初の一回目のジャンプフラグ </summary>
     private bool _isJumpOneTime = false;
 
     /// <summary> 子のコリジョン取得用 </summary>
     [SerializeField] PlayerCollisionPresenter _playerCollision;
+
+
+    //バフ関連
+    /// <summary> プレイヤーのレベル（強化段階） </summary>
+    private int _playerBuffLevel = 1;
+
+    /// <summary> BuffCardManager </summary>
+    [SerializeField] BuffCardManager _buffCardManager;
+
+    /// <summary> バフレベルが上がった時 </summary>
+    public Subject<Unit> BuffLevelUpEnd = new Subject<Unit>();
+
 
     //Spine
     /// <summary> SkeletonAnimation </summary>
@@ -84,7 +97,6 @@ public class Player : MonoBehaviour
 
     /// <summary> 取得したアニメリスト </summary>
     private List<Spine.Animation> _jumpCandidates;
-
 
     /// <summary> ジャンプで切り替えたいアタッチメントのあるスロット </summary>
     private string _slotName = "face_1";
@@ -98,24 +110,21 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        //Spineアニメーション初期設定
-        var skeletonData = _skeletonAnimation.Skeleton.Data;
+        InitializeSpineAnim();
 
-        _jumpCandidates = skeletonData.Animations
-           .Where(a => _jumpAnimNameTargetStringList.Contains(a.Name))
-           .ToList();
-
-        //Spineアタッチメント名初期設定
-        var slotIndex = skeletonData.FindSlot(_slotName).Index;
-
-        _attachments = new List<Attachment>();
-
-        foreach (var name in _attachmentNames)
+        //バウンス時
+        _playerCollision.CollisionExit.Subscribe(collision =>
         {
-            var attachment = skeletonData.DefaultSkin.GetAttachment(slotIndex, name);
-            if (attachment != null)
-                _attachments.Add(attachment);
-        }
+            GetBounceCollision(collision);
+            SetPlayerState(PlayerState.Bounce);
+
+        }).AddTo(this);
+
+        _buffCardManager.CardSelectedEnd.Subscribe(_=> 
+        {
+            SetPlayerState(PlayerState.BuffLevelUp);
+
+        }).AddTo(this);
     }
 
     private void Start()
@@ -134,12 +143,7 @@ public class Player : MonoBehaviour
 
         }).AddTo(this);
 
-        _playerCollision.CollisionExit.Subscribe(collision=> 
-        {      
-            GetBounceCollision(collision);
-            SetPlayerState(PlayerState.Bounce);
-
-        }).AddTo(this);
+ 
 
 
         //スタミナ自動回復いったんオフ
@@ -243,8 +247,13 @@ public class Player : MonoBehaviour
                 {
                     PlayRandomSpineAnim(_skeletonAnimation, _jumpCandidates, false);
                     ApplyRandomAttachment(_skeletonAnimation, _slotName, _attachments);
-                }              
+                }            
                
+                break;
+
+            case PlayerState.BuffLevelUp:
+                _playerBuffLevel += 1;
+                BuffLevelUpEnd.OnNext(Unit.Default);
 
                 break;
 
@@ -295,6 +304,30 @@ public class Player : MonoBehaviour
     }
 
 
+    //Spine
+    /// <summary>
+    /// Spineのアニメーション関連の初期設定
+    /// </summary>
+    void InitializeSpineAnim()
+    {
+        //Spineアニメーション初期設定       
+        var skeletonData = _skeletonAnimation.Skeleton.Data;
+
+        _jumpCandidates = skeletonData.Animations
+           .Where(a => _jumpAnimNameTargetStringList.Contains(a.Name))
+           .ToList();
+
+        //Spineアタッチメント名初期設定
+        var slotIndex = skeletonData.FindSlot(_slotName).Index;
+        _attachments = new List<Attachment>();
+        foreach (var name in _attachmentNames)
+        {
+            var attachment = skeletonData.DefaultSkin.GetAttachment(slotIndex, name);
+            if (attachment != null)
+                _attachments.Add(attachment);
+        }
+    }
+
     /// <summary>
     /// Spineのアニメーションをランダム再生
     /// </summary>
@@ -322,11 +355,20 @@ public class Player : MonoBehaviour
         skeletonAnimation.Skeleton.SetAttachment(slotName, at.Name);
     }
 
+
     /// <summary>
     /// Collision受け渡し用
     /// </summary>
     public void GetBounceCollision(Collision2D collision)
     {
         _bounceCollision = collision;
+    }
+
+    /// <summary>
+    /// バフレベルを取得
+    /// </summary>
+    public int GetBuffLevel()
+    {
+        return _playerBuffLevel;
     }
 }
