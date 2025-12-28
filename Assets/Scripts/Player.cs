@@ -41,6 +41,9 @@ public class Player : MonoBehaviour
     /// <summary> _attackCollisionのCircleCollider2D </summary>
     [SerializeField] CircleCollider2D _attackCollision;
 
+    /// <summary> _arrowのTransform </summary>
+    [SerializeField] private Transform _arrowTrans;
+
     /// <summary> 回転用のシーケンス </summary>
     private DG.Tweening.Sequence _rotateSequence;
 
@@ -178,10 +181,14 @@ public class Player : MonoBehaviour
 
                 _rotationArrowRootTrans.gameObject.SetActive(true);
                 _rotationArrowRootTrans.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                _arrowTrans.localScale = new Vector3(0f,1f,1f);
+
                 _rotateSequence?.Kill();
                 _rotateSequence = DOTween.Sequence();
 
                 _rotateSequence.Append(_rotationArrowRootTrans.DOLocalRotate(new Vector3(0, 0, -_jumpAngle), _moveAngleTime,DG.Tweening.RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLink(gameObject));
+                _rotateSequence.Join(_arrowTrans.DOScaleX(1f,1f).SetEase(Ease.OutElastic));
+
                 /*
                 _rotateSequence.Append(_rotationArrowRootTrans.DOLocalRotate(new Vector3(0, 0, _jumpAngle),_moveAngleTime/4*1).SetEase(Ease.Linear).SetLink(gameObject));
                 _rotateSequence.Append(_rotationArrowRootTrans.DOLocalRotate(new Vector3(0, 0, -_jumpAngle), _moveAngleTime / 4 * 2).SetEase(Ease.Linear).SetLink(gameObject));
