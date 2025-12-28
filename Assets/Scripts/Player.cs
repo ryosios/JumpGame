@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
     [SerializeField] private SkeletonAnimation _skeletonAnimation;
 
     /// <summary> ジャンプで再生したいアニメーションリスト </summary>
-    private string[] _jumpAnimNameTargetStringList = { "jump_1", "jump_2", "jump_3" };
+    private string[] _jumpAnimNameTargetStringList = { "jump_1", "jump_2", "jump_3", "jump_4" };
 
     /// <summary> 取得したアニメリスト </summary>
     private List<Spine.Animation> _jumpCandidates;
