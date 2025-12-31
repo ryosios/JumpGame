@@ -83,6 +83,7 @@ public class TweenTitleButtonRoot : MonoBehaviour
                 {                   
                    buttonButton.enabled = true;
                 }
+                Debug.Log("Buttonインあにめ");
 
                 break;
 

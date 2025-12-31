@@ -9,8 +9,8 @@ public class GameMaster : MonoBehaviour
 
     public enum GameMasterState
     {
-        GameStart,
-        PlayStart,
+        Default,
+        Playing,
         GameEnd,
         GameTimeStop,
         GameTimeStart
@@ -21,6 +21,8 @@ public class GameMaster : MonoBehaviour
     [SerializeField] Player _player;
 
     [SerializeField] private BuffCardManager _buffCardManager;
+
+    [SerializeField] TweenTransition _tweenTransition;
 
     /// <summary>  PlayStartのSubject </summary>
     public Subject<Unit> PlayStart = new Subject<Unit>();
@@ -50,27 +52,32 @@ public class GameMaster : MonoBehaviour
         // シーン切り替えでも破棄しない場合
         DontDestroyOnLoad(gameObject);
 
-        SetTimerGaugeState(GameMasterState.GameStart);
+       
 
         _player.JumpOneTime.Subscribe(_ =>
         {
-            SetTimerGaugeState(GameMasterState.PlayStart);
+            Instance.SetTimerGaugeState(GameMasterState.Playing);
 
         }).AddTo(this);
 
         _buffCardManager.CardCreateStart.Subscribe(_=> 
         {
-            SetTimerGaugeState(GameMasterState.GameTimeStop);
+            Instance.SetTimerGaugeState(GameMasterState.GameTimeStop);
 
         }).AddTo(this);
 
         _buffCardManager.CardSelectedEnd.Subscribe(_ =>
         {
-            SetTimerGaugeState(GameMasterState.GameTimeStart);
+            Instance.SetTimerGaugeState(GameMasterState.GameTimeStart);
 
         }).AddTo(this);
 
 
+    }
+
+    private void Start()
+    {
+        Instance.SetTimerGaugeState(GameMasterState.Default);
     }
 
     /// <summary>
@@ -83,11 +90,13 @@ public class GameMaster : MonoBehaviour
 
         switch (state)
         {
-            case GameMasterState.GameStart:
+            case GameMasterState.Default:
+                _tweenTransition.PlayOutAnim();
+
 
                 break;
 
-            case GameMasterState.PlayStart:
+            case GameMasterState.Playing:
                 Debug.Log("ここに");
                 GameMaster.Instance.PlayStart.OnNext(Unit.Default);
 

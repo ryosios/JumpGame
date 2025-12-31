@@ -27,6 +27,8 @@ public class TweenTitleImage : MonoBehaviour
 
     private Vector3 _initTitleImageScale;
 
+    public Subject<Unit> InEnd = new Subject<Unit>();
+
     private void Awake()
     {
         _initTitleImagePos = _titleImageRect.anchoredPosition;
@@ -51,7 +53,7 @@ public class TweenTitleImage : MonoBehaviour
                 _titleSequence?.Kill();
                 _titleSpine.AnimationState.SetAnimation(0, "default", false);
 
-                SetTweenTitleImageState(TweenTitleImageState.In);
+               
 
                 break;
 
@@ -67,20 +69,14 @@ public class TweenTitleImage : MonoBehaviour
                 //0.5
                 _titleSequence.InsertCallback(0.5f, () =>
                 {
+                    
                     _titleSpine.AnimationState.SetAnimation(0, "in", false);
 
                 });
 
                 //2.5
-                _titleSequence.Insert(2f, _titleImageRect.DOScale(0.6f, 1f).SetEase(Ease.OutExpo));
-                _titleSequence.Insert(2f, _titleImageRect.DOAnchorPosY(190f, 1f).SetEase(Ease.OutExpo));
-                _titleSequence.InsertCallback(1.5f, () =>
-                {
-                   // _titleSpine.AnimationState.SetAnimation(0, "loop", true);
-
-                });
-
-                
+                _titleSequence.Insert(2f, _titleImageRect.DOScale(0.67f, 1f).SetEase(Ease.OutExpo));
+                _titleSequence.Insert(2f, _titleImageRect.DOAnchorPosY(190f, 1f).SetEase(Ease.OutExpo));                
 
                 break;
 

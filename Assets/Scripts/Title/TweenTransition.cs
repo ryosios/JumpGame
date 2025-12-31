@@ -10,9 +10,12 @@ public class TweenTransition : MonoBehaviour
     {
         Default,
         In,
+        Out,
     }
 
     //public Subject<Unit> Default = new Subject<Unit>();
+
+    [SerializeField] private RectTransform _transitionRect;
 
     [SerializeField] private Image _transitionImage;
 
@@ -23,6 +26,10 @@ public class TweenTransition : MonoBehaviour
     private Sequence _thisSequence;
 
     private float _transitionTime = 0.5f;
+
+    public Subject<Unit> InEnd = new Subject<Unit>();
+
+    public Subject<Unit> OutEnd = new Subject<Unit>();
 
     private void Awake()
     {
@@ -45,14 +52,35 @@ public class TweenTransition : MonoBehaviour
 
                 break;
 
-            case ThisState.In:
+            case ThisState.Out:
+                _transitionRect.eulerAngles = new Vector3(0f, 0f, 0f);
                 _transitionGroup.alpha = 1f;
                 _thisSequence?.Kill();
                 _thisSequence = DOTween.Sequence();
                 _thisSequence.SetLink(gameObject);
+                _transitionMatrialInstance.SetFloat("_Float", 0f);
 
-                _thisSequence.Append(DOVirtual.Float(0.6f, 0, _transitionTime, value =>{_transitionMatrialInstance.SetFloat("_Float", value); }).SetEase(Ease.OutCubic).SetLink(gameObject));
-               
+                _thisSequence.Append(DOVirtual.Float(0f, 0.6f, _transitionTime, value =>{_transitionMatrialInstance.SetFloat("_Float", value); }).SetEase(Ease.InCubic).SetLink(gameObject)).OnComplete(()=> 
+                {
+                    OutEnd.OnNext(Unit.Default);
+                
+                });              
+
+                break;
+
+            case ThisState.In:
+                _transitionRect.eulerAngles = new Vector3(0f, 0f, 180f);
+                _transitionGroup.alpha = 1f;
+                _thisSequence?.Kill();
+                _thisSequence = DOTween.Sequence();
+                _thisSequence.SetLink(gameObject);
+                _transitionMatrialInstance.SetFloat("_Float", 1f);
+                
+                _thisSequence.Append(DOVirtual.Float(0.6f, 0, _transitionTime, value => { _transitionMatrialInstance.SetFloat("_Float", value); }).SetEase(Ease.OutCubic).SetLink(gameObject)).OnComplete(() =>
+                {
+                    InEnd.OnNext(Unit.Default);
+                  
+                });
 
                 break;
 
@@ -70,5 +98,10 @@ public class TweenTransition : MonoBehaviour
     public void PlayInAnim()
     {
         SetThisState(ThisState.In);
+    }
+
+    public void PlayOutAnim()
+    {
+        SetThisState(ThisState.Out);
     }
 }

@@ -21,18 +21,16 @@ public class TitleManager : MonoBehaviour
     [SerializeField] TweenTitleImage _tweenTitleImage;
     [SerializeField] TweenTitleButtonRoot _tweenTitleButtonRoot;
 
+    [SerializeField] TweenTransition _tweenTransition;
+
     private void Awake()
     {
-       
-
-
-        SetTitleManagerState(TitleManagerState.Default);
-
+        
     }
 
     private void Start()
     {
-        SetTitleManagerState(TitleManagerState.Title);
+        SetTitleManagerState(TitleManagerState.Default);
     }
 
     /// <summary>
@@ -45,7 +43,16 @@ public class TitleManager : MonoBehaviour
         switch (state)
         {
             case TitleManagerState.Default:
-                
+                //タイトル遷移前にトランジションとかで少し待つ
+                _tweenTitleImage.PlayDefaultAnim();
+                _tweenTransition.PlayOutAnim();
+                _tweenTransition.OutEnd.Subscribe(_ =>
+                {
+                    SetTitleManagerState(TitleManagerState.Title);
+
+
+                }).AddTo(this);
+
 
                 break;
 
@@ -53,7 +60,8 @@ public class TitleManager : MonoBehaviour
                 _tweenTitleImage.PlayInAnim();
                 _tweenTitleButtonRoot.PlayInAnim(2.2f);
                
-               
+
+
 
                 break;
 
