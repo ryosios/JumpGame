@@ -4,6 +4,8 @@ using DG.Tweening;
 using System.Collections;
 using Spine;
 using Spine.Unity;
+using UnityEngine.UI;
+using UniRx.Triggers;
 
 public class TitleManager : MonoBehaviour
 {
@@ -15,31 +17,41 @@ public class TitleManager : MonoBehaviour
         GameEnd,
 
     }
-
+    /// <summary> TitleImage </summary>
     [SerializeField] TweenTitleImage _tweenTitleImage;
+    [SerializeField] TweenTitleButtonRoot _tweenTitleButtonRoot;
 
     private void Awake()
     {
+       
+
 
         SetTitleManagerState(TitleManagerState.Default);
 
     }
+
+    private void Start()
+    {
+        SetTitleManagerState(TitleManagerState.Title);
+    }
+
     /// <summary>
     /// ステート
     /// </summary>
-    public void SetTitleManagerState(TitleManagerState titleManagerStatee)
+    public void SetTitleManagerState(TitleManagerState titleManagerState)
     {
-        var state = titleManagerStatee;
+        var state = titleManagerState;
 
         switch (state)
         {
             case TitleManagerState.Default:
-                SetTitleManagerState(TitleManagerState.Title);
+                
 
                 break;
 
             case TitleManagerState.Title:
-                _tweenTitleImage.PlauInAnim();
+                _tweenTitleImage.PlayInAnim();
+                _tweenTitleButtonRoot.PlayInAnim(2.2f);
                
                
 
