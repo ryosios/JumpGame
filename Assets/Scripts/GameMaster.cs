@@ -91,13 +91,13 @@ public class GameMaster : MonoBehaviour
         switch (state)
         {
             case GameMasterState.Default:
-                _tweenTransition.PlayOutAnim();
+                //トランジション開始
+                _tweenTransition.PlayOutAnim(1f);
 
 
                 break;
 
             case GameMasterState.Playing:
-                Debug.Log("ここに");
                 GameMaster.Instance.PlayStart.OnNext(Unit.Default);
 
                 break;

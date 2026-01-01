@@ -27,6 +27,8 @@ public class TweenTransition : MonoBehaviour
 
     private float _transitionTime = 0.5f;
 
+    private float _transitionOutDelayTime = 0f;
+
     public Subject<Unit> InEnd = new Subject<Unit>();
 
     public Subject<Unit> OutEnd = new Subject<Unit>();
@@ -49,10 +51,12 @@ public class TweenTransition : MonoBehaviour
         {
             case ThisState.Default:
                 _transitionGroup.alpha = 0;
+                _transitionImage.enabled = false;
 
                 break;
 
             case ThisState.Out:
+                _transitionImage.enabled = true;
                 _transitionRect.eulerAngles = new Vector3(0f, 0f, 0f);
                 _transitionGroup.alpha = 1f;
                 _thisSequence?.Kill();
@@ -60,15 +64,18 @@ public class TweenTransition : MonoBehaviour
                 _thisSequence.SetLink(gameObject);
                 _transitionMatrialInstance.SetFloat("_Float", 0f);
 
+                _thisSequence.AppendInterval(_transitionOutDelayTime);
                 _thisSequence.Append(DOVirtual.Float(0f, 0.6f, _transitionTime, value =>{_transitionMatrialInstance.SetFloat("_Float", value); }).SetEase(Ease.InCubic).SetLink(gameObject)).OnComplete(()=> 
                 {
+                    _transitionImage.enabled = false;
                     OutEnd.OnNext(Unit.Default);
                 
-                });              
+                });
 
                 break;
 
             case ThisState.In:
+                _transitionImage.enabled = true;
                 _transitionRect.eulerAngles = new Vector3(0f, 0f, 180f);
                 _transitionGroup.alpha = 1f;
                 _thisSequence?.Kill();
@@ -78,6 +85,7 @@ public class TweenTransition : MonoBehaviour
                 
                 _thisSequence.Append(DOVirtual.Float(0.6f, 0, _transitionTime, value => { _transitionMatrialInstance.SetFloat("_Float", value); }).SetEase(Ease.OutCubic).SetLink(gameObject)).OnComplete(() =>
                 {
+                    
                     InEnd.OnNext(Unit.Default);
                   
                 });
@@ -100,8 +108,9 @@ public class TweenTransition : MonoBehaviour
         SetThisState(ThisState.In);
     }
 
-    public void PlayOutAnim()
+    public void PlayOutAnim(float delayTime = 0f)
     {
+        _transitionOutDelayTime = delayTime;
         SetThisState(ThisState.Out);
     }
 }

@@ -75,8 +75,8 @@ public class TweenTitleImage : MonoBehaviour
                 });
 
                 //2.5
-                _titleSequence.Insert(2f, _titleImageRect.DOScale(0.67f, 1f).SetEase(Ease.OutExpo));
-                _titleSequence.Insert(2f, _titleImageRect.DOAnchorPosY(190f, 1f).SetEase(Ease.OutExpo));                
+                _titleSequence.Insert(1.9f, _titleImageRect.DOScale(0.67f, 0.35f).SetEase(Ease.InExpo));
+                _titleSequence.Insert(1.9f, _titleImageRect.DOAnchorPosY(190f, 0.35f).SetEase(Ease.InExpo));                
 
                 break;
 
