@@ -239,6 +239,7 @@ GameObject:
   - component: {fileID: 9101974486865350543}
   - component: {fileID: 2174255975212827747}
   - component: {fileID: 5315151780210280562}
+  - component: {fileID: 9167895055428726967}
   m_Layer: 5
   m_Name: BuffCard
   m_TagString: Untagged
@@ -393,8 +394,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _thisButton: {fileID: 9101974486865350543}
+  _tweenBuffCard: {fileID: 9167895055428726967}
   _buffBasesStock: []
   _buffBasesActive: []
+--- !u!114 &9167895055428726967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4236615436326561212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20be5ce158ae3a44aac75c7352c6e62b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rootRect: {fileID: 2576102085397230365}
+  _rootGroup: {fileID: 1330498913696618487}
 --- !u!1 &4730737813302142291
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,6 +420,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2576102085397230365}
+  - component: {fileID: 1330498913696618487}
   m_Layer: 5
   m_Name: Root
   m_TagString: Untagged
@@ -431,6 +448,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1330498913696618487
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4730737813302142291}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6533429670532914589
 GameObject:
   m_ObjectHideFlags: 0

@@ -51,9 +51,7 @@ public class TweenTitleImage : MonoBehaviour
                 _titleImageRect.localScale = _initTitleImageScale;
                 _titleImageGroup.alpha = 0;
                 _titleSequence?.Kill();
-                _titleSpine.AnimationState.SetAnimation(0, "default", false);
-
-               
+                _titleSpine.AnimationState.SetAnimation(0, "default", false);               
 
                 break;
 
@@ -68,9 +66,9 @@ public class TweenTitleImage : MonoBehaviour
 
                 //0.5
                 _titleSequence.InsertCallback(0.5f, () =>
-                {
-                    
-                    _titleSpine.AnimationState.SetAnimation(0, "in", false);
+                {             
+                    var entry = _titleSpine.AnimationState.SetAnimation(0, "in", false);
+                    entry.TimeScale = 2f; // 1.5倍速
 
                 });
 

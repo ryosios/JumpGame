@@ -16,7 +16,7 @@ public class BuffCard : MonoBehaviour
         Initialize,
         CardSelect,
         Destroy
-    }
+    }  
 
     /// <summary> カードが選択されたとき </summary>
     public Subject<BuffBase> CardSelected = new Subject<BuffBase>();
@@ -26,6 +26,12 @@ public class BuffCard : MonoBehaviour
 
     [SerializeField] private Button _thisButton;
     public Button ThisButton  => _thisButton;
+
+
+    /// <summary> カードのアニメーションクラス </summary>
+    [SerializeField] private TweenBuffCard _tweenBuffCard;
+
+    public TweenBuffCard tweenBuffCard => _tweenBuffCard;
 
     /// <summary> ロードした全BaffBaseのスクリプタブルオブジェクト </summary>
     [Header("※ 注意：このリストは実行時に自動で代入されます")]

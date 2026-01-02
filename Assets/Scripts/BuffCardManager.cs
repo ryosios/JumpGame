@@ -55,11 +55,7 @@ public class BuffCardManager : MonoBehaviour
             }
           
         
-        }).AddTo(this);
-
-
-       
-          
+        }).AddTo(this);         
        
        
     }
@@ -86,8 +82,12 @@ public class BuffCardManager : MonoBehaviour
                 for (int i = 0; i < _maxSelectCardValue; i++)
                 {
                     //アクティブになっているカードをすべて取得しておく
-                    _activeCardsList.Add(CreateCard()); 
+                    var card = CreateCard();
+                    _activeCardsList.Add(card);
+                    card.tweenBuffCard.PlayInAnim(i * 0.1f);
+
                 }
+               
                 
                 
 
@@ -118,6 +118,7 @@ public class BuffCardManager : MonoBehaviour
     private BuffCard CreateCard()
     {
         BuffCard buffCardInstance = Instantiate(_buffCard, _posRoot) as BuffCard;
+        
         buffCardInstance.gameObject.SetActive(true);
         buffCardInstance.CardSelected.Subscribe(_=> 
         {
