@@ -33,6 +33,8 @@ public class TweenTransition : MonoBehaviour
 
     public Subject<Unit> OutEnd = new Subject<Unit>();
 
+ 
+
     private void Awake()
     {
         _transitionMatrialInstance = Instantiate(_transitionImage.material);
@@ -40,6 +42,9 @@ public class TweenTransition : MonoBehaviour
 
         SetThisState(ThisState.Default);
     }
+
+   
+
     /// <summary>
     /// ステート
     /// </summary>

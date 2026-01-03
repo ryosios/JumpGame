@@ -120,8 +120,9 @@ public class BuffCardManager : MonoBehaviour
         BuffCard buffCardInstance = Instantiate(_buffCard, _posRoot) as BuffCard;
         
         buffCardInstance.gameObject.SetActive(true);
-        buffCardInstance.CardSelected.Subscribe(_=> 
-        {
+        buffCardInstance.CardSelected.Subscribe(_=>
+        {//カードが選択された時のサブジェクト
+
             SetBuffCardManagerState(BuffCardManagerState.CardSelected);
             
 

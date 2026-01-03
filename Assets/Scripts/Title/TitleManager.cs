@@ -58,7 +58,7 @@ public class TitleManager : MonoBehaviour
 
             case TitleManagerState.Title:
                 _tweenTitleImage.PlayInAnim();
-                _tweenTitleButtonRoot.PlayInAnim(2.2f);
+                _tweenTitleButtonRoot.PlayInAnim(1.7f);
                
 
 

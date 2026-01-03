@@ -10,6 +10,8 @@ public class TweenBuffCard : MonoBehaviour
     {
         Default,
         In,
+        Selected,
+        Out,
     }
 
     //public Subject<Unit> Default = new Subject<Unit>();
@@ -18,20 +20,41 @@ public class TweenBuffCard : MonoBehaviour
 
     [SerializeField] CanvasGroup _rootGroup;
 
-    private Vector2 _intRootPos = new Vector2(0,0);
-
-    private float _ySlideValue = 100f;
-
-    private float _xSlideValue = 100f;
+    [SerializeField] CanvasGroup _baseWhiteGroup;
 
     private Sequence _sequence;
 
     private float _delay = 0f;
-    
+
+
+    public bool _isDebug;
+
     private void Awake()
     {
-        _intRootPos = new Vector2(0f, 500f);
         SetThisState(ThisState.Default);
+    }
+
+    private void Update()
+    {
+        if (_isDebug)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                SetThisState(ThisState.Default);
+            }
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                SetThisState(ThisState.In);
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                SetThisState(ThisState.Selected);
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                SetThisState(ThisState.Out);
+            }
+        }
     }
 
     /// <summary>
@@ -43,8 +66,10 @@ public class TweenBuffCard : MonoBehaviour
 
         switch (state)
         {
-            case ThisState.Default:         
-                
+            case ThisState.Default:
+                _rootGroup.alpha = 0;
+                _baseWhiteGroup.alpha = 0;
+
                 break;
 
             case ThisState.In:
@@ -52,14 +77,42 @@ public class TweenBuffCard : MonoBehaviour
                 _sequence = DOTween.Sequence();
                 _sequence.SetLink(gameObject);
 
+                _rootGroup.alpha = 1;
+                _rootRect.localScale = Vector3.one * 0.7f;
+                _baseWhiteGroup.alpha = 0;
+
+                _sequence.Insert(_delay,_rootRect.DOScale(1f,0.5f).SetEase(Ease.OutElastic)).SetUpdate(true);
+               
+                break;
+
+            case ThisState.Selected:
+                _sequence?.Kill();
+                _sequence = DOTween.Sequence();
+                _sequence.SetLink(gameObject);
+
+                _rootGroup.alpha = 1;
+
+                _rootRect.localScale = Vector3.one * 0.9f;
+                _baseWhiteGroup.alpha = 1f;
+
+                _sequence.Insert(_delay, _rootRect.DOScale(1f, 0.5f).SetEase(Ease.OutElastic)).SetUpdate(true);
+                _sequence.Insert(_delay, _baseWhiteGroup.DOFade(0f, 1f).SetEase(Ease.Linear)).SetUpdate(true);
+             
+
+                break;
+
+            case ThisState.Out:
+                _sequence?.Kill();
+                _sequence = DOTween.Sequence();
+                _sequence.SetLink(gameObject);
+
                 _rootGroup.alpha = 0;
 
-                _rootRect.anchoredPosition = _intRootPos;
-                
-                Debug.Log(_intRootPos);
-                Debug.Log(_rootRect.anchoredPosition);
-                _sequence.Insert(_delay,_rootRect.DOAnchorPosY(0f,0.5f).SetEase(Ease.OutExpo)).SetUpdate(true);
-                _sequence.Insert(_delay, _rootGroup.DOFade(1f, 0.5f).SetEase(Ease.OutExpo)).SetUpdate(true);
+                _rootRect.localScale = Vector3.one;
+                _baseWhiteGroup.alpha = 0f;
+
+               
+
 
                 break;
 

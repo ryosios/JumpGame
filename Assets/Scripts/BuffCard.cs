@@ -19,7 +19,7 @@ public class BuffCard : MonoBehaviour
     }  
 
     /// <summary> カードが選択されたとき </summary>
-    public Subject<BuffBase> CardSelected = new Subject<BuffBase>();
+    public Subject<BuffCard> CardSelected = new Subject<BuffCard>();
 
     /// <summary> BuffAddTimeカードが選択されたとき </summary>
     public Subject<BuffAddTime> CardSelectedBuffAddTime = new Subject<BuffAddTime>();
@@ -79,10 +79,11 @@ public class BuffCard : MonoBehaviour
 
             case BuffCardState.CardSelect:
                 //カードにセット予定の能力（_buffBasesActive）を子クラスの種類で振り分けて発火
+                CardSelected.OnNext(this);
 
                 foreach (var buffBaseActive in _buffBasesActive)
                 {
-                    CardSelected.OnNext(buffBaseActive);
+                    
 
                     if (buffBaseActive is BuffAddTime buffAddTime)
                     {
