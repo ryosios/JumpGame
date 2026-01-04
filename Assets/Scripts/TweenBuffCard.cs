@@ -14,13 +14,15 @@ public class TweenBuffCard : MonoBehaviour
         Out,
     }
 
-    //public Subject<Unit> Default = new Subject<Unit>();
+    public Subject<Unit> OutEnd = new Subject<Unit>();
 
     [SerializeField] RectTransform _rootRect;
 
     [SerializeField] CanvasGroup _rootGroup;
 
     [SerializeField] CanvasGroup _baseWhiteGroup;
+
+    [SerializeField] ParticleSystem _effectIn;
 
     private Sequence _sequence;
 
@@ -69,6 +71,7 @@ public class TweenBuffCard : MonoBehaviour
             case ThisState.Default:
                 _rootGroup.alpha = 0;
                 _baseWhiteGroup.alpha = 0;
+                _rootRect.localScale = Vector3.one * 0.7f;
 
                 break;
 
@@ -78,10 +81,16 @@ public class TweenBuffCard : MonoBehaviour
                 _sequence.SetLink(gameObject);
 
                 _rootGroup.alpha = 1;
-                _rootRect.localScale = Vector3.one * 0.7f;
+                _rootRect.localScale = new Vector3(1f, 0.95f, 1f);
                 _baseWhiteGroup.alpha = 0;
 
-                _sequence.Insert(_delay,_rootRect.DOScale(1f,0.5f).SetEase(Ease.OutElastic)).SetUpdate(true);
+                _sequence.Insert(_delay,_rootRect.DOScaleY(1f,0.7f).SetEase(Ease.OutElastic)).SetUpdate(true);
+                _sequence.InsertCallback(_delay,()=> 
+                {
+                    _effectIn.Play();
+                  
+
+                }).SetUpdate(true);
                
                 break;
 
@@ -92,11 +101,17 @@ public class TweenBuffCard : MonoBehaviour
 
                 _rootGroup.alpha = 1;
 
-                _rootRect.localScale = Vector3.one * 0.9f;
+                _rootRect.localScale = Vector3.one * 1f;
                 _baseWhiteGroup.alpha = 1f;
 
-                _sequence.Insert(_delay, _rootRect.DOScale(1f, 0.5f).SetEase(Ease.OutElastic)).SetUpdate(true);
-                _sequence.Insert(_delay, _baseWhiteGroup.DOFade(0f, 1f).SetEase(Ease.Linear)).SetUpdate(true);
+                _sequence.Insert(_delay, _rootRect.DOScale(1.2f, 0.35f).SetEase(Ease.OutBack)).SetUpdate(true);
+                _sequence.Insert(_delay, _baseWhiteGroup.DOFade(0f, 0.35f).SetEase(Ease.OutSine)).SetUpdate(true);
+
+                _sequence.InsertCallback(_delay + 0.35f, () => 
+                {
+                    SetThisState(ThisState.Out);
+                
+                }).SetUpdate(true);
              
 
                 break;
@@ -106,12 +121,19 @@ public class TweenBuffCard : MonoBehaviour
                 _sequence = DOTween.Sequence();
                 _sequence.SetLink(gameObject);
 
-                _rootGroup.alpha = 0;
+                _rootGroup.alpha = 1f;
 
-                _rootRect.localScale = Vector3.one;
+                
                 _baseWhiteGroup.alpha = 0f;
 
-               
+                _sequence.Insert(_delay, _rootGroup.DOFade(0f, 0.2f).SetEase(Ease.Linear)).SetUpdate(true);
+
+                _sequence.InsertCallback(_delay + 0.2f, () => 
+                {
+                    OutEnd.OnNext(Unit.Default);
+                
+                }).SetUpdate(true);
+
 
 
                 break;
@@ -123,6 +145,20 @@ public class TweenBuffCard : MonoBehaviour
     {
         _delay = delay;
         SetThisState(ThisState.In);
+
+    }
+
+    public void PlaySelectedAnim(float delay = 0)
+    {
+        _delay = delay;
+        SetThisState(ThisState.Selected);
+
+    }
+
+    public void PlayOutAnim(float delay = 0)
+    {
+        _delay = delay;
+        SetThisState(ThisState.Out);
 
     }
 }

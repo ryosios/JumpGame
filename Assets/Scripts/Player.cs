@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
     private float _sutaminaValue = 1f;
 
     /// <summary> スタミナ回復スピード </summary>
-    private float _sutaminaRecoverySpeed = 0.005f;
+    private float _sutaminaRecoverySpeed = 0.01f;
 
     /// <summary> 　矢印出てる時間 </summary>
     private float _moveAngleTime = 1f;
@@ -149,14 +149,14 @@ public class Player : MonoBehaviour
  
 
 
-        //スタミナ自動回復いったんオフ
-        /*
+        //スタミナ自動回復
+        
         Observable.EveryUpdate().Subscribe(_ =>
         {
             SetPlayerState(PlayerState.SutaminaRecovery);
 
         }).AddTo(this);
-        */
+        
     }
 
     /// <summary>
@@ -242,6 +242,10 @@ public class Player : MonoBehaviour
                 if(_sutaminaValue < 1f)
                 {
                     _sutaminaValue += Time.deltaTime * _sutaminaRecoverySpeed;
+                    if(_sutaminaValue >= 1f)
+                    {
+                        _sutaminaValue = 1;
+                    }
                     SutaminaChange.OnNext(_sutaminaValue);
 
                 }                

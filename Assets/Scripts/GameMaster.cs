@@ -24,6 +24,8 @@ public class GameMaster : MonoBehaviour
 
     [SerializeField] TweenTransition _tweenTransition;
 
+    [SerializeField] TweenRightUIs _tweenRightUIs;
+
     /// <summary>  PlayStartのSubject </summary>
     public Subject<Unit> PlayStart = new Subject<Unit>();
 
@@ -93,6 +95,7 @@ public class GameMaster : MonoBehaviour
             case GameMasterState.Default:
                 //トランジション開始
                 _tweenTransition.PlayOutAnim(1f);
+                _tweenRightUIs.PlayInAnim(1.5f);
 
 
                 break;

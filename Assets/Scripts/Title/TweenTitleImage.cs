@@ -27,6 +27,8 @@ public class TweenTitleImage : MonoBehaviour
 
     private Vector3 _initTitleImageScale;
 
+    [SerializeField] private ParticleSystem _titleImageParticle;
+
     public Subject<Unit> InEnd = new Subject<Unit>();
 
     private void Awake()
@@ -74,7 +76,13 @@ public class TweenTitleImage : MonoBehaviour
 
                 //2.5
                 _titleSequence.Insert(1.2f, _titleImageRect.DOScale(0.67f, 0.35f).SetEase(Ease.InExpo));
-                _titleSequence.Insert(1.2f, _titleImageRect.DOAnchorPosY(190f, 0.35f).SetEase(Ease.InExpo));                
+                _titleSequence.Insert(1.2f, _titleImageRect.DOAnchorPosY(190f, 0.35f).SetEase(Ease.InExpo));
+
+                _titleSequence.InsertCallback(1.5f,()=>
+                {
+                    _titleImageParticle.Play();
+
+                });
 
                 break;
 

@@ -3,6 +3,7 @@ using UniRx;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class BuffCardManager : MonoBehaviour
 {
@@ -32,12 +33,19 @@ public class BuffCardManager : MonoBehaviour
 
     [SerializeField] private EnemyCreater _enemyCreater;
 
+    [SerializeField] private Image _blackBoardImage;
+
+    [SerializeField] private CanvasGroup _blackBoardGroups;
+
     private int _maxSelectCardValue = 3;
 
     private List<BuffCard> _activeCardsList = new List<BuffCard>();
 
     /// <summary>  敵カウントがいくつごとにカードイベントが起きるか </summary>
     private int _cardEventCount = 5;
+
+
+    private BuffCard _selectedBuffCard;
 
     private void Awake()
     {
@@ -46,6 +54,7 @@ public class BuffCardManager : MonoBehaviour
 
         _enemyCreater.EnemyKillCount.Subscribe(value => 
         {
+            Debug.Log("koko-1");
 
             if (value != 0 && value % _cardEventCount == 0)
             {
@@ -70,14 +79,23 @@ public class BuffCardManager : MonoBehaviour
 
         switch (state)
         {
-            case BuffCardManagerState.Default:         
-                
+            case BuffCardManagerState.Default:
+                _blackBoardImage.raycastTarget = false;
+                _blackBoardGroups.alpha = 0f;
+                _blackBoardGroups.gameObject.SetActive(false);
+               
+
                 break;
 
             case BuffCardManagerState.CardCreate:
+                
                 CardCreateStart.OnNext(Unit.Default);
                 _activeCardsList?.Clear();
                 _activeCardsList = new List<BuffCard>();
+
+                _blackBoardGroups.gameObject.SetActive(true);
+                _blackBoardImage.raycastTarget = true;
+                _blackBoardGroups.alpha = 1f;
 
                 for (int i = 0; i < _maxSelectCardValue; i++)
                 {
@@ -85,11 +103,8 @@ public class BuffCardManager : MonoBehaviour
                     var card = CreateCard();
                     _activeCardsList.Add(card);
                     card.tweenBuffCard.PlayInAnim(i * 0.1f);
-
-                }
-               
-                
-                
+                    
+                }                
 
                 break;
 
@@ -101,14 +116,41 @@ public class BuffCardManager : MonoBehaviour
                 {
                     activeCardsList.ThisButton.enabled = false;
                 }
+               
 
                 //アニメーション再生後にDestroy
                 foreach (var activeCardsList in _activeCardsList)
                 {
-                    Destroy(activeCardsList.gameObject);
+                    if(activeCardsList == _selectedBuffCard)
+                    {
+                        activeCardsList.tweenBuffCard.PlaySelectedAnim(0);
+                        activeCardsList.tweenBuffCard.OutEnd.Subscribe(_=> 
+                        {
+                            CardSelectedEnd.OnNext(Unit.Default);
+
+                            _blackBoardGroups.alpha = 0f;
+                            _blackBoardGroups.gameObject.SetActive(false);
+                            _blackBoardImage.raycastTarget = false;
+
+                            //先に消しちゃうとHorizontalLayoutでレイアウトが崩れるのでまとめて消す
+                            foreach (var card in _activeCardsList)
+                            {
+                                Destroy(card.gameObject);
+                            }
+                            
+
+                        }).AddTo(this);
+                    }
+                    else
+                    {
+                        activeCardsList.tweenBuffCard.PlayOutAnim(0f);
+                        //先に消しちゃうとHorizontalLayoutでレイアウトが崩れるのでまとめて消す
+                        
+                    }
+                    
                 }
 
-                CardSelectedEnd.OnNext(Unit.Default);
+               
 
                 break;
 
@@ -120,9 +162,9 @@ public class BuffCardManager : MonoBehaviour
         BuffCard buffCardInstance = Instantiate(_buffCard, _posRoot) as BuffCard;
         
         buffCardInstance.gameObject.SetActive(true);
-        buffCardInstance.CardSelected.Subscribe(_=>
+        buffCardInstance.CardSelected.Subscribe( buffCard =>
         {//カードが選択された時のサブジェクト
-
+            _selectedBuffCard = buffCard;
             SetBuffCardManagerState(BuffCardManagerState.CardSelected);
             
 
