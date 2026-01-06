@@ -10,6 +10,7 @@ public class GameMaster : MonoBehaviour
     public enum GameMasterState
     {
         Default,
+        EnemyCreate,
         Playing,
         GameEnd,
         GameTimeStop,
@@ -25,6 +26,11 @@ public class GameMaster : MonoBehaviour
     [SerializeField] TweenTransition _tweenTransition;
 
     [SerializeField] TweenRightUIs _tweenRightUIs;
+
+    [SerializeField] EnemyCreater _enemyCreater;
+
+    /// <summary>  EnemyCreateのSubject </summary>
+    public Subject<Unit> EnemyCreateStart = new Subject<Unit>();
 
     /// <summary>  PlayStartのSubject </summary>
     public Subject<Unit> PlayStart = new Subject<Unit>();
@@ -58,19 +64,19 @@ public class GameMaster : MonoBehaviour
 
         _player.JumpOneTime.Subscribe(_ =>
         {
-            Instance.SetTimerGaugeState(GameMasterState.Playing);
+            Instance.SetGameMasterState(GameMasterState.Playing);
 
         }).AddTo(this);
 
         _buffCardManager.CardCreateStart.Subscribe(_=> 
         {
-            Instance.SetTimerGaugeState(GameMasterState.GameTimeStop);
+            Instance.SetGameMasterState(GameMasterState.GameTimeStop);
 
         }).AddTo(this);
 
         _buffCardManager.CardSelectedEnd.Subscribe(_ =>
         {
-            Instance.SetTimerGaugeState(GameMasterState.GameTimeStart);
+            Instance.SetGameMasterState(GameMasterState.GameTimeStart);
 
         }).AddTo(this);
 
@@ -79,14 +85,14 @@ public class GameMaster : MonoBehaviour
 
     private void Start()
     {
-        Instance.SetTimerGaugeState(GameMasterState.Default);
+        Instance.SetGameMasterState(GameMasterState.Default);
     }
 
     /// <summary>
     /// ステート
     /// </summary>
     /// <param name="timeScaleValue">タイムスケール変更値</param>
-    public void SetTimerGaugeState(GameMasterState gameMasterState)
+    public void SetGameMasterState(GameMasterState gameMasterState)
     {
         var state = gameMasterState;
 
@@ -96,6 +102,14 @@ public class GameMaster : MonoBehaviour
                 //トランジション開始
                 _tweenTransition.PlayOutAnim(1f);
                 _tweenRightUIs.PlayInAnim(1.5f);
+
+                //仮
+                SetGameMasterState(GameMasterState.EnemyCreate);
+
+                break;
+
+            case GameMasterState.EnemyCreate:
+                EnemyCreateStart.OnNext(Unit.Default);
 
 
                 break;

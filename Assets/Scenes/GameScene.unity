@@ -507,6 +507,7 @@ MonoBehaviour:
   _buffCardManager: {fileID: 1450575841}
   _tweenTransition: {fileID: 1744997926}
   _tweenRightUIs: {fileID: 607843484}
+  _enemyCreater: {fileID: 1077135057}
 --- !u!4 &143053193
 Transform:
   m_ObjectHideFlags: 0
@@ -7139,6 +7140,10 @@ PrefabInstance:
     - target: {fileID: 4903043199986181737, guid: 05dcde0d3991d714590134e8504f1ea4, type: 3}
       propertyPath: m_Name
       value: ResultRoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 4903043199986181737, guid: 05dcde0d3991d714590134e8504f1ea4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7801488850602512453, guid: 05dcde0d3991d714590134e8504f1ea4, type: 3}
       propertyPath: m_Pivot.x

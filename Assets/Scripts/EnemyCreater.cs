@@ -19,7 +19,6 @@ public class EnemyCreater : MonoBehaviour
     /// <summary> 撃破した敵の数 </summary>
     public ReactiveProperty<int> EnemyKillCount { get; } = new ReactiveProperty<int>(0);
 
-
     /// <summary> Enemyぶら下げるRoot </summary>
     [SerializeField] private Transform _enemyRoot;
 
@@ -44,12 +43,21 @@ public class EnemyCreater : MonoBehaviour
         _enemyPrefabs = Resources.LoadAll<EnemyBase>("Prefabs/Enemys").ToList();
 
         //開始時生成
+        /*
         for (int i = 0; i < _maxEnemyValue; i++)
         {
 
             SetEnemyCreaterState(EnemyCreaterState.Create);
 
         }
+        */
+
+        GameMaster.Instance.EnemyCreateStart.Subscribe(_=> 
+        {
+            SetEnemyCreaterState(EnemyCreaterState.Create);
+
+
+        }).AddTo(this);
     }
 
     /// <summary>
@@ -67,7 +75,11 @@ public class EnemyCreater : MonoBehaviour
                 break;
 
             case EnemyCreaterState.Create:
-                CreateEnemy();   
+                for (int i = 0; i < _maxEnemyValue; i++)
+                {
+                    CreateEnemy();
+                }
+                  
                 
 
                 break;
