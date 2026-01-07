@@ -1,6 +1,6 @@
 using UnityEngine;
 using UniRx;
-
+using Cysharp.Threading.Tasks;
 public class GameMaster : MonoBehaviour
 {
     //ゲーム進行管理用クラス
@@ -64,19 +64,19 @@ public class GameMaster : MonoBehaviour
 
         _player.JumpOneTime.Subscribe(_ =>
         {
-            Instance.SetGameMasterState(GameMasterState.Playing);
+            Instance.SetGameMasterState(GameMasterState.Playing).Forget();
 
         }).AddTo(this);
 
         _buffCardManager.CardCreateStart.Subscribe(_=> 
         {
-            Instance.SetGameMasterState(GameMasterState.GameTimeStop);
+            Instance.SetGameMasterState(GameMasterState.GameTimeStop).Forget();
 
         }).AddTo(this);
 
         _buffCardManager.CardSelectedEnd.Subscribe(_ =>
         {
-            Instance.SetGameMasterState(GameMasterState.GameTimeStart);
+            Instance.SetGameMasterState(GameMasterState.GameTimeStart).Forget();
 
         }).AddTo(this);
 
@@ -85,14 +85,14 @@ public class GameMaster : MonoBehaviour
 
     private void Start()
     {
-        Instance.SetGameMasterState(GameMasterState.Default);
+        Instance.SetGameMasterState(GameMasterState.Default).Forget();
     }
 
     /// <summary>
     /// ステート
     /// </summary>
     /// <param name="timeScaleValue">タイムスケール変更値</param>
-    public void SetGameMasterState(GameMasterState gameMasterState)
+    public async UniTask SetGameMasterState(GameMasterState gameMasterState)
     {
         var state = gameMasterState;
 
@@ -101,10 +101,12 @@ public class GameMaster : MonoBehaviour
             case GameMasterState.Default:
                 //トランジション開始
                 _tweenTransition.PlayOutAnim(1f);
-                _tweenRightUIs.PlayInAnim(1.5f);
+                
 
+                await _tweenRightUIs.PlayInAnim(1.5f);
                 //仮
-                SetGameMasterState(GameMasterState.EnemyCreate);
+                Debug.Log("待機済");
+                SetGameMasterState(GameMasterState.EnemyCreate).Forget();
 
                 break;
 

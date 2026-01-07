@@ -2,6 +2,9 @@ using UnityEngine;
 using UniRx;
 using DG.Tweening;
 using System.Collections;
+using Cysharp.Threading.Tasks;
+using System.Threading;
+//型または名前空間のDOTweenが名前空間Cysharp.Threading.Tasksに存在しません　と出る
 
 public class TweenRightUIs : MonoBehaviour
 {
@@ -24,14 +27,17 @@ public class TweenRightUIs : MonoBehaviour
     [SerializeField] private RectTransform[] _uiPartsRects;
     [SerializeField] private CanvasGroup[] _uiPartsGroups;
 
+    private CancellationToken _destroyToken;
+
     private void Awake()
     {
-        SetThisState(ThisState.Default);
+        _destroyToken = this.GetCancellationTokenOnDestroy();
+        SetThisState(ThisState.Default, _destroyToken).Forget();
     }
     /// <summary>
     /// ステート
     /// </summary>
-    private void SetThisState(ThisState thisState)
+    private async UniTask SetThisState(ThisState thisState, CancellationToken cancellationToken)
     {
         var state = thisState;
 
@@ -69,15 +75,18 @@ public class TweenRightUIs : MonoBehaviour
                     
                 }
 
+                //非同期待機条件
+                await _sequence.AsyncWaitForCompletion();
+                
                 break;
 
         }
     }
 
-    public void PlayInAnim(float delay = 0) 
+    public async UniTask PlayInAnim(float delay = 0) 
     {
         _outStartDelay = delay;
-        SetThisState(ThisState.In);
+        await SetThisState(ThisState.In, _destroyToken);
     }
 
 }
