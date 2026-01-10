@@ -11,8 +11,7 @@ public class InputController : MonoBehaviour
         CenterAreaButtonEnter,
         CenterAreaButtonExit,
         CenterAreaButtonActiveFalse,
-        CenterAreaButtonActiveTrue
-
+        CenterAreaButtonActiveTrue,
 
     }
 

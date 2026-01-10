@@ -59,12 +59,14 @@ public class TweenTransition : MonoBehaviour
         switch (state)
         {
             case ThisState.Default:
+                Time.timeScale = 1;
                 _transitionGroup.alpha = 0;
                 _transitionImage.enabled = false;
 
                 break;
 
             case ThisState.Out:
+                Debug.Log("タイトル開始-1");
                 _transitionImage.enabled = true;
                 _transitionRect.eulerAngles = new Vector3(0f, 0f, 0f);
                 _transitionGroup.alpha = 1f;
@@ -72,13 +74,15 @@ public class TweenTransition : MonoBehaviour
                 _thisSequence = DOTween.Sequence();
                 _thisSequence.SetLink(gameObject);
                 _transitionMatrialInstance.SetFloat("_Float", 0f);
+                Debug.Log("タイトル開始0");
 
                 _thisSequence.AppendInterval(_transitionOutDelayTime);
                 _thisSequence.Append(DOVirtual.Float(0f, 0.6f, _transitionTime, value =>{_transitionMatrialInstance.SetFloat("_Float", value); }).SetEase(Ease.InCubic).SetLink(gameObject)).OnComplete(()=> 
                 {
                     _transitionImage.enabled = false;
                     OutEnd.OnNext(Unit.Default);
-                
+                    Debug.Log("タイトル開始");
+
                 });
                 //非同期待機条件
                 await _thisSequence.AsyncWaitForCompletion();

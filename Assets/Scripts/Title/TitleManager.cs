@@ -45,6 +45,7 @@ public class TitleManager : MonoBehaviour
         switch (state)
         {
             case TitleManagerState.Default:
+                
                 //タイトル遷移前にトランジションとかで少し待つ
                 _tweenTitleImage.PlayDefaultAnim();
                 await _tweenTransition.PlayOutAnim();
