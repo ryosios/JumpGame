@@ -14,6 +14,7 @@ public class InputController : MonoBehaviour
         CenterAreaButtonActiveTrue,
 
     }
+    [SerializeField] private GameMaster _gameMaster;
 
     public static InputController Instance { get; private set; }
 
@@ -58,19 +59,19 @@ public class InputController : MonoBehaviour
             })
             .AddTo(this);
 
-        GameMaster.Instance.GameTimeStop.Subscribe(_ =>
+        _gameMaster.GameTimeStop.Subscribe(_ =>
         {
             SetInputState(InputState.CenterAreaButtonActiveFalse);
 
         }).AddTo(this);
 
-        GameMaster.Instance.GameTimeStart.Subscribe(_ =>
+        _gameMaster.GameTimeStart.Subscribe(_ =>
         {
             SetInputState(InputState.CenterAreaButtonActiveTrue);
 
         }).AddTo(this);
 
-        GameMaster.Instance.ResultStart.Subscribe(_ =>
+        _gameMaster.ResultStart.Subscribe(_ =>
         {
             SetInputState(InputState.CenterAreaButtonActiveFalse);
 

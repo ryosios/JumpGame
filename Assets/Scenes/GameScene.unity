@@ -3852,6 +3852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554487509aa2cf546be61d74cbd6a336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameMaster: {fileID: 1987969082}
   _enemyRoot: {fileID: 1077135056}
   _enemyCreatePosLocatorTrans: {fileID: 2004412597}
 --- !u!1 &1094937462
@@ -4255,6 +4256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 504aa23396f655a4d998ad23eb667bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameMaster: {fileID: 1987969082}
   _countText: {fileID: 1969595820}
   _buffCardManager: {fileID: 1450575841}
 --- !u!225 &1280964255
@@ -5414,6 +5416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d3a13578f643f409ebf8a1a5a67a82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameMaster: {fileID: 1987969082}
   _centerAreaButton: {fileID: 525087141}
 --- !u!1 &1800550945
 GameObject:
@@ -6517,6 +6520,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1969595818}
   m_CullTransparentMesh: 1
+--- !u!114 &1987969082 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6639669140848576195, guid: 0ae0d47749a666c4b840d58c4a6044a3, type: 3}
+  m_PrefabInstance: {fileID: 1436524161534228396}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d2cc7177e32db7419a7222aee53a5de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2004412596
 GameObject:
   m_ObjectHideFlags: 0
@@ -7276,6 +7290,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ResultRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 6170059316613040243, guid: 05dcde0d3991d714590134e8504f1ea4, type: 3}
+      propertyPath: _gameMaster
+      value: 
+      objectReference: {fileID: 1987969082}
     - target: {fileID: 7801488850602512453, guid: 05dcde0d3991d714590134e8504f1ea4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

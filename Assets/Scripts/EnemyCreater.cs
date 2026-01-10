@@ -13,6 +13,9 @@ public class EnemyCreater : MonoBehaviour
         Create
     }
 
+    /// <summary> Enemyぶら下げるRoot </summary>
+    [SerializeField] private GameMaster _gameMaster;
+
     /// <summary> インスタンス化済みのEnemyBaseリスト </summary>
     private List<EnemyBase> _activeEnemyBase = new ();
 
@@ -52,7 +55,7 @@ public class EnemyCreater : MonoBehaviour
         }
         */
 
-        GameMaster.Instance.EnemyCreateStart.Subscribe(_=> 
+        _gameMaster.EnemyCreateStart.Subscribe(_=> 
         {
             SetEnemyCreaterState(EnemyCreaterState.Create);
 

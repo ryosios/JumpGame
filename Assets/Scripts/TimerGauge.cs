@@ -22,8 +22,13 @@ public class TimerGauge : MonoBehaviour
 
     public Subject<Unit> TimerZero = new Subject<Unit>();
 
+    /// <summary> GameMaster </summary>
+    [SerializeField] private GameMaster _gameMaster;
+
     [SerializeField] private TextMeshProUGUI _countText;
+
     private float _time = 0f;
+
     private bool _isRunning = false;
 
 
@@ -55,20 +60,20 @@ public class TimerGauge : MonoBehaviour
         }).AddTo(this);
 
         //時間停止と一緒にタイマーも止める
-        GameMaster.Instance.GameTimeStop.Subscribe(_ =>
+        _gameMaster.GameTimeStop.Subscribe(_ =>
         {
             SetTimerGaugeState(TimerGaugeState.TimerStop);
 
         }).AddTo(this);
 
         //解除
-        GameMaster.Instance.GameTimeStart.Subscribe(_ =>
+        _gameMaster.GameTimeStart.Subscribe(_ =>
         {
             SetTimerGaugeState(TimerGaugeState.TimerStart);
 
         }).AddTo(this);
 
-        GameMaster.Instance.PlayStart.Subscribe(_ =>
+        _gameMaster.PlayStart.Subscribe(_ =>
         {
             
             SetTimerGaugeState(TimerGaugeState.TimerStart);

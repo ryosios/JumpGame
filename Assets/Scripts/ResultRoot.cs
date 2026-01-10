@@ -19,6 +19,8 @@ public class ResultRoot : MonoBehaviour
 
     public bool _isDebug;
 
+    [SerializeField] private GameMaster _gameMaster;
+
     [SerializeField] private CanvasGroup _thisGroup;
 
     [SerializeField] private TweenResultRoot _tweenResultRoot;
@@ -30,7 +32,7 @@ public class ResultRoot : MonoBehaviour
         //GameMasterのインスタンスができる前に購読するとまずいのでStart
         _destroyToken = this.GetCancellationTokenOnDestroy();
 
-        GameMaster.Instance.ResultStart.Subscribe(_ =>
+        _gameMaster.ResultStart.Subscribe(_ =>
         {
             Debug.Log("Result2");//ここが表示来ない
             SetThisState(ThisState.ResultUpdate, _destroyToken).Forget();

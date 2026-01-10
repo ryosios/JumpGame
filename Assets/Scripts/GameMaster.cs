@@ -9,8 +9,6 @@ public class GameMaster : MonoBehaviour
 {
     //ゲーム進行管理用クラス
 
-    public static GameMaster Instance { get; private set; }
-
     public enum GameMasterState
     {
         Default,
@@ -60,43 +58,28 @@ public class GameMaster : MonoBehaviour
     private CancellationToken _destroyToken;
 
     private void Awake()
-    {
-        _destroyToken = this.GetCancellationTokenOnDestroy();
-
-        // すでにインスタンスがある → 破棄して重複を防ぐ
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-
-        // シーン切り替えでも破棄しない場合
-        DontDestroyOnLoad(gameObject);
-
-       
+    {       
 
         _player.JumpOneTime.Subscribe(_ =>
         {
-            Instance.SetGameMasterState(GameMasterState.Playing, _destroyToken).Forget();
+            SetGameMasterState(GameMasterState.Playing, _destroyToken).Forget();
 
         }).AddTo(this);
 
         _buffCardManager.CardCreateStart.Subscribe(_=> 
         {
-            Instance.SetGameMasterState(GameMasterState.GameTimeStop, _destroyToken).Forget();
+            SetGameMasterState(GameMasterState.GameTimeStop, _destroyToken).Forget();
 
         }).AddTo(this);
 
         _buffCardManager.CardSelectedEnd.Subscribe(_ =>
         {
-            Instance.SetGameMasterState(GameMasterState.GameTimeStart, _destroyToken).Forget();
+            SetGameMasterState(GameMasterState.GameTimeStart, _destroyToken).Forget();
 
         }).AddTo(this);
         _timerGauge.TimerZero.Subscribe(_ =>
         {
-            Instance.SetGameMasterState(GameMasterState.TimeOut, _destroyToken).Forget();
+            SetGameMasterState(GameMasterState.TimeOut, _destroyToken).Forget();
 
         }).AddTo(this);
 
@@ -104,7 +87,7 @@ public class GameMaster : MonoBehaviour
 
     private void Start()
     {
-        Instance.SetGameMasterState(GameMasterState.Default,_destroyToken).Forget();
+        SetGameMasterState(GameMasterState.Default,_destroyToken).Forget();
     }
 
     /// <summary>
@@ -131,7 +114,7 @@ public class GameMaster : MonoBehaviour
                 await UniTask.Delay(TimeSpan.FromSeconds(0.2f), ignoreTimeScale: true);
 
                 //敵クリエイトステートに遷移
-                Instance.SetGameMasterState(GameMasterState.EnemyCreate,_destroyToken).Forget();
+                SetGameMasterState(GameMasterState.EnemyCreate,_destroyToken).Forget();
 
                 break;
 
@@ -144,12 +127,12 @@ public class GameMaster : MonoBehaviour
                 await _tweenMainCamera.PlayZoomInAnim();
 
                 //待機後にステート遷移
-                Instance.SetGameMasterState(GameMasterState.Playing, _destroyToken).Forget();
+                SetGameMasterState(GameMasterState.Playing, _destroyToken).Forget();
 
                 break;
 
             case GameMasterState.Playing:
-                GameMaster.Instance.PlayStart.OnNext(Unit.Default);
+                PlayStart.OnNext(Unit.Default);
 
                 break;
 
@@ -160,16 +143,16 @@ public class GameMaster : MonoBehaviour
                 //ちょっと待ってもいいかも
 
                 //リザルトに遷移
-                Instance.SetGameMasterState(GameMasterState.Result, _destroyToken).Forget();
+                SetGameMasterState(GameMasterState.Result, _destroyToken).Forget();
 
                 break;
 
             case GameMasterState.Result:
                 //リザルトUI表示 //プレイヤー側で入力できないようにする。
-                Instance.ResultStart.OnNext(Unit.Default);               
+                ResultStart.OnNext(Unit.Default);               
                 
                 //時間を止める。
-                Instance.SetGameMasterState(GameMasterState.GameTimeStop,cancellationToken).Forget();
+                SetGameMasterState(GameMasterState.GameTimeStop,cancellationToken).Forget();
 
                 break;
 
@@ -178,12 +161,12 @@ public class GameMaster : MonoBehaviour
                 break;
 
             case GameMasterState.GameTimeStart:
-                GameMaster.Instance.GameTimeStart.OnNext(Unit.Default);
+                GameTimeStart.OnNext(Unit.Default);
                 ChangeTimeScale(1);
                 break;
 
             case GameMasterState.GameTimeStop:
-                GameMaster.Instance.GameTimeStop.OnNext(Unit.Default);
+                GameTimeStop.OnNext(Unit.Default);
                 ChangeTimeScale(0);
                 break;
 
