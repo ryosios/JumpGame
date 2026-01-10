@@ -164,10 +164,11 @@ public class GameMaster : MonoBehaviour
                 break;
 
             case GameMasterState.Result:
-                //リザルトUI表示
-                Instance.ResultStart.OnNext(Unit.Default);//ここが別くらすで購読できてない。 GameMaster.Instance.ResultStart.Subscribe(_ =>で呼んでるけどDebugがこない
-               
-                Debug.Log("Result1");
+                //リザルトUI表示 //プレイヤー側で入力できないようにする。
+                Instance.ResultStart.OnNext(Unit.Default);               
+                
+                //時間を止める。
+                Instance.SetGameMasterState(GameMasterState.GameTimeStop,cancellationToken).Forget();
 
                 break;
 

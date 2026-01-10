@@ -27,6 +27,7 @@ public class ResultRoot : MonoBehaviour
 
     private void Start()
     {
+        //GameMasterのインスタンスができる前に購読するとまずいのでStart
         _destroyToken = this.GetCancellationTokenOnDestroy();
 
         GameMaster.Instance.ResultStart.Subscribe(_ =>

@@ -143,6 +143,7 @@ public class Player : MonoBehaviour
         InputController.Instance.CenterAreaButtonExit.Where(_ => _sutaminaValue > _jumpSutamina).Subscribe(_ =>
         {
             SetPlayerState(PlayerState.Jump);
+            Debug.Log("ジャンプ");
 
         }).AddTo(this);
 

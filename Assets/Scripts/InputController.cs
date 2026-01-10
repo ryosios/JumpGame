@@ -24,7 +24,8 @@ public class InputController : MonoBehaviour
 
     public Subject<Unit> CenterAreaButtonExit = new Subject<Unit>();
 
-  
+
+    private bool _isPlayable = true;
 
     private void Awake()
     {
@@ -42,6 +43,7 @@ public class InputController : MonoBehaviour
 
         // 押した瞬間
         _centerAreaButton.OnPointerDownAsObservable()
+            .Where(_ => _isPlayable == true)
             .Subscribe(_ =>
             {
                 SetInputState(InputState.CenterAreaButtonEnter);
@@ -50,6 +52,7 @@ public class InputController : MonoBehaviour
 
         // 離した瞬間
         _centerAreaButton.OnPointerUpAsObservable()
+            .Where(_ => _isPlayable == true)
             .Subscribe(_ =>
             {
                 SetInputState(InputState.CenterAreaButtonExit);
@@ -65,6 +68,12 @@ public class InputController : MonoBehaviour
         GameMaster.Instance.GameTimeStart.Subscribe(_ =>
         {
             SetInputState(InputState.CenterAreaButtonActiveTrue);
+
+        }).AddTo(this);
+
+        GameMaster.Instance.ResultStart.Subscribe(_ =>
+        {
+            SetInputState(InputState.CenterAreaButtonActiveFalse);
 
         }).AddTo(this);
 
@@ -112,11 +121,13 @@ public class InputController : MonoBehaviour
                 break;
 
             case InputState.CenterAreaButtonActiveFalse:
+                _isPlayable = false;
                 _centerAreaButton.enabled = false;
 
                 break;
 
             case InputState.CenterAreaButtonActiveTrue:
+                _isPlayable = true;
                 _centerAreaButton.enabled = true;
 
                 break;
