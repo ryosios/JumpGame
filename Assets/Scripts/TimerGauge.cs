@@ -7,17 +7,20 @@ using TMPro;
 
 public class TimerGauge : MonoBehaviour
 {
-    //タイマー管理用クラス
+    //時間管理用クラス
 
     public enum TimerGaugeState
     {
         TimerStop,
         TimerStart,
-      
+        TimerZero,
+
 
     }
 
     public Subject<Unit> Default = new Subject<Unit>();
+
+    public Subject<Unit> TimerZero = new Subject<Unit>();
 
     [SerializeField] private TextMeshProUGUI _countText;
     private float _time = 0f;
@@ -67,7 +70,7 @@ public class TimerGauge : MonoBehaviour
 
         GameMaster.Instance.PlayStart.Subscribe(_ =>
         {
-            Debug.Log("ここに2");
+            
             SetTimerGaugeState(TimerGaugeState.TimerStart);
 
 
@@ -101,7 +104,13 @@ public class TimerGauge : MonoBehaviour
                 TimerStart();
                 break;
 
-          
+            case TimerGaugeState.TimerZero:
+                //Timeが0になったとき
+                TimerZero.OnNext(Unit.Default);
+                
+                break;
+
+
 
         }
     }
@@ -153,6 +162,8 @@ public class TimerGauge : MonoBehaviour
             {
                 _time = 0f;
                 _isRunning = false;
+               
+                SetTimerGaugeState(TimerGaugeState.TimerZero);
             }
             if (_countText != null)
             {

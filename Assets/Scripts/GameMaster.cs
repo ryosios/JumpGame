@@ -15,8 +15,10 @@ public class GameMaster : MonoBehaviour
     {
         Default,
         EnemyCreate,
-        Playing,
-        GameEnd,
+        Playing,//操作可能開始
+        TimeOut,//制限時間時間終了
+        Result,//リザルト
+        GameEnd,//ゲーム終了
         GameTimeStop,
         GameTimeStart
 
@@ -35,11 +37,16 @@ public class GameMaster : MonoBehaviour
 
     [SerializeField] TweenMainCamera _tweenMainCamera;
 
+    [SerializeField] TimerGauge _timerGauge;
+
     /// <summary>  EnemyCreateのSubject </summary>
     public Subject<Unit> EnemyCreateStart = new Subject<Unit>();
 
     /// <summary>  PlayStartのSubject </summary>
     public Subject<Unit> PlayStart = new Subject<Unit>();
+
+    /// <summary>  ResultのSubject </summary>
+    public Subject<Unit> ResultStart = new Subject<Unit>();
 
     /// <summary>  GameEndのSubject </summary>
     public Subject<Unit> GameEnd = new Subject<Unit>();
@@ -87,7 +94,11 @@ public class GameMaster : MonoBehaviour
             Instance.SetGameMasterState(GameMasterState.GameTimeStart, _destroyToken).Forget();
 
         }).AddTo(this);
+        _timerGauge.TimerZero.Subscribe(_ =>
+        {
+            Instance.SetGameMasterState(GameMasterState.TimeOut, _destroyToken).Forget();
 
+        }).AddTo(this);
 
     }
 
@@ -138,6 +149,25 @@ public class GameMaster : MonoBehaviour
 
             case GameMasterState.Playing:
                 GameMaster.Instance.PlayStart.OnNext(Unit.Default);
+
+                break;
+
+            case GameMasterState.TimeOut:
+                Debug.Log("時間切れ！");
+                //操作不可にする
+
+                //ちょっと待ってもいいかも
+
+                //リザルトに遷移
+                Instance.SetGameMasterState(GameMasterState.Result, _destroyToken).Forget();
+
+                break;
+
+            case GameMasterState.Result:
+                //リザルトUI表示
+                Instance.ResultStart.OnNext(Unit.Default);//ここが別くらすで購読できてない。 GameMaster.Instance.ResultStart.Subscribe(_ =>で呼んでるけどDebugがこない
+               
+                Debug.Log("Result1");
 
                 break;
 

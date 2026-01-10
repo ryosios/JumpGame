@@ -11454,6 +11454,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7801488850602512453}
   - component: {fileID: 8372277549080707324}
+  - component: {fileID: 4701878318885746262}
+  - component: {fileID: 6170059316613040243}
   m_Layer: 5
   m_Name: ResultRoot
   m_TagString: Untagged
@@ -11473,6 +11475,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5923889980426059731}
   - {fileID: 80324016827623936}
   - {fileID: 5722413301035493915}
   - {fileID: 2432743946586628753}
@@ -11495,12 +11498,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c411448b837cc6d4d8d5486dd8e00073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _thisGroup: {fileID: 4701878318885746262}
   _resultTitleRect: {fileID: 80324016827623936}
   _resultTitleGroup: {fileID: 3614482040744585082}
   _whiteGroup: {fileID: 8872164177883442687}
   _effect1: {fileID: 3113220950072714144}
   _effect2: {fileID: 7779969458369638465}
   _isDebug: 1
+--- !u!225 &4701878318885746262
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4903043199986181737}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &6170059316613040243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4903043199986181737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67d8e8a19ca0f214ba813829183240de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isDebug: 0
+  _thisGroup: {fileID: 4701878318885746262}
+  _tweenResultRoot: {fileID: 8372277549080707324}
 --- !u!1 &5152104666588800010
 GameObject:
   m_ObjectHideFlags: 0
@@ -16340,6 +16371,81 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &5296017406832515981
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5923889980426059731}
+  - component: {fileID: 2547858149145079145}
+  - component: {fileID: 1959744317618696416}
+  m_Layer: 5
+  m_Name: BlackBoard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5923889980426059731
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296017406832515981}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 7801488850602512453}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 92.05014, y: -319.55002}
+  m_SizeDelta: {x: 3327.5002, y: 2024.9001}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2547858149145079145
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296017406832515981}
+  m_CullTransparentMesh: 1
+--- !u!114 &1959744317618696416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296017406832515981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 83f6942a7bdcbf24eb9349a989f88343, type: 2}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.49019608}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5888859331397542247
 GameObject:
   m_ObjectHideFlags: 0

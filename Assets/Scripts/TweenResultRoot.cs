@@ -15,6 +15,8 @@ public class TweenResultRoot : MonoBehaviour
 
     public Subject<Unit> OutEnd = new Subject<Unit>();
 
+    [SerializeField] CanvasGroup _thisGroup;
+
     [SerializeField] RectTransform _resultTitleRect;
 
     [SerializeField] CanvasGroup _resultTitleGroup;
@@ -64,6 +66,7 @@ public class TweenResultRoot : MonoBehaviour
         {
             case ThisState.Default:
                 _sequence?.Kill();
+                _thisGroup.alpha = 0;
                 _resultTitleGroup.alpha = 0f;
                 _whiteGroup.alpha = 0f;
 
@@ -74,6 +77,7 @@ public class TweenResultRoot : MonoBehaviour
                 _sequence = DOTween.Sequence();
                 _sequence.SetLink(gameObject);
 
+                _thisGroup.alpha = 1;
                 _resultTitleGroup.alpha = 0f;
                 _resultTitleRect.localScale = Vector3.one * 0.7f;
                 _whiteGroup.alpha = 0f;
