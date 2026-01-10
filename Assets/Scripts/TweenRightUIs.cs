@@ -74,6 +74,7 @@ public class TweenRightUIs : MonoBehaviour
                     _sequence.Insert(time + i * 0.05f, _uiPartsGroups[i].DOFade(1f, 0.35f).SetEase(Ease.OutExpo));
                     
                 }
+                _sequence.AppendInterval(0.1f);
 
                 //非同期待機条件
                 await _sequence.AsyncWaitForCompletion();

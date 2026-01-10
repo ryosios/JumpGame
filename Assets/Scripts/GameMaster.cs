@@ -2,6 +2,9 @@ using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using System.Collections;
+using System;
+
 public class GameMaster : MonoBehaviour
 {
     //ゲーム進行管理用クラス
@@ -29,6 +32,8 @@ public class GameMaster : MonoBehaviour
     [SerializeField] TweenRightUIs _tweenRightUIs;
 
     [SerializeField] EnemyCreater _enemyCreater;
+
+    [SerializeField] TweenMainCamera _tweenMainCamera;
 
     /// <summary>  EnemyCreateのSubject </summary>
     public Subject<Unit> EnemyCreateStart = new Subject<Unit>();
@@ -67,19 +72,19 @@ public class GameMaster : MonoBehaviour
 
         _player.JumpOneTime.Subscribe(_ =>
         {
-            Instance.SetGameMasterState(GameMasterState.Playing).Forget();
+            Instance.SetGameMasterState(GameMasterState.Playing, _destroyToken).Forget();
 
         }).AddTo(this);
 
         _buffCardManager.CardCreateStart.Subscribe(_=> 
         {
-            Instance.SetGameMasterState(GameMasterState.GameTimeStop).Forget();
+            Instance.SetGameMasterState(GameMasterState.GameTimeStop, _destroyToken).Forget();
 
         }).AddTo(this);
 
         _buffCardManager.CardSelectedEnd.Subscribe(_ =>
         {
-            Instance.SetGameMasterState(GameMasterState.GameTimeStart).Forget();
+            Instance.SetGameMasterState(GameMasterState.GameTimeStart, _destroyToken).Forget();
 
         }).AddTo(this);
 
@@ -88,34 +93,46 @@ public class GameMaster : MonoBehaviour
 
     private void Start()
     {
-        Instance.SetGameMasterState(GameMasterState.Default).Forget();
+        Instance.SetGameMasterState(GameMasterState.Default,_destroyToken).Forget();
     }
 
     /// <summary>
     /// ステート
     /// </summary>
     /// <param name="timeScaleValue">タイムスケール変更値</param>
-    public async UniTask SetGameMasterState(GameMasterState gameMasterState)
+    public async UniTask SetGameMasterState(GameMasterState gameMasterState, CancellationToken cancellationToken)
     {
         var state = gameMasterState;
 
         switch (state)
         {
             case GameMasterState.Default:
-                //トランジション開始
-                _tweenTransition.PlayOutAnim(1f).Forget();
+                //カメラを初期位置に
+                _tweenMainCamera.UpdatePos(new Vector3(0,0,-32f));
                 
-                //UI入場が終わるまで待機2
+                //トランジション開始
+                _tweenTransition.PlayOutAnim(1f).Forget();   
+
+                //UI入場が終わるまで待機
                 await _tweenRightUIs.PlayInAnim(1.5f);
-                //仮
-                Debug.Log("待機済");
-                SetGameMasterState(GameMasterState.EnemyCreate).Forget();
+
+                await UniTask.Delay(TimeSpan.FromSeconds(0.2f), ignoreTimeScale: true);
+
+                //敵クリエイトステートに遷移
+                Instance.SetGameMasterState(GameMasterState.EnemyCreate,_destroyToken).Forget();
 
                 break;
 
             case GameMasterState.EnemyCreate:
+                //敵生成
                 EnemyCreateStart.OnNext(Unit.Default);
 
+                await UniTask.Delay(TimeSpan.FromSeconds(1.5f), ignoreTimeScale: true);
+                //カメラをプレイ位置にズームイン。
+                await _tweenMainCamera.PlayZoomInAnim();
+
+                //待機後にステート遷移
+                Instance.SetGameMasterState(GameMasterState.Playing, _destroyToken).Forget();
 
                 break;
 

@@ -4,7 +4,7 @@ using DG.Tweening;
 using System.Collections;
 using Cysharp.Threading.Tasks;
 using System.Threading;
-//型または名前空間のDOTweenが名前空間Cysharp.Threading.Tasksに存在しません　と出る
+using System;
 
 public class TemplateTween : MonoBehaviour
 {
@@ -16,16 +16,15 @@ public class TemplateTween : MonoBehaviour
 
     //public Subject<Unit> Default = new Subject<Unit>();
 
-    /// <summary> スライド距離 </summary>
-    private float _outSlideDistancey = 300f;
 
     /// <summary> アウトアニメーションのスタート時のディレイ </summary>
     private float _outStartDelay = 0;
 
     private Sequence _sequence;
 
-    [SerializeField] private RectTransform[] _uiPartsRects;
-    [SerializeField] private CanvasGroup[] _uiPartsGroups;
+    public bool _isDebug;
+
+    [SerializeField] private RectTransform _thisRect;
 
     private CancellationToken _destroyToken;
 
@@ -34,6 +33,21 @@ public class TemplateTween : MonoBehaviour
         _destroyToken = this.GetCancellationTokenOnDestroy();
         SetThisState(ThisState.Default, _destroyToken).Forget();
     }
+
+    /* デバッグ用
+    private void Update()
+    {
+        if (_isDebug)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                SetThisState(ThisState.Default,_destroyToken).Forget();
+            }
+           
+        }
+    }
+    */
+
     /// <summary>
     /// ステート
     /// </summary>
@@ -44,11 +58,7 @@ public class TemplateTween : MonoBehaviour
         switch (state)
         {
             case ThisState.Default:
-                foreach (var uiPartsGroup in _uiPartsGroups)
-                {
-                    uiPartsGroup.alpha = 0f;
-                }
-
+              
 
                 break;
 
@@ -57,23 +67,6 @@ public class TemplateTween : MonoBehaviour
                 _sequence = DOTween.Sequence();
                 _sequence.SetLink(gameObject);
 
-                foreach (var uiPartsRect in _uiPartsRects)
-                {
-                    uiPartsRect.anchoredPosition = new Vector2(585f + _outSlideDistancey, uiPartsRect.anchoredPosition.y);
-                }
-                foreach (var uiPartsGroup in _uiPartsGroups)
-                {
-                    uiPartsGroup.alpha = 0f;
-                }
-
-                float time = _outStartDelay;
-
-                for (int i = 0; i < _uiPartsRects.Length; i++)
-                {
-                    _sequence.Insert(time + i * 0.05f, _uiPartsRects[i].DOAnchorPosX(585f, 0.35f).SetEase(Ease.OutExpo));
-                    _sequence.Insert(time + i * 0.05f, _uiPartsGroups[i].DOFade(1f, 0.35f).SetEase(Ease.OutExpo));
-
-                }
                 //非同期待機条件
                 await _sequence.AsyncWaitForCompletion();
                 break;              

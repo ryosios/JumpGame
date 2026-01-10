@@ -508,6 +508,7 @@ MonoBehaviour:
   _tweenTransition: {fileID: 1744997926}
   _tweenRightUIs: {fileID: 607843484}
   _enemyCreater: {fileID: 1077135057}
+  _tweenMainCamera: {fileID: 330585550}
 --- !u!4 &143053193
 Transform:
   m_ObjectHideFlags: 0
@@ -660,6 +661,7 @@ GameObject:
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
   - component: {fileID: 330585549}
+  - component: {fileID: 330585550}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -816,6 +818,20 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: d0adb049cc24eb443aa294b7cad6c66b, type: 2}
+--- !u!114 &330585550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22e04c19ec9cc8349b96f25b14913433, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _thisTrans: {fileID: 330585546}
+  _isDebug: 0
 --- !u!1 &348233352
 GameObject:
   m_ObjectHideFlags: 0

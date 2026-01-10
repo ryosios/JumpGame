@@ -24,6 +24,9 @@ public class EnemyBase : MonoBehaviour
     /// <summary>  _enemyEffect1のParticleSystem </summary>
     [SerializeField] private ParticleSystem _enemyEffect1;
 
+    /// <summary>  _enemyEffect1のParticleSystem </summary>
+    [SerializeField] private ParticleSystem _enemyEffect2in;
+
     /// <summary>  EnemyCollisionEnterのSubject </summary>
     public Subject<Unit> EnemyCollisionEnter = new Subject<Unit>();
 
@@ -73,7 +76,9 @@ public class EnemyBase : MonoBehaviour
                 break;
 
             case EnemyBaseState.Default:
-               
+                //エフェクト再生
+                _enemyEffect2in.Play();
+
                 break;
 
             case EnemyBaseState.Killed:
