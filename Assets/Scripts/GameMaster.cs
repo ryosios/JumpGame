@@ -1,6 +1,7 @@
 using UnityEngine;
 using UniRx;
 using Cysharp.Threading.Tasks;
+using System.Threading;
 public class GameMaster : MonoBehaviour
 {
     //ゲーム進行管理用クラス
@@ -44,10 +45,12 @@ public class GameMaster : MonoBehaviour
     /// <summary>  GameTimeStopのSubject </summary>
     public Subject<Unit> GameTimeStop = new Subject<Unit>();
 
-
+    private CancellationToken _destroyToken;
 
     private void Awake()
     {
+        _destroyToken = this.GetCancellationTokenOnDestroy();
+
         // すでにインスタンスがある → 破棄して重複を防ぐ
         if (Instance != null && Instance != this)
         {
@@ -100,9 +103,9 @@ public class GameMaster : MonoBehaviour
         {
             case GameMasterState.Default:
                 //トランジション開始
-                _tweenTransition.PlayOutAnim(1f);
+                _tweenTransition.PlayOutAnim(1f).Forget();
                 
-
+                //UI入場が終わるまで待機2
                 await _tweenRightUIs.PlayInAnim(1.5f);
                 //仮
                 Debug.Log("待機済");
@@ -135,6 +138,8 @@ public class GameMaster : MonoBehaviour
                 ChangeTimeScale(0);
                 break;
 
+                //非同期待機条件
+               // await _sequence.AsyncWaitForCompletion();
         }
     }
 

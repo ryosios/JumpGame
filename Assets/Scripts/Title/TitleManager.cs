@@ -6,6 +6,8 @@ using Spine;
 using Spine.Unity;
 using UnityEngine.UI;
 using UniRx.Triggers;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public class TitleManager : MonoBehaviour
 {
@@ -30,13 +32,13 @@ public class TitleManager : MonoBehaviour
 
     private void Start()
     {
-        SetTitleManagerState(TitleManagerState.Default);
+        SetTitleManagerState(TitleManagerState.Default).Forget();
     }
 
     /// <summary>
     /// ステート
     /// </summary>
-    public void SetTitleManagerState(TitleManagerState titleManagerState)
+    public async UniTask SetTitleManagerState(TitleManagerState titleManagerState)
     {
         var state = titleManagerState;
 
@@ -45,23 +47,15 @@ public class TitleManager : MonoBehaviour
             case TitleManagerState.Default:
                 //タイトル遷移前にトランジションとかで少し待つ
                 _tweenTitleImage.PlayDefaultAnim();
-                _tweenTransition.PlayOutAnim();
-                _tweenTransition.OutEnd.Subscribe(_ =>
-                {
-                    SetTitleManagerState(TitleManagerState.Title);
+                await _tweenTransition.PlayOutAnim();
 
-
-                }).AddTo(this);
-
+                SetTitleManagerState(TitleManagerState.Title).Forget();
 
                 break;
 
             case TitleManagerState.Title:
                 _tweenTitleImage.PlayInAnim();
                 _tweenTitleButtonRoot.PlayInAnim(1.7f);
-               
-
-
 
                 break;
 

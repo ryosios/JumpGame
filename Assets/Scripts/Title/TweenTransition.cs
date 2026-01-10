@@ -3,6 +3,8 @@ using UniRx;
 using DG.Tweening;
 using System.Collections;
 using UnityEngine.UI;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 public class TweenTransition : MonoBehaviour
 {
@@ -33,14 +35,16 @@ public class TweenTransition : MonoBehaviour
 
     public Subject<Unit> OutEnd = new Subject<Unit>();
 
- 
+
+    private CancellationToken _destroyToken;
 
     private void Awake()
     {
+        _destroyToken = this.GetCancellationTokenOnDestroy();
         _transitionMatrialInstance = Instantiate(_transitionImage.material);
         _transitionImage.material = _transitionMatrialInstance;
 
-        SetThisState(ThisState.Default);
+        SetThisState(ThisState.Default, _destroyToken).Forget();
     }
 
    
@@ -48,7 +52,7 @@ public class TweenTransition : MonoBehaviour
     /// <summary>
     /// ステート
     /// </summary>
-    private void SetThisState(ThisState thisState)
+    private async UniTask SetThisState(ThisState thisState,CancellationToken cancellationToken)
     {
         var state = thisState;
 
@@ -76,7 +80,8 @@ public class TweenTransition : MonoBehaviour
                     OutEnd.OnNext(Unit.Default);
                 
                 });
-
+                //非同期待機条件
+                await _thisSequence.AsyncWaitForCompletion();
                 break;
 
             case ThisState.In:
@@ -94,10 +99,13 @@ public class TweenTransition : MonoBehaviour
                     InEnd.OnNext(Unit.Default);
                   
                 });
-
+                //非同期待機条件
+                await _thisSequence.AsyncWaitForCompletion();
                 break;
 
         }
+
+       
     }
 
     /// <summary>
@@ -108,14 +116,14 @@ public class TweenTransition : MonoBehaviour
         return _transitionTime;
     }
 
-    public void PlayInAnim()
+    public async UniTask PlayInAnim()
     {
-        SetThisState(ThisState.In);
+        await SetThisState(ThisState.In, _destroyToken);
     }
 
-    public void PlayOutAnim(float delayTime = 0f)
+    public async UniTask PlayOutAnim(float delayTime = 0f)
     {
         _transitionOutDelayTime = delayTime;
-        SetThisState(ThisState.Out);
+        await SetThisState(ThisState.Out,_destroyToken);
     }
 }
