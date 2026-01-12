@@ -76,12 +76,19 @@ public class TweenResultRankTextRoot : MonoBehaviour
                 _sequence?.Kill();
                 _sequence = DOTween.Sequence();
                 _sequence.SetLink(gameObject);
+                _sequence.SetUpdate(true);
                 _thisGroup.alpha = 1f;
+
+                //タイムスケール0用のawaitにする。
+                await UniTask.Delay(TimeSpan.FromSeconds(_outStartDelay), DelayType.UnscaledDeltaTime,PlayerLoopTiming.Update, _destroyToken);
 
                 for (int i = 0; i < _tweenResultRankTextParts.Length; i++)
                 {
-                    _tweenResultRankTextParts[i].PlayInAnim(_destroyToken, 0.05f*i).Forget();
+                    _tweenResultRankTextParts[i].PlayInAnim(_destroyToken, 0.05f * i).Forget();
                 }
+                
+
+               
 
                 //非同期待機条件
                 await _sequence.AsyncWaitForCompletion();
@@ -94,10 +101,10 @@ public class TweenResultRankTextRoot : MonoBehaviour
     }
 
 
-    public async UniTask PlayInAnim(float delay = 0)
+    public async UniTask PlayInAnim(CancellationToken cancellationToken, float delay = 0)
     {
         _outStartDelay = delay;
-        await SetThisState(ThisState.In, _destroyToken);
+        await SetThisState(ThisState.In, cancellationToken);
     }
 
 }

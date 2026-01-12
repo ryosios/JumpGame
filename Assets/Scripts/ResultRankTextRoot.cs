@@ -74,10 +74,11 @@ public class ResultRankTextRoot : MonoBehaviour
                     _resultRankTextParts[i].SetText(cancellationToken, pointValue[i]);
                 }
 
-                _tweenResultRankTextRoot.PlayInAnim().Forget();
-
+                
 
                 break;
+
+          
 
 
         }

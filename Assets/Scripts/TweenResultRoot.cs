@@ -2,6 +2,8 @@ using UnityEngine;
 using UniRx;
 using DG.Tweening;
 using System.Collections;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine.UI;
 
 public class TweenResultRoot : MonoBehaviour
@@ -14,6 +16,10 @@ public class TweenResultRoot : MonoBehaviour
     }
 
     public Subject<Unit> OutEnd = new Subject<Unit>();
+
+    [SerializeField] TweenResultRankTextRoot _tweenResultRankTextRoot;
+
+    [SerializeField] TweenResultBackOrRetry _tweenResultBackOrRetry;
 
     [SerializeField] CanvasGroup _thisGroup;
 
@@ -31,11 +37,13 @@ public class TweenResultRoot : MonoBehaviour
 
     private float _delay = 0f;
 
+    private CancellationToken _destroyToken;
 
     public bool _isDebug;
 
     private void Awake()
     {
+        _destroyToken = this.GetCancellationTokenOnDestroy();
         SetThisState(ThisState.Default);
     }
 
@@ -86,7 +94,8 @@ public class TweenResultRoot : MonoBehaviour
                 _sequence.InsertCallback(_delay, () =>
                 {
                     _effect1.Play();
-
+                    _tweenResultRankTextRoot.PlayInAnim(_destroyToken, 0.5f).Forget();
+                    _tweenResultBackOrRetry.PlayInAnim(_destroyToken,1f).Forget();
 
                 }).SetUpdate(true);
 

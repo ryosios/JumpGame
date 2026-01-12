@@ -12,7 +12,9 @@ public class ResultBackOrRetry : MonoBehaviour
     private enum ThisState
     {
         Default,
+        InAnimation,
         TitleButton,
+        RetryButton,
     }
 
     //public Subject<Unit> Default = new Subject<Unit>();
@@ -22,6 +24,8 @@ public class ResultBackOrRetry : MonoBehaviour
     private float _outStartDelay = 0;
 
     public bool _isDebug;
+
+    [SerializeField] private GameMaster _gameMaster;
 
     [SerializeField] private Button ButtonTitle;
 
@@ -67,10 +71,14 @@ public class ResultBackOrRetry : MonoBehaviour
 
             case ThisState.TitleButton:
                 //タイトルに戻る
-                UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScene");
-            
-
+                UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScene");  
               
+                break;
+
+            case ThisState.RetryButton:
+                //リトライ
+                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+
                 break;
 
         }
@@ -88,5 +96,10 @@ public class ResultBackOrRetry : MonoBehaviour
     public void OnTitleButton()
     {
         SetThisState(ThisState.TitleButton,_destroyToken).Forget();
+    }
+
+    public void OnRetryButton()
+    {
+        SetThisState(ThisState.RetryButton, _destroyToken).Forget();
     }
 }

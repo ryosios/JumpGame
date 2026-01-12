@@ -7,7 +7,7 @@ using System.Threading;
 using System;
 using UnityEngine.UI;
 
-public class TweenResultRankTextParts : MonoBehaviour
+public class TweenResultBackOrRetry : MonoBehaviour
 {
     private enum ThisState
     {
@@ -76,10 +76,12 @@ public class TweenResultRankTextParts : MonoBehaviour
                 _sequence.SetLink(gameObject);
                 _sequence.SetUpdate(true);
                 _thisGroup.alpha = 0f;
-                _thisRect.anchoredPosition = new Vector2(_initThisPos.x +500f,_initThisPos.y);
 
-                _sequence.Insert(_outStartDelay,_thisRect.DOAnchorPosX(_initThisPos.x,0.5f).SetEase(Ease.OutExpo));
-                _sequence.Insert(_outStartDelay, _thisGroup.DOFade(1f, 0.5f).SetEase(Ease.OutCubic));
+                //遅延こっちだとうまくいかない
+                //await UniTask.Delay(TimeSpan.FromSeconds(_outStartDelay), DelayType.UnscaledDeltaTime,PlayerLoopTiming.Update, _destroyToken);
+
+                //こっちだとうまくいく
+                _sequence.Insert(_outStartDelay, _thisGroup.DOFade(1f, 0.2f));
 
                 //非同期待機条件
                 await _sequence.AsyncWaitForCompletion();
@@ -92,10 +94,10 @@ public class TweenResultRankTextParts : MonoBehaviour
     }
 
 
-    public async UniTask PlayInAnim(CancellationToken cancellationToken,float delay = 0)
+    public async UniTask PlayInAnim(CancellationToken cancellationToken, float delay = 0)
     {
         _outStartDelay = delay;
-        await SetThisState(ThisState.In, _destroyToken);
+        await SetThisState(ThisState.In, cancellationToken);
     }
 
 }
