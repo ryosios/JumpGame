@@ -10,8 +10,8 @@ public static class SaveManager
         Path.Combine(Application.persistentDataPath, "save.dat");
 
     //適当でいいが「固定」にする
-    private static readonly string Key = "MySecretKey1234"; // 16文字
-    private static readonly string Iv = "MySecretIv12345"; // 16文字
+    private static readonly string Key = "MySecretKey12345"; // 16文字
+    private static readonly string Iv = "MySecretIv123456"; // 16文字
 
     // --------------------
     // Save
@@ -28,6 +28,7 @@ public static class SaveManager
     // --------------------
     public static SaveData Load()
     {
+        Debug.Log("保存された"+Application.persistentDataPath);
         if (!File.Exists(FilePath))
             return null;
 
@@ -67,6 +68,7 @@ public static class SaveManager
      保存
      SaveManager.Save(new SaveData
      {
+         //C:\Users\taro\AppData\LocalLow\MyCompany\MyGame\save.dat
          gold = 100
      });
 

@@ -26,12 +26,17 @@ public class TweenResultRankTextParts : MonoBehaviour
 
     [SerializeField] private RectTransform _thisRect;
 
+    [SerializeField] private CanvasGroup _thisGroup;
+
+    private Vector2 _initThisPos;
+
     private Sequence _sequence;
 
     private CancellationToken _destroyToken;
 
     private void Awake()
     {
+        _initThisPos = _thisRect.anchoredPosition;
         _destroyToken = this.GetCancellationTokenOnDestroy();
         SetThisState(ThisState.Default, _destroyToken).Forget();
     }
@@ -60,6 +65,7 @@ public class TweenResultRankTextParts : MonoBehaviour
         switch (state)
         {
             case ThisState.Default:
+                _thisGroup.alpha = 0f;
 
 
                 break;
@@ -68,8 +74,12 @@ public class TweenResultRankTextParts : MonoBehaviour
                 _sequence?.Kill();
                 _sequence = DOTween.Sequence();
                 _sequence.SetLink(gameObject);
+                _sequence.SetUpdate(true);
+                _thisGroup.alpha = 0f;
+                _thisRect.anchoredPosition = new Vector2(_initThisPos.x +500f,_initThisPos.y);
 
-                //_sequence.Insert(0f,);
+                _sequence.Insert(0f,_thisRect.DOAnchorPosX(_initThisPos.x,0.5f).SetEase(Ease.OutExpo));
+                _sequence.Insert(0f, _thisGroup.DOFade(1f, 0.5f).SetEase(Ease.OutCubic));
 
                 //非同期待機条件
                 await _sequence.AsyncWaitForCompletion();
@@ -82,7 +92,7 @@ public class TweenResultRankTextParts : MonoBehaviour
     }
 
 
-    public async UniTask PlayInAnim(float delay = 0)
+    public async UniTask PlayInAnim(CancellationToken cancellationToken,float delay = 0)
     {
         _outStartDelay = delay;
         await SetThisState(ThisState.In, _destroyToken);

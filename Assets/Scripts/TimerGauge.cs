@@ -73,7 +73,7 @@ public class TimerGauge : MonoBehaviour
 
         }).AddTo(this);
 
-        _gameMaster.PlayStart.Subscribe(_ =>
+        _gameMaster .PlayStart.Subscribe(_ =>
         {
             
             SetTimerGaugeState(TimerGaugeState.TimerStart);

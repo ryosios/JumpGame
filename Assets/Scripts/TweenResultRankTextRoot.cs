@@ -7,13 +7,13 @@ using System.Threading;
 using System;
 using UnityEngine.UI;
 
-public class ResultRankTextRoot : MonoBehaviour
+public class TweenResultRankTextRoot : MonoBehaviour
 {
     private enum ThisState
     {
         Default,
-        Update,
-  
+        In,
+
     }
 
     //public Subject<Unit> Default = new Subject<Unit>();
@@ -26,17 +26,21 @@ public class ResultRankTextRoot : MonoBehaviour
 
     [SerializeField] private RectTransform _thisRect;
 
-    [SerializeField] private ResultRankTextParts[] _resultRankTextParts;
+    [SerializeField] private CanvasGroup _thisGroup;
 
-    [SerializeField] private TweenResultRankTextRoot _tweenResultRankTextRoot;
+    [SerializeField] private TweenResultRankTextParts[] _tweenResultRankTextParts;
+
+    private Vector2 _initThisPos;
+
+    private Sequence _sequence;
 
     private CancellationToken _destroyToken;
 
     private void Awake()
     {
+        _initThisPos = _thisRect.anchoredPosition;
         _destroyToken = this.GetCancellationTokenOnDestroy();
         SetThisState(ThisState.Default, _destroyToken).Forget();
-
     }
 
     /* デバッグ用
@@ -56,41 +60,44 @@ public class ResultRankTextRoot : MonoBehaviour
     /// <summary>
     /// ステート
     /// </summary>
-    private async UniTask SetThisState(ThisState thisState, CancellationToken cancellationToken, int[] pointValue = null)
+    private async UniTask SetThisState(ThisState thisState, CancellationToken cancellationToken)
     {
         var state = thisState;
 
         switch (state)
         {
             case ThisState.Default:
+                _thisGroup.alpha = 0f;
 
 
                 break;
 
-            case ThisState.Update:
-                //リザルト内容更新
-                for (int i = 0; i < _resultRankTextParts.Length; i++)
+            case ThisState.In:
+                _sequence?.Kill();
+                _sequence = DOTween.Sequence();
+                _sequence.SetLink(gameObject);
+                _thisGroup.alpha = 1f;
+
+                for (int i = 0; i < _tweenResultRankTextParts.Length; i++)
                 {
-                    _resultRankTextParts[i].SetText(cancellationToken, pointValue[i]);
+                    _tweenResultRankTextParts[i].PlayInAnim(_destroyToken, 0.05f*i).Forget();
                 }
 
-                _tweenResultRankTextRoot.PlayInAnim().Forget();
-
-
+                //非同期待機条件
+                await _sequence.AsyncWaitForCompletion();
                 break;
 
+            
 
         }
 
     }
 
-    /// <summary>
-    /// テキスト設定用
-    /// </summary>
-    public void SetText(CancellationToken cancellationToken, int[] pointValue)
-    {
-        SetThisState(ThisState.Update, cancellationToken, pointValue).Forget();
-    }
 
+    public async UniTask PlayInAnim(float delay = 0)
+    {
+        _outStartDelay = delay;
+        await SetThisState(ThisState.In, _destroyToken);
+    }
 
 }

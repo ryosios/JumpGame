@@ -282,6 +282,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5243488942816443455}
   - component: {fileID: 2910437569232965996}
+  - component: {fileID: 7578395375819796483}
+  - component: {fileID: 2029245484814403319}
   m_Layer: 5
   m_Name: ResultParts
   m_TagString: Untagged
@@ -323,5 +325,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isDebug: 0
+  _tweenResultRankTextParts: {fileID: 7578395375819796483}
   _thisRect: {fileID: 5243488942816443455}
-  _: []
+  _pointText: {fileID: 8535135944004596541}
+--- !u!114 &7578395375819796483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8880162197573434316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e15e88bb5f8531448a2b91beb83316ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isDebug: 0
+  _thisRect: {fileID: 5243488942816443455}
+  _thisGroup: {fileID: 2029245484814403319}
+--- !u!225 &2029245484814403319
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8880162197573434316}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

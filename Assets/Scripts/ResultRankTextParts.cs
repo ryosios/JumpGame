@@ -6,14 +6,14 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
 using UnityEngine.UI;
-
+using TMPro;
 public class ResultRankTextParts : MonoBehaviour
 {
     private enum ThisState
     {
         Default,
         Update,
-        SlideIn,
+        
     }
 
     //public Subject<Unit> Default = new Subject<Unit>();
@@ -24,13 +24,15 @@ public class ResultRankTextParts : MonoBehaviour
 
     public bool _isDebug;
 
+
+    [SerializeField] private TweenResultRankTextParts _tweenResultRankTextParts;  
+
     [SerializeField] private RectTransform _thisRect;
 
-    [SerializeField] private Text _rankingText;
+    [SerializeField] private TextMeshProUGUI _pointText;
 
     private string _rankingString = "test";
 
-    [SerializeField] private TweenResultRankTextParts _tweenResultRankTextParts;
 
     private CancellationToken _destroyToken;
 
@@ -57,7 +59,7 @@ public class ResultRankTextParts : MonoBehaviour
     /// <summary>
     /// ステート
     /// </summary>
-    private async UniTask SetThisState(ThisState thisState, CancellationToken cancellationToken)
+    private async UniTask SetThisState(ThisState thisState, CancellationToken cancellationToken,int text = 0)
     {
         var state = thisState;
 
@@ -70,34 +72,23 @@ public class ResultRankTextParts : MonoBehaviour
 
             case ThisState.Update:
                 //リザルト内容更新
-                
-                SetText(_rankingText,_rankingString);
-                
-                SetThisState(ThisState.SlideIn,cancellationToken).Forget();
+                _rankingString = text.ToString();
+                _pointText.text = _rankingString;
 
                 break;
 
-            case ThisState.SlideIn:
-                //スライドインアニメーション
-                _tweenResultRankTextParts.PlayInAnim().Forget();
-              
-
-               
-                break;
 
         }
 
     }
 
-    private void SetText(Text text, string comment)
+    /// <summary>
+    /// テキスト設定用
+    /// </summary>
+    public void SetText(CancellationToken cancellationToken,int pointValue)
     {
-        text.text = comment;
+        SetThisState(ThisState.Update, cancellationToken, pointValue).Forget();
     }
 
-    public async UniTask PlayInAnim(float delay = 0)
-    {
-        _outStartDelay = delay;
-        await SetThisState(ThisState.SlideIn, _destroyToken);
-    }
 
 }

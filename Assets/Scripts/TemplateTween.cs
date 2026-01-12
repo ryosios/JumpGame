@@ -66,6 +66,7 @@ public class TemplateTween : MonoBehaviour
                 _sequence?.Kill();
                 _sequence = DOTween.Sequence();
                 _sequence.SetLink(gameObject);
+                _sequence.SetUpdate(true);
 
                 //非同期待機条件
                 await _sequence.AsyncWaitForCompletion();

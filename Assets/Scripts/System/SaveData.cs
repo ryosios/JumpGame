@@ -7,7 +7,7 @@ using UnityEngine;
 [Serializable]
 public class SaveData
 {
-    public int gold;
+    public int[] resultPoints;
 }
 
 

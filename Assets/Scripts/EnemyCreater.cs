@@ -13,7 +13,7 @@ public class EnemyCreater : MonoBehaviour
         Create
     }
 
-    /// <summary> Enemyぶら下げるRoot </summary>
+    /// <summary> GameMaster </summary>
     [SerializeField] private GameMaster _gameMaster;
 
     /// <summary> インスタンス化済みのEnemyBaseリスト </summary>
