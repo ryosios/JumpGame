@@ -19,7 +19,8 @@ public class Player : MonoBehaviour
         Attack,
         SutaminaRecovery,
         Bounce,
-        BuffLevelUp
+        BuffLevelUp,
+        SizeUpdate,
     }
 
     public Subject<Unit> EnemyCollisionEnter = new Subject<Unit>();
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour
 
     /// <summary> _arrowのTransform </summary>
     [SerializeField] private Transform _arrowTrans;
+
 
     /// <summary> 回転用のシーケンス </summary>
     private DG.Tweening.Sequence _rotateSequence;
@@ -90,6 +92,9 @@ public class Player : MonoBehaviour
     /// <summary> バフレベルが上がった時 </summary>
     public Subject<Unit> BuffLevelUpEnd = new Subject<Unit>();
 
+    /// <summary> バフで加算される数値の総合値 </summary>
+    private float _updatePlayerSizeValue = 0f;
+
 
     //Spine
     /// <summary> SkeletonAnimation </summary>
@@ -126,6 +131,16 @@ public class Player : MonoBehaviour
         _buffCardManager.CardSelectedEnd.Subscribe(_=> 
         {
             SetPlayerState(PlayerState.BuffLevelUp);
+
+        }).AddTo(this);
+
+        _buffCardManager.CardCreated.Subscribe(buffCard => 
+        {
+            buffCard.CardSelectedBuffPlayerSize.Subscribe(buffPlayerSize => 
+            {
+                _updatePlayerSizeValue += buffPlayerSize._addPlayerSize;
+                SetPlayerState(PlayerState.SizeUpdate);
+            }).AddTo(this);
 
         }).AddTo(this);
     }
@@ -266,6 +281,15 @@ public class Player : MonoBehaviour
             case PlayerState.BuffLevelUp:
                 _playerBuffLevel += 1;
                 BuffLevelUpEnd.OnNext(Unit.Default);
+
+                break;
+
+            case PlayerState.SizeUpdate:
+                Vector3 currentSize = this.transform.localScale;
+                currentSize.x += _updatePlayerSizeValue;
+                currentSize.y += _updatePlayerSizeValue;
+                currentSize.z += _updatePlayerSizeValue;
+                this.transform.localScale = currentSize;
 
                 break;
 

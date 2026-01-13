@@ -8,6 +8,9 @@ public class BuffAddTime : BuffBase
 
     public float _addTimeValue = 10f;
 
-   
+    public void Apply()
+    {
+
+    }
 
 }

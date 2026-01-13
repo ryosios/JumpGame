@@ -72,6 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _thisButton: {fileID: 7677008115017810642}
+  _buffTextText: {fileID: 7287833866870212820}
   _tweenBuffCard: {fileID: 7780092320479536702}
   _buffBasesStock: []
   _buffBasesActive: []
@@ -247,6 +248,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2576102085397230365, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}
   m_PrefabInstance: {fileID: 1502658177037667677}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7287833866870212820 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8212619501493470601, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}
+  m_PrefabInstance: {fileID: 1502658177037667677}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7677008115017810642 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9101974486865350543, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}

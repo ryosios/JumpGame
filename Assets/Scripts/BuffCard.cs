@@ -3,6 +3,7 @@ using UniRx;
 using DG.Tweening;
 using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 
 using System.Collections.Generic;
 
@@ -24,9 +25,14 @@ public class BuffCard : MonoBehaviour
     /// <summary> BuffAddTimeカードが選択されたとき </summary>
     public Subject<BuffAddTime> CardSelectedBuffAddTime = new Subject<BuffAddTime>();
 
+    /// <summary> BuffPlayerSizeカードが選択されたとき </summary>
+    public Subject<BuffPlayerSize> CardSelectedBuffPlayerSize = new Subject<BuffPlayerSize>();
+
     [SerializeField] private Button _thisButton;
     public Button ThisButton  => _thisButton;
 
+
+    [SerializeField] private TextMeshProUGUI _buffTextText;
 
     /// <summary> カードのアニメーションクラス </summary>
     [SerializeField] private TweenBuffCard _tweenBuffCard;
@@ -45,6 +51,8 @@ public class BuffCard : MonoBehaviour
 
     private void Awake()
     {
+       
+
         SetBuffCardState(BuffCardState.Default);
     }
 
@@ -68,11 +76,13 @@ public class BuffCard : MonoBehaviour
                 break;
 
             case BuffCardState.Initialize:
-                //ランダムでBuffBaseの中から能力をゲットしてカードにつっこむ
+                //インスタンス化時、続けてランダムでBuffBaseの中から能力をゲットしてカードにつっこむ
                 //とりあえず能力1個
                 _buffBasesActive = new();
                 int index_A = Random.Range(0, _buffBasesStock.Count);
                 _buffBasesActive.Add(_buffBasesStock[index_A]);
+                _buffTextText.text = _buffBasesActive[0].buffName;
+               
 
 
                 break;
@@ -89,6 +99,11 @@ public class BuffCard : MonoBehaviour
                     {
                         CardSelectedBuffAddTime.OnNext(buffAddTime);
                         
+                    }
+                    if (buffBaseActive is BuffPlayerSize buffPlayerSize)
+                    {
+                        CardSelectedBuffPlayerSize.OnNext(buffPlayerSize);
+
                     }
 
 

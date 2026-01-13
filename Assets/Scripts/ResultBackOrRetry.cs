@@ -69,6 +69,12 @@ public class ResultBackOrRetry : MonoBehaviour
 
                 break;
 
+            case ThisState.InAnimation:
+                //インアニメーション
+
+
+                break;
+
             case ThisState.TitleButton:
                 //タイトルに戻る
                 UnityEngine.SceneManagement.SceneManager.LoadScene("TitleScene");  

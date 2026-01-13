@@ -13,6 +13,7 @@ public class BuffBase : ScriptableObject
     public Sprite icon;
 
   
+
  
 
 }
