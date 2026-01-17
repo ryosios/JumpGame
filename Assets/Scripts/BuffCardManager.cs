@@ -14,6 +14,7 @@ public class BuffCardManager : MonoBehaviour
         Default,
         CardCreate,
         CardSelected,
+        UpdateBuffMaxSelectCard,
     }
 
     /// <summary>  バフカードが生成された最初 </summary>
@@ -64,16 +65,15 @@ public class BuffCardManager : MonoBehaviour
             }
           
         
-        }).AddTo(this);         
-       
-       
+        }).AddTo(this);
+
     }
 
 
     /// <summary>
     /// ステート
     /// </summary>
-    public void SetBuffCardManagerState(BuffCardManagerState baffCardManagerState)
+    public void SetBuffCardManagerState(BuffCardManagerState baffCardManagerState, BuffMaxSelectCard buffMaxSelectCard = null)
     {
         var state = baffCardManagerState;
 
@@ -148,12 +148,15 @@ public class BuffCardManager : MonoBehaviour
                         
                     }
                     
-                }
-
-               
+                }               
 
                 break;
 
+            case BuffCardManagerState.UpdateBuffMaxSelectCard:
+                _maxSelectCardValue += buffMaxSelectCard._addBuffMaxSelectCardValue;
+
+
+                break;
         }
     }
 
@@ -167,6 +170,11 @@ public class BuffCardManager : MonoBehaviour
             _selectedBuffCard = buffCard;
             SetBuffCardManagerState(BuffCardManagerState.CardSelected);
             
+
+        }).AddTo(this);
+        buffCardInstance.CardSelectedBuffMaxSelectCard.Subscribe(buffMaxSelectCard =>
+        {//バフでカード枚数が増える判定のサブジェクト
+            SetBuffCardManagerState(BuffCardManagerState.UpdateBuffMaxSelectCard, buffMaxSelectCard);            
 
         }).AddTo(this);
         CardCreated.OnNext(buffCardInstance);

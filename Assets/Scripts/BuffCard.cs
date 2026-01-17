@@ -31,6 +31,9 @@ public class BuffCard : MonoBehaviour
     /// <summary> BuffStaminaRecoveryカードが選択されたとき </summary>
     public Subject<BuffStaminaRecovery> CardSelectedBuffStaminaRecovery = new Subject<BuffStaminaRecovery>();
 
+    /// <summary> BuffMaxSelectCardカードが選択されたとき </summary>
+    public Subject<BuffMaxSelectCard> CardSelectedBuffMaxSelectCard = new Subject<BuffMaxSelectCard>();
+
     [SerializeField] private Button _thisButton;
     public Button ThisButton  => _thisButton;
 
@@ -114,6 +117,11 @@ public class BuffCard : MonoBehaviour
                     if (buffBaseActive is BuffStaminaRecovery buffStaminaRecovery)
                     {
                         CardSelectedBuffStaminaRecovery.OnNext(buffStaminaRecovery);
+
+                    }
+                    if (buffBaseActive is BuffMaxSelectCard buffMaxSelectCard)
+                    {
+                        CardSelectedBuffMaxSelectCard.OnNext(buffMaxSelectCard);
 
                     }
 
