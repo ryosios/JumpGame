@@ -104,7 +104,17 @@ public class BuffCardManager : MonoBehaviour
                     _activeCardsList.Add(card);
                     card.tweenBuffCard.PlayInAnim(i * 0.1f);
                     
-                }                
+                }
+
+                //バフでカード枚数が増える
+                foreach (var buffCard in _activeCardsList)
+                {
+                    buffCard.CardSelectedBuffMaxSelectCard.Subscribe(buffMaxSelectCard =>
+                    {//バフでカード枚数が増える判定のサブジェクト
+                        SetBuffCardManagerState(BuffCardManagerState.UpdateBuffMaxSelectCard, buffMaxSelectCard);
+
+                    }).AddTo(this);
+                }
 
                 break;
 
@@ -175,11 +185,6 @@ public class BuffCardManager : MonoBehaviour
             _selectedBuffCard = buffCard;
             SetBuffCardManagerState(BuffCardManagerState.CardSelected);
             
-
-        }).AddTo(this);
-        buffCardInstance.CardSelectedBuffMaxSelectCard.Subscribe(buffMaxSelectCard =>
-        {//バフでカード枚数が増える判定のサブジェクト
-            SetBuffCardManagerState(BuffCardManagerState.UpdateBuffMaxSelectCard, buffMaxSelectCard);            
 
         }).AddTo(this);
         CardCreated.OnNext(buffCardInstance);
