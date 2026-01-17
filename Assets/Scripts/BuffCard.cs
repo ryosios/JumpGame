@@ -28,11 +28,16 @@ public class BuffCard : MonoBehaviour
     /// <summary> BuffPlayerSizeカードが選択されたとき </summary>
     public Subject<BuffPlayerSize> CardSelectedBuffPlayerSize = new Subject<BuffPlayerSize>();
 
+    /// <summary> BuffStaminaRecoveryカードが選択されたとき </summary>
+    public Subject<BuffStaminaRecovery> CardSelectedBuffStaminaRecovery = new Subject<BuffStaminaRecovery>();
+
     [SerializeField] private Button _thisButton;
     public Button ThisButton  => _thisButton;
 
 
     [SerializeField] private TextMeshProUGUI _buffTextText;
+
+    [SerializeField] private TextMeshProUGUI _buffValueText;
 
     /// <summary> カードのアニメーションクラス </summary>
     [SerializeField] private TweenBuffCard _tweenBuffCard;
@@ -82,7 +87,8 @@ public class BuffCard : MonoBehaviour
                 int index_A = Random.Range(0, _buffBasesStock.Count);
                 _buffBasesActive.Add(_buffBasesStock[index_A]);
                 _buffTextText.text = _buffBasesActive[0].buffName;
-               
+                _buffValueText.text = _buffBasesActive[0].descriptionValue;
+
 
 
                 break;
@@ -103,6 +109,11 @@ public class BuffCard : MonoBehaviour
                     if (buffBaseActive is BuffPlayerSize buffPlayerSize)
                     {
                         CardSelectedBuffPlayerSize.OnNext(buffPlayerSize);
+
+                    }
+                    if (buffBaseActive is BuffStaminaRecovery buffStaminaRecovery)
+                    {
+                        CardSelectedBuffStaminaRecovery.OnNext(buffStaminaRecovery);
 
                     }
 

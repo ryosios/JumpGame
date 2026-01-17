@@ -33,6 +33,8 @@ public class TweenResultRoot : MonoBehaviour
 
     [SerializeField] ParticleSystem _effect2;
 
+    [SerializeField] ParticleSystem _effect3;
+
     private Sequence _sequence;
 
     private float _delay = 0f;
@@ -107,6 +109,7 @@ public class TweenResultRoot : MonoBehaviour
                 _sequence.InsertCallback(_delay + 0.3f, () =>
                 {
                     _effect2.Play();
+                    _effect3.Play();
 
 
                 }).SetUpdate(true);

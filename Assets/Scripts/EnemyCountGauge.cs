@@ -21,6 +21,14 @@ public class EnemyCountGauge : MonoBehaviour
 
     [SerializeField] private EnemyCreater _enemyCreater;
 
+    /// <summary>　ポイント係数（変動予定） </summary>
+    private float _pointRatio = 1f;
+
+    /// <summary>　現在のポイント：敵の数×ポイント係数 </summary>
+    private float _currentPoint = 0f;
+
+    private int _beforeCount = 0;
+
     private void Awake()
     {
         _enemyCreater.EnemyKillCount.Subscribe(value => 
@@ -52,12 +60,18 @@ public class EnemyCountGauge : MonoBehaviour
     }
 
     /// <summary>
-    /// カウント数更新
+    /// カウントをポイント計算して更新
     /// </summary>
-    /// <param name="value">更新する値</param>
+    /// <param name="value">敵の数</param>
     private void SetEnemyCountGaugeValue(int value)
     {
-        _countText.text = value.ToString();
+        int updateCount = value;
+        int diff = updateCount - _beforeCount;
+        float updatePoint = diff* _pointRatio;
+        _currentPoint += updatePoint;
+        int currentInt = (int)_currentPoint;//表示はintにして少数切り捨て
+        _countText.text = currentInt.ToString();
+        _beforeCount = updateCount;
     }
 
 }

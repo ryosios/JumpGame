@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: 0
+  m_MinWidth: 260
   m_MinHeight: 0
   m_PreferredWidth: 260
   m_PreferredHeight: 370
@@ -73,6 +73,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _thisButton: {fileID: 7677008115017810642}
   _buffTextText: {fileID: 7287833866870212820}
+  _buffValueText: {fileID: 5757567247286317625}
   _tweenBuffCard: {fileID: 7780092320479536702}
   _buffBasesStock: []
   _buffBasesActive: []
@@ -111,22 +112,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1979154331361486850, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}
       propertyPath: m_SortingLayer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2576102085397230365, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}
-      propertyPath: m_Pivot.y
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2576102085397230365, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.000015258789
-      objectReference: {fileID: 0}
-    - target: {fileID: 2576102085397230365, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.000061035156
-      objectReference: {fileID: 0}
-    - target: {fileID: 2576102085397230365, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}
-      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3518502195657119793, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}
@@ -221,9 +206,7 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 5314749100788106916}
-    m_RemovedComponents:
-    - {fileID: 5315151780210280562, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}
-    - {fileID: 9167895055428726967, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -248,6 +231,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2576102085397230365, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}
   m_PrefabInstance: {fileID: 1502658177037667677}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5757567247286317625 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6574269531685273444, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}
+  m_PrefabInstance: {fileID: 1502658177037667677}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7287833866870212820 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8212619501493470601, guid: b9b8a8f43f002e44a9d0359d2f327ba3, type: 3}

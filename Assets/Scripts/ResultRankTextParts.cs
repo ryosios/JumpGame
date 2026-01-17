@@ -59,7 +59,7 @@ public class ResultRankTextParts : MonoBehaviour
     /// <summary>
     /// ステート
     /// </summary>
-    private async UniTask SetThisState(ThisState thisState, CancellationToken cancellationToken,int text = 0)
+    private async UniTask SetThisState(ThisState thisState, CancellationToken cancellationToken,int pointValue = 0)
     {
         var state = thisState;
 
@@ -72,7 +72,8 @@ public class ResultRankTextParts : MonoBehaviour
 
             case ThisState.Update:
                 //リザルト内容更新
-                _rankingString = text.ToString();
+                int value = Mathf.Min(pointValue, 999999999);
+                _rankingString = value.ToString("D9");
                 _pointText.text = _rankingString;
 
                 break;

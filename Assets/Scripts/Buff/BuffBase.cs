@@ -9,7 +9,7 @@ public class BuffBase : ScriptableObject
     [Header("Card Info")]
     public string buffName;
     [TextArea]
-    public string description;
+    public string descriptionValue;
     public Sprite icon;
 
   

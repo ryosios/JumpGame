@@ -20,7 +20,8 @@ public class Player : MonoBehaviour
         SutaminaRecovery,
         Bounce,
         BuffLevelUp,
-        SizeUpdate,
+        BuffSizeUpdate,
+        BuffStaminaRecovery,
     }
 
     public Subject<Unit> EnemyCollisionEnter = new Subject<Unit>();
@@ -56,7 +57,7 @@ public class Player : MonoBehaviour
     private float _jumpAngle = 360f;
 
     /// <summary>  ジャンプに消費するスタミナ </summary>
-    private float _jumpSutamina = 0.2f;
+    private float _jumpSutamina = 0.1f;
 
     /// <summary> スタミナの値 </summary>
     private float _sutaminaValue = 1f;
@@ -92,8 +93,11 @@ public class Player : MonoBehaviour
     /// <summary> バフレベルが上がった時 </summary>
     public Subject<Unit> BuffLevelUpEnd = new Subject<Unit>();
 
-    /// <summary> バフで加算される数値の総合値 </summary>
+    /// <summary> バフで加算されるサイズの数値の総合値 </summary>
     private float _updatePlayerSizeValue = 0f;
+
+    /// <summary> バフで加算されるスタミナ値 </summary>
+    private float _updateBuffStaminaValue = 0f;
 
 
     //Spine
@@ -139,7 +143,17 @@ public class Player : MonoBehaviour
             buffCard.CardSelectedBuffPlayerSize.Subscribe(buffPlayerSize => 
             {
                 _updatePlayerSizeValue += buffPlayerSize._addPlayerSize;
-                SetPlayerState(PlayerState.SizeUpdate);
+                SetPlayerState(PlayerState.BuffSizeUpdate);
+            }).AddTo(this);
+
+        }).AddTo(this);
+
+        _buffCardManager.CardCreated.Subscribe(buffCard =>
+        {
+            buffCard.CardSelectedBuffStaminaRecovery.Subscribe(buffStaminaRecovery =>
+            {
+                _updateBuffStaminaValue += buffStaminaRecovery._addStaminaValue;
+                SetPlayerState(PlayerState.BuffStaminaRecovery);
             }).AddTo(this);
 
         }).AddTo(this);
@@ -284,12 +298,25 @@ public class Player : MonoBehaviour
 
                 break;
 
-            case PlayerState.SizeUpdate:
+            case PlayerState.BuffSizeUpdate:
                 Vector3 currentSize = this.transform.localScale;
                 currentSize.x += _updatePlayerSizeValue;
                 currentSize.y += _updatePlayerSizeValue;
                 currentSize.z += _updatePlayerSizeValue;
                 this.transform.localScale = currentSize;
+
+                break;
+
+            case PlayerState.BuffStaminaRecovery:
+                _sutaminaValue += _updateBuffStaminaValue;
+                if (_sutaminaValue >= 1f)
+                {
+                    _sutaminaValue = 1;
+                }
+                SutaminaChange.OnNext(_sutaminaValue);
+
+
+
 
                 break;
 
