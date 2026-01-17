@@ -153,7 +153,12 @@ public class BuffCardManager : MonoBehaviour
                 break;
 
             case BuffCardManagerState.UpdateBuffMaxSelectCard:
-                _maxSelectCardValue += buffMaxSelectCard._addBuffMaxSelectCardValue;
+                if (_maxSelectCardValue < 5) 
+                {
+                    //いったん上限5枚まで。2段目作っていいかも
+                    _maxSelectCardValue += buffMaxSelectCard._addBuffMaxSelectCardValue;
+                }
+                
 
 
                 break;
