@@ -7516,10 +7516,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 200557247}
     m_Modifications:
-    - target: {fileID: 4701878318885746262, guid: 05dcde0d3991d714590134e8504f1ea4, type: 3}
-      propertyPath: m_Alpha
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4903043199986181737, guid: 05dcde0d3991d714590134e8504f1ea4, type: 3}
       propertyPath: m_Name
       value: ResultRoot
