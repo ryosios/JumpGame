@@ -74,4 +74,13 @@ public class EnemyCountGauge : MonoBehaviour
         _beforeCount = updateCount;
     }
 
+    /// <summary>
+    /// 現在のポイントを取得
+    /// </summary>
+
+    public int GetCurrentPoint()
+    {
+        return (int)_currentPoint;//表示はintにして少数切り捨て
+    }
+
 }

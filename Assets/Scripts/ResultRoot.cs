@@ -15,6 +15,7 @@ public class ResultRoot : MonoBehaviour
         Default,
         ResultUpdate,//内容更新
         ResultAnimation,//アニメーション
+        ResultClear,//ポイント0に戻す
     }
 
     public bool _isDebug;
@@ -28,6 +29,8 @@ public class ResultRoot : MonoBehaviour
     [SerializeField] private EnemyCreater _enemyCreaeter;
 
     [SerializeField] private ResultRankTextRoot _resultRankTextRoot;
+
+    [SerializeField] private EnemyCountGauge _enemyCountGauge;
 
     private int _resultPointCurrent;
 
@@ -62,14 +65,15 @@ public class ResultRoot : MonoBehaviour
         SetThisState(ThisState.Default, _destroyToken).Forget();
     }
 
-    /* デバッグ用
+    //デバッグ用
+    /*
     private void Update()
     {
         if (_isDebug)
         {
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKeyDown(KeyCode.Keypad9))
             {
-                SetThisState(ThisState.Default,_destroyToken).Forget();
+                SetThisState(ThisState.ResultClear, _destroyToken).Forget();
             }
            
         }
@@ -93,7 +97,7 @@ public class ResultRoot : MonoBehaviour
             case ThisState.ResultUpdate:
                 //内容更新
                 //今回のポイントを保存
-                _resultPointCurrent = _enemyCreaeter.EnemyKillCount.Value;
+                _resultPointCurrent = _enemyCountGauge.GetCurrentPoint();
 
                 //読み込み
                 _resultPointsNow?.Clear();
@@ -139,9 +143,37 @@ public class ResultRoot : MonoBehaviour
 
                 break;
             case ThisState.ResultAnimation:
+                Debug.Log("リザルトアニメーションスタート");
                 //描画
                 _tweenResultRoot.PlayInAnim();
 
+                break;
+
+            case ThisState.ResultClear:
+
+                //読み込み
+                _resultPointsNow?.Clear();
+
+                var data2 = SaveManager.Load();
+                if (data2 != null)
+                {
+                    int[] resultPoints = data2.resultPoints;
+                    for (int i = 0; i < resultPoints.Length; i++)
+                    {
+                        _resultPoints[i] = 0;
+                    }
+                }
+
+                //保存
+                SaveManager.Save(new SaveData
+                {
+                    resultPoints = _resultPoints
+                });
+
+                //ポイントをUI描画に送信
+                _resultRankTextRoot.SetText(_destroyToken, _resultPoints);
+
+              
                 break;
 
         }

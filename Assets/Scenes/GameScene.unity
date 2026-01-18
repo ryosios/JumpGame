@@ -7532,6 +7532,10 @@ PrefabInstance:
       propertyPath: _enemyCreaeter
       value: 
       objectReference: {fileID: 1077135057}
+    - target: {fileID: 6170059316613040243, guid: 05dcde0d3991d714590134e8504f1ea4, type: 3}
+      propertyPath: _enemyCountGauge
+      value: 
+      objectReference: {fileID: 1828837611}
     - target: {fileID: 7801488850602512453, guid: 05dcde0d3991d714590134e8504f1ea4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
