@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BuffMaxSelectCard1
   m_EditorClassIdentifier: 
   buffName: MaxSelectCard
-  descriptionValue: +1
+  descriptionValue: 1
   buffImageTexture: {fileID: 21300000, guid: 2243c9f00c48d4e4283482254c83df9e, type: 3}
   _addBuffMaxSelectCardValue: 1

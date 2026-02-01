@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1850387296753ab4eb1803aa6fe37e9f, type: 3}
-  m_Name: BuffPlayerSize1
+  m_Script: {fileID: 11500000, guid: 0459b8be5180ac54ca7dfcdafb4337f0, type: 3}
+  m_Name: BuffPlayerSpeed1
   m_EditorClassIdentifier: 
-  buffName: PlayerSize
-  descriptionValue: 0.5
-  buffImageTexture: {fileID: 21300000, guid: 5d1be10c6c351264ab9ad8b15e6179e4, type: 3}
-  _addPlayerSize: 0.05
+  buffName: PlayerSpeed
+  descriptionValue: 1
+  buffImageTexture: {fileID: 21300000, guid: 70cada8d01f718a4daf144f98ab83671, type: 3}
+  _addPlayerSpeed: 3

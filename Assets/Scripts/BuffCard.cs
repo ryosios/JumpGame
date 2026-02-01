@@ -28,6 +28,9 @@ public class BuffCard : MonoBehaviour
     /// <summary> BuffPlayerSizeカードが選択されたとき </summary>
     public Subject<BuffPlayerSize> CardSelectedBuffPlayerSize = new Subject<BuffPlayerSize>();
 
+    /// <summary> BuffPlayerSpeedカードが選択されたとき </summary>
+    public Subject<BuffPlayerSpeed> CardSelectedBuffPlayerSpeed = new Subject<BuffPlayerSpeed>();
+
     /// <summary> BuffStaminaRecoveryカードが選択されたとき </summary>
     public Subject<BuffStaminaRecovery> CardSelectedBuffStaminaRecovery = new Subject<BuffStaminaRecovery>();
 
@@ -93,7 +96,7 @@ public class BuffCard : MonoBehaviour
                 //_buffBasesActiveは1個か2個の予定。とりあえず1個だけなので_buffBasesActive[0]
                 _buffBasesActive.Add(_buffBasesStock[index_A]);
                 //_buffTextText.text = _buffBasesActive[0].buffName;
-                //_buffValueText.text = _buffBasesActive[0].descriptionValue;
+                _buffValueText.text = _buffBasesActive[0].descriptionValue;
                 _buffPartsTexture.sprite = _buffBasesActive[0].buffImageTexture;
 
                 break;
@@ -103,8 +106,7 @@ public class BuffCard : MonoBehaviour
                 CardSelected.OnNext(this);
 
                 foreach (var buffBaseActive in _buffBasesActive)
-                {
-                    
+                {                   
 
                     if (buffBaseActive is BuffAddTime buffAddTime)
                     {
@@ -126,7 +128,11 @@ public class BuffCard : MonoBehaviour
                         CardSelectedBuffMaxSelectCard.OnNext(buffMaxSelectCard);
 
                     }
+                    if (buffBaseActive is BuffPlayerSpeed buffPlayerSpeed)
+                    {
+                        CardSelectedBuffPlayerSpeed.OnNext(buffPlayerSpeed);
 
+                    }
 
 
                 }

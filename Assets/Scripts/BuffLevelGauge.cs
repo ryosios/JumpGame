@@ -14,6 +14,7 @@ public class BuffLevelGauge : MonoBehaviour
         Default,
         Update,
         PlayerSizeCountTextUpdate,
+        PlayerSpeedCountTextUpdate,
     }
 
     [SerializeField] private TextMeshProUGUI _buffLevelText;
@@ -24,7 +25,7 @@ public class BuffLevelGauge : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI _playerSizeCountText;
 
-    [SerializeField] private TextMeshProUGUI _speedCountText;
+    [SerializeField] private TextMeshProUGUI _playerSpeedCountText;
 
 
     private void Awake()
@@ -41,6 +42,12 @@ public class BuffLevelGauge : MonoBehaviour
             buffCard.CardSelectedBuffPlayerSize.Subscribe(buffPlayerSize =>
             {
                 SetBuffLevelGaugeState(BuffLevelGaugeState.PlayerSizeCountTextUpdate);
+
+            }).AddTo(this);
+
+            buffCard.CardSelectedBuffPlayerSpeed.Subscribe(buffPlayerSpeed =>
+            {
+                SetBuffLevelGaugeState(BuffLevelGaugeState.PlayerSpeedCountTextUpdate);
 
             }).AddTo(this);
 
@@ -69,11 +76,17 @@ public class BuffLevelGauge : MonoBehaviour
 
             case BuffLevelGaugeState.PlayerSizeCountTextUpdate:
                 
-                int countText = int.Parse(_playerSizeCountText.text);
-                countText += 1;
-                _playerSizeCountText.text = countText.ToString();
+                int countTextSize = int.Parse(_playerSizeCountText.text);
+                countTextSize += 1;
+                _playerSizeCountText.text = countTextSize.ToString();
 
+                break;
 
+            case BuffLevelGaugeState.PlayerSpeedCountTextUpdate:
+
+                int countTextSpeed = int.Parse(_playerSpeedCountText.text);
+                countTextSpeed += 1;
+                _playerSpeedCountText.text = countTextSpeed.ToString();
 
                 break;
 

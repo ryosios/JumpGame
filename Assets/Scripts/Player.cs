@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
         BuffLevelUp,
         BuffSizeUpdate,
         BuffStaminaRecovery,
+        BuffSpeedUpdate,
     }
 
     public Subject<Unit> EnemyCollisionEnter = new Subject<Unit>();
@@ -96,6 +97,9 @@ public class Player : MonoBehaviour
     /// <summary> バフで加算されるサイズの数値の総合値 </summary>
     private float _updatePlayerSizeValue = 0f;
 
+    /// <summary> バフで加算されるスピードの数値の総合値 </summary>
+    private float _updatePlayerSpeedValue = 0f;
+
     /// <summary> バフで加算されるスタミナ値 </summary>
     private float _updateBuffStaminaValue = 0f;
 
@@ -144,6 +148,12 @@ public class Player : MonoBehaviour
             {
                 _updatePlayerSizeValue += buffPlayerSize._addPlayerSize;
                 SetPlayerState(PlayerState.BuffSizeUpdate);
+            }).AddTo(this);
+
+            buffCard.CardSelectedBuffPlayerSpeed.Subscribe(buffPlayerSpeed =>
+            {
+                _updatePlayerSpeedValue += buffPlayerSpeed._addPlayerSpeed;
+                SetPlayerState(PlayerState.BuffSpeedUpdate);
             }).AddTo(this);
 
         }).AddTo(this);

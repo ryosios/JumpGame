@@ -82,19 +82,19 @@ public class TweenResultRankTextParts : MonoBehaviour
                 _thisRect.localScale = new Vector3(2f,1f,1f);
 
                 _time = _outStartDelay;
-                _sequence.Insert(_time, _thisRect.DOAnchorPosX(_initThisPos.x,0.2f).SetEase(Ease.OutCubic));
-                _sequence.Insert(_time, _thisRect.DOScaleX(0.5f, 0.2f).SetEase(Ease.OutCubic));
-                _sequence.Insert(_time, _thisGroup.DOFade(1f, 0.2f).SetEase(Ease.Linear));
+                _sequence.Insert(_time, _thisRect.DOAnchorPosX(_initThisPos.x,0.15f).SetEase(Ease.OutCubic));
+                _sequence.Insert(_time, _thisRect.DOScaleX(0.5f, 0.15f).SetEase(Ease.OutCubic));
+                _sequence.Insert(_time, _thisGroup.DOFade(1f, 0.15f).SetEase(Ease.Linear));
 
-                _time += 0.2f;
-                _sequence.Insert(_time, _thisRect.DOAnchorPosX(_initThisPos.x +20f, 0.2f).SetEase(Ease.OutSine));
-                _sequence.Insert(_time, _thisRect.DOScaleX(1.2f, 0.2f).SetEase(Ease.OutSine));
+                _time += 0.15f;
+                _sequence.Insert(_time, _thisRect.DOAnchorPosX(_initThisPos.x +20f, 0.15f).SetEase(Ease.OutSine));
+                _sequence.Insert(_time, _thisRect.DOScaleX(1.2f, 0.15f).SetEase(Ease.OutSine));
 
-                _time += 0.2f;
-                _sequence.Insert(_time, _thisRect.DOAnchorPosX(_initThisPos.x, 0.2f).SetEase(Ease.InSine));
-                _sequence.Insert(_time, _thisRect.DOScaleX(0.9f, 0.2f).SetEase(Ease.InSine));
+                _time += 0.15f;
+                _sequence.Insert(_time, _thisRect.DOAnchorPosX(_initThisPos.x, 0.15f).SetEase(Ease.InSine));
+                _sequence.Insert(_time, _thisRect.DOScaleX(0.9f, 0.15f).SetEase(Ease.InSine));
 
-                _time += 0.2f;
+                _time += 0.15f;
                 _sequence.Insert(_time, _thisRect.DOAnchorPosX(_initThisPos.x + 10f, 0.1f).SetEase(Ease.OutSine));
                 _sequence.Insert(_time, _thisRect.DOScaleX(1.05f, 0.05f).SetEase(Ease.OutSine));
 
