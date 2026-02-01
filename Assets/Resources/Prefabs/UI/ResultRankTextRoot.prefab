@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: d876e80ce1539af42afe2491db6504e8, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -168,6 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isDebug: 0
   _thisRect: {fileID: 4280814595895970692}
+  _locatorRect: {fileID: 3525324429793611254}
   _resultRankTextParts:
   - {fileID: 5304595396007564394}
   - {fileID: 2879364188767139629}

@@ -10,10 +10,7 @@ public class BuffBase : ScriptableObject
     public string buffName;
     [TextArea]
     public string descriptionValue;
-    public Sprite icon;
+    public Sprite buffImageTexture;
 
-  
-
- 
 
 }

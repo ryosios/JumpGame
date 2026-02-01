@@ -26,6 +26,8 @@ public class ResultRankTextRoot : MonoBehaviour
 
     [SerializeField] private RectTransform _thisRect;
 
+    [SerializeField] private RectTransform _locatorRect;
+
     [SerializeField] private ResultRankTextParts[] _resultRankTextParts;
 
     [SerializeField] private TweenResultRankTextRoot _tweenResultRankTextRoot;
@@ -63,12 +65,14 @@ public class ResultRankTextRoot : MonoBehaviour
         switch (state)
         {
             case ThisState.Default:
+                _locatorRect.gameObject.SetActive(false);
 
 
                 break;
 
             case ThisState.Update:
                 //リザルト内容更新
+                _locatorRect.gameObject.SetActive(true);
                 for (int i = 0; i < _resultRankTextParts.Length; i++)
                 {
                     _resultRankTextParts[i].SetText(cancellationToken, pointValue[i]);

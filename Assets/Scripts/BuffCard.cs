@@ -40,6 +40,8 @@ public class BuffCard : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI _buffTextText;
 
+    [SerializeField] private Image _buffPartsTexture;
+
     [SerializeField] private TextMeshProUGUI _buffValueText;
 
     /// <summary> カードのアニメーションクラス </summary>
@@ -88,11 +90,11 @@ public class BuffCard : MonoBehaviour
                 //とりあえず能力1個
                 _buffBasesActive = new();
                 int index_A = Random.Range(0, _buffBasesStock.Count);
+                //_buffBasesActiveは1個か2個の予定。とりあえず1個だけなので_buffBasesActive[0]
                 _buffBasesActive.Add(_buffBasesStock[index_A]);
-                _buffTextText.text = _buffBasesActive[0].buffName;
-                _buffValueText.text = _buffBasesActive[0].descriptionValue;
-
-
+                //_buffTextText.text = _buffBasesActive[0].buffName;
+                //_buffValueText.text = _buffBasesActive[0].descriptionValue;
+                _buffPartsTexture.sprite = _buffBasesActive[0].buffImageTexture;
 
                 break;
 
@@ -111,7 +113,7 @@ public class BuffCard : MonoBehaviour
                     }
                     if (buffBaseActive is BuffPlayerSize buffPlayerSize)
                     {
-                        CardSelectedBuffPlayerSize.OnNext(buffPlayerSize);
+                        CardSelectedBuffPlayerSize.OnNext(buffPlayerSize);                        
 
                     }
                     if (buffBaseActive is BuffStaminaRecovery buffStaminaRecovery)

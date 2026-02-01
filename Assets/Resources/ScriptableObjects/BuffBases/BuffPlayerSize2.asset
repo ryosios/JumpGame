@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buffName: PlayerSize
   descriptionValue: +2
-  icon: {fileID: 0}
+  buffImageTexture: {fileID: 21300000, guid: 5d1be10c6c351264ab9ad8b15e6179e4, type: 3}
   _addPlayerSize: 0.1

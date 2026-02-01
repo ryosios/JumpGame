@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buffName: Stamina
   descriptionValue: +50%
-  icon: {fileID: 0}
+  buffImageTexture: {fileID: 21300000, guid: 28de28efbdc474d478f0c1f589406076, type: 3}
   _addStaminaValue: 0.5

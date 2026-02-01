@@ -90,13 +90,14 @@ public class ResultRoot : MonoBehaviour
         switch (state)
         {
             case ThisState.Default:
-
+                this.gameObject.SetActive(true);
 
                 break;
 
             case ThisState.ResultUpdate:
                 //内容更新
                 //今回のポイントを保存
+                Debug.Log("リザルト開始");
                 _resultPointCurrent = _enemyCountGauge.GetCurrentPoint();
 
                 //読み込み
