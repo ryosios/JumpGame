@@ -4,7 +4,7 @@ using UniRx;
 [CreateAssetMenu(fileName = "BuffPlayerSize", menuName = "Scriptable Objects/BuffPlayerSize")]
 public class BuffPlayerSize : BuffBase
 {
-    //バフ能力子クラス　時間追加
+    //繝舌ヵ閭ｽ蜉帛ｭ舌け繝ｩ繧ｹ縲譎る俣霑ｽ蜉
 
     public float _addPlayerSize = 0.05f;
 
