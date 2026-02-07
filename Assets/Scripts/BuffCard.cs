@@ -37,6 +37,12 @@ public class BuffCard : MonoBehaviour
     /// <summary> BuffMaxSelectCardカードが選択されたとき </summary>
     public Subject<BuffMaxSelectCard> CardSelectedBuffMaxSelectCard = new Subject<BuffMaxSelectCard>();
 
+    /// <summary> BuffEnemyCountカードが選択されたとき </summary>
+    public Subject<BuffEnemyCount> CardSelectedBuffEnemyCount = new Subject<BuffEnemyCount>();
+
+    /// <summary> BuffEnemyCountカードが選択されたとき </summary>
+    public Subject<BuffPlayerBounce> CardSelectedBuffPlayerBounce = new Subject<BuffPlayerBounce>();
+
     [SerializeField] private Button _thisButton;
     public Button ThisButton  => _thisButton;
 
@@ -131,6 +137,11 @@ public class BuffCard : MonoBehaviour
                     if (buffBaseActive is BuffPlayerSpeed buffPlayerSpeed)
                     {
                         CardSelectedBuffPlayerSpeed.OnNext(buffPlayerSpeed);
+
+                    }
+                    if (buffBaseActive is BuffEnemyCount buffEnemyCount)
+                    {
+                        CardSelectedBuffEnemyCount.OnNext(buffEnemyCount);
 
                     }
 

@@ -25,6 +25,12 @@ public class TitleManager : MonoBehaviour
 
     [SerializeField] TweenTransition _tweenTransition;
 
+    /// <summary> オーディオ再生管理コンポーネント </summary>
+    [SerializeField] AudioManager _audioManager;
+
+    /// <summary> タイトルBGM </summary>
+    [SerializeField] AudioClipHolder _audioTitleBGMHolder;
+
     private void Awake()
     {
         
@@ -57,6 +63,8 @@ public class TitleManager : MonoBehaviour
             case TitleManagerState.Title:
                 _tweenTitleImage.PlayInAnim();
                 _tweenTitleButtonRoot.PlayInAnim(1.7f);
+                _audioManager.PlayMusic(_audioTitleBGMHolder.HolderClip[0], _audioTitleBGMHolder.HolderAudio, true);
+
 
                 break;
 

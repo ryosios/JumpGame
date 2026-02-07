@@ -103,6 +103,11 @@ public class Player : MonoBehaviour
     /// <summary> バフで加算されるスタミナ値 </summary>
     private float _updateBuffStaminaValue = 0f;
 
+    /// <summary> フィジックマテリアル </summary>
+    private PhysicsMaterial2D _playerPhysicsMaterial;
+
+    /// <summary> _playerRigidのRigidbody2D </summary>
+    [SerializeField] private CircleCollider2D _playerCollider;
 
     //Spine
     /// <summary> SkeletonAnimation </summary>
@@ -127,6 +132,9 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         InitializeSpineAnim();
+
+        
+        _playerPhysicsMaterial = _playerCollider.sharedMaterial;
 
         //バウンス時
         _playerCollision.CollisionExit.Subscribe(collision =>
@@ -154,6 +162,12 @@ public class Player : MonoBehaviour
             {
                 _updatePlayerSpeedValue += buffPlayerSpeed._addPlayerSpeed;
                 SetPlayerState(PlayerState.BuffSpeedUpdate);
+            }).AddTo(this);
+
+            buffCard.CardSelectedBuffPlayerBounce.Subscribe(buffPlayerBounce =>
+            {
+                _playerPhysicsMaterial.bounciness += buffPlayerBounce._addPlayerBounce;
+               
             }).AddTo(this);
 
         }).AddTo(this);

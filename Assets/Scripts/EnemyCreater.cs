@@ -40,6 +40,9 @@ public class EnemyCreater : MonoBehaviour
     /// <summary> Enemy生成範囲の外半径 </summary>
     private float _enemyNewOuterRadius = 14f;
 
+    /// <summary> BuffCardManager </summary>
+    [SerializeField] BuffCardManager _buffCardManager;
+
     private void Awake()
     {
         //enemy読み込み
@@ -54,6 +57,17 @@ public class EnemyCreater : MonoBehaviour
 
         }
         */
+
+        _buffCardManager.CardCreated.Subscribe(buffCard =>
+        {
+            buffCard.CardSelectedBuffEnemyCount.Subscribe(buffEnemyCount =>
+            {
+                _maxEnemyValue += buffEnemyCount._addEnemyCount;
+              
+            }).AddTo(this);
+
+
+        }).AddTo(this);
 
         _gameMaster.EnemyCreateStart.Subscribe(_=> 
         {
