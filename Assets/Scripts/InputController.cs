@@ -77,6 +77,15 @@ public class InputController : MonoBehaviour
 
         }).AddTo(this);
 
+        //開始時入力不可にしておく。
+        SetInputState(InputState.CenterAreaButtonActiveFalse);
+        _gameMaster.PlayStart.Subscribe(_=> 
+        {//ゲームが開始したとき
+            SetInputState(InputState.CenterAreaButtonActiveTrue);
+
+        
+        }).AddTo(this);
+
     }
 
     private void Update()
@@ -121,14 +130,15 @@ public class InputController : MonoBehaviour
                 break;
 
             case InputState.CenterAreaButtonActiveFalse:
+                //このBoolがTrueのときにクリック入力を通す
                 _isPlayable = false;
-                _centerAreaButton.enabled = false;
+                
 
                 break;
 
             case InputState.CenterAreaButtonActiveTrue:
                 _isPlayable = true;
-                _centerAreaButton.enabled = true;
+           
 
                 break;
 
