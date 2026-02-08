@@ -47,11 +47,16 @@ public class BuffCard : MonoBehaviour
     public Button ThisButton  => _thisButton;
 
 
-    [SerializeField] private TextMeshProUGUI _buffTextText;
+   // [SerializeField] private TextMeshProUGUI _buffTextText;
 
     [SerializeField] private Image _buffPartsTexture;
 
     [SerializeField] private TextMeshProUGUI _buffValueText;
+
+
+    [SerializeField] private Image _buffPartsSubTexture;
+
+    [SerializeField] private TextMeshProUGUI _buffValueSubText;
 
     /// <summary> カードのアニメーションクラス </summary>
     [SerializeField] private TweenBuffCard _tweenBuffCard;
@@ -99,11 +104,16 @@ public class BuffCard : MonoBehaviour
                 //とりあえず能力1個
                 _buffBasesActive = new();
                 int index_A = Random.Range(0, _buffBasesStock.Count);
+                int index_B = Random.Range(0, _buffBasesStock.Count);
                 //_buffBasesActiveは1個か2個の予定。とりあえず1個だけなので_buffBasesActive[0]
                 _buffBasesActive.Add(_buffBasesStock[index_A]);
+                _buffBasesActive.Add(_buffBasesStock[index_B]);
                 //_buffTextText.text = _buffBasesActive[0].buffName;
                 _buffValueText.text = _buffBasesActive[0].descriptionValue;
                 _buffPartsTexture.sprite = _buffBasesActive[0].buffImageTexture;
+
+                _buffValueSubText.text = _buffBasesActive[1].descriptionValue;
+                _buffPartsSubTexture.sprite = _buffBasesActive[1].buffImageTexture;
 
                 break;
 
@@ -142,6 +152,11 @@ public class BuffCard : MonoBehaviour
                     if (buffBaseActive is BuffEnemyCount buffEnemyCount)
                     {
                         CardSelectedBuffEnemyCount.OnNext(buffEnemyCount);
+
+                    }
+                    if (buffBaseActive is BuffPlayerBounce buffPlayerBounce)
+                    {
+                        CardSelectedBuffPlayerBounce.OnNext(buffPlayerBounce);
 
                     }
 

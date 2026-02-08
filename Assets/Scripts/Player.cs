@@ -172,6 +172,7 @@ public class Player : MonoBehaviour
 
             buffCard.CardSelectedBuffPlayerBounce.Subscribe(buffPlayerBounce =>
             {
+                Debug.Log(buffPlayerBounce._addPlayerBounce);
                 _playerPhysicsMaterial.bounciness += buffPlayerBounce._addPlayerBounce;
                
             }).AddTo(this);
