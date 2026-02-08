@@ -271,7 +271,9 @@ public class Player : MonoBehaviour
                 //ジャンプ
                 //SE停止
                 _audioManager.StopMusic(_playerAudioHolder.HolderAudio);
-                
+
+                _audioManager.PlayMusic(_playerAudioHolder.HolderClip[3], _playerAudioHolder.HolderAudio);
+
                 _rotateSequence?.Kill();
                 _rotationArrowRootTrans.gameObject.SetActive(false);
                 _playerRigid.constraints = RigidbodyConstraints2D.None;
@@ -330,8 +332,13 @@ public class Player : MonoBehaviour
 
                     //SE
                     _audioManager.PlayMusic(_playerAudioHolder.HolderClip[1], _playerAudioHolder.HolderAudio);
-                }            
-               
+                }
+                else if (_bounceCollision.gameObject.layer == 10)
+                {
+                    //SE
+                    _audioManager.PlayMusic(_playerAudioHolder.HolderClip[2], _playerAudioHolder.HolderAudio);
+                }
+
                 break;
 
             case PlayerState.BuffLevelUp:

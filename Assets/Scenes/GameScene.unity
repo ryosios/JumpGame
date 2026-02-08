@@ -5408,6 +5408,8 @@ MonoBehaviour:
   _clip:
   - {fileID: 8300000, guid: 2aa5bfb811ea1b04a8e91bf35b86fc25, type: 3}
   - {fileID: 8300000, guid: 0da5ed70aaea1044296a8c4c43376cb3, type: 3}
+  - {fileID: 8300000, guid: 858c154edfab91e48b1e886c2a610de0, type: 3}
+  - {fileID: 8300000, guid: 91875ebab46eec94296bbb3a4bcbdb58, type: 3}
   _audio: {fileID: 1407698903}
 --- !u!224 &1450575840 stripped
 RectTransform:
