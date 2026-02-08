@@ -37,6 +37,10 @@ public class GameMaster : MonoBehaviour
 
     [SerializeField] TimerGauge _timerGauge;
 
+    [SerializeField] AudioManager _audioManager;
+
+    [SerializeField] AudioClipHolder _gameSceneBGMAudioHolder;
+
     /// <summary>  EnemyCreateのSubject </summary>
     public Subject<Unit> EnemyCreateStart = new Subject<Unit>();
 
@@ -104,12 +108,15 @@ public class GameMaster : MonoBehaviour
                 Time.timeScale = 1;
                 //カメラを初期位置に
                 _tweenMainCamera.UpdatePos(new Vector3(0,0,-32f));
-                
+
                 //トランジション開始
                 _tweenTransition.PlayOutAnim(1f).Forget();   
 
                 //UI入場が終わるまで待機
                 await _tweenRightUIs.PlayInAnim(1.5f);
+
+                //BGM
+                _audioManager.PlayMusic(_gameSceneBGMAudioHolder.HolderClip[0], _gameSceneBGMAudioHolder.HolderAudio, true);
 
                 await UniTask.Delay(TimeSpan.FromSeconds(0.2f), ignoreTimeScale: true);
 

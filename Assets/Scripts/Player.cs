@@ -29,6 +29,12 @@ public class Player : MonoBehaviour
 
     public Subject<Unit> EnemyCollisionExit = new Subject<Unit>();
 
+    /// <summary> AudioManager </summary>
+    [SerializeField] private AudioManager _audioManager;
+
+    /// <summary> AudioHolder </summary>
+    [SerializeField] private AudioClipHolder _playerAudioHolder;
+
     /// <summary>  スタミナ変動したときのサブジェクト </summary>
     public Subject<float> SutaminaChange = new Subject<float>();
 
@@ -229,6 +235,10 @@ public class Player : MonoBehaviour
                 break;
 
             case PlayerState.Direction:
+                //ターゲット
+
+                //SE
+                _audioManager.PlayMusic(_playerAudioHolder.HolderClip[0],_playerAudioHolder.HolderAudio,true);
 
                 _playerRigid.linearVelocity = Vector2.zero;
                 _playerRigid.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
@@ -249,7 +259,8 @@ public class Player : MonoBehaviour
                 _rotateSequence.Append(_rotationArrowRootTrans.DOLocalRotate(new Vector3(0, 0, 0), _moveAngleTime / 4 * 1).SetEase(Ease.Linear).SetLink(gameObject));
                 */
                 _rotateSequence.OnComplete(()=>
-                {         
+                {
+                    
                     _rotateSequence?.Kill();
                     
                 });
@@ -257,6 +268,10 @@ public class Player : MonoBehaviour
                 break;
 
             case PlayerState.Jump:
+                //ジャンプ
+                //SE停止
+                _audioManager.StopMusic(_playerAudioHolder.HolderAudio);
+                
                 _rotateSequence?.Kill();
                 _rotationArrowRootTrans.gameObject.SetActive(false);
                 _playerRigid.constraints = RigidbodyConstraints2D.None;
@@ -312,6 +327,9 @@ public class Player : MonoBehaviour
                 {
                     PlayRandomSpineAnim(_skeletonAnimation, _jumpCandidates, false);
                     ApplyRandomAttachment(_skeletonAnimation, _slotName, _attachments);
+
+                    //SE
+                    _audioManager.PlayMusic(_playerAudioHolder.HolderClip[1], _playerAudioHolder.HolderAudio);
                 }            
                
                 break;
