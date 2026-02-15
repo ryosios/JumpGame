@@ -95,15 +95,14 @@ public class Player : MonoBehaviour
     /// <summary> GameMaster </summary>
     [SerializeField] private GameMaster _gameMaster;
 
+    /*
     //バフ関連
     /// <summary> プレイヤーのレベル（強化段階） </summary>
     private int _playerBuffLevel = 1;
+    */
 
     /// <summary> BuffCardManager </summary>
     [SerializeField] BuffCardManager _buffCardManager;
-
-    /// <summary> バフレベルが上がった時 </summary>
-    public Subject<Unit> BuffLevelUpEnd = new Subject<Unit>();
 
     /// <summary> バフで加算されるサイズの数値の総合値 </summary>
     private float _updatePlayerSizeValue = 0f;
@@ -156,12 +155,6 @@ public class Player : MonoBehaviour
         {
             GetBounceCollision(collision);
             SetPlayerState(PlayerState.Bounce);
-
-        }).AddTo(this);
-
-        _buffCardManager.CardSelectedEnd.Subscribe(_=> 
-        {
-            SetPlayerState(PlayerState.BuffLevelUp);
 
         }).AddTo(this);
 
@@ -355,13 +348,7 @@ public class Player : MonoBehaviour
                     _audioManager.PlayMusic(_playerAudioHolder.HolderClip[1], _playerAudioHolder.HolderAudio);
                 }
 
-                break;
-
-            case PlayerState.BuffLevelUp:
-                _playerBuffLevel += 1;
-                BuffLevelUpEnd.OnNext(Unit.Default);
-
-                break;
+                break;               
 
             case PlayerState.BuffSizeUpdate:
                 Vector3 currentSize = this.transform.localScale;
@@ -379,9 +366,6 @@ public class Player : MonoBehaviour
                     _sutaminaValue = 1;
                 }
                 SutaminaChange.OnNext(_sutaminaValue);
-
-
-
 
                 break;
 
@@ -492,11 +476,4 @@ public class Player : MonoBehaviour
         _bounceCollision = collision;
     }
 
-    /// <summary>
-    /// バフレベルを取得
-    /// </summary>
-    public int GetBuffLevel()
-    {
-        return _playerBuffLevel;
-    }
 }

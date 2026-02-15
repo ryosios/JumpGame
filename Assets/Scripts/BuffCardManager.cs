@@ -48,6 +48,12 @@ public class BuffCardManager : MonoBehaviour
 
     private BuffCard _selectedBuffCard;
 
+    /// <summary> バフの総合レベル </summary>
+    public ReactiveProperty<int> _buffLevel = new ReactiveProperty<int>(1);
+
+    /// <summary> バフのマックス値 </summary>
+    private int _buffLevelMaxValue = 50;
+
     private void Awake()
     {
         //var buffCards = Resources.LoadAll<BuffCard>("Prefabs/Cards");
@@ -121,6 +127,13 @@ public class BuffCardManager : MonoBehaviour
             case BuffCardManagerState.CardSelected:
                 //カードがどれか選択された
                 Debug.Log("選択された");
+
+                //バフレベルを上げる
+                if(_buffLevel.Value < _buffLevelMaxValue)
+                {
+                    _buffLevel.Value += 1;
+                }                
+
                 //ボタンコンポーネントを非アクティブに
                 foreach(var activeCardsList in _activeCardsList)
                 {

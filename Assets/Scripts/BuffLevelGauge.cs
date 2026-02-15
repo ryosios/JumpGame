@@ -32,7 +32,7 @@ public class BuffLevelGauge : MonoBehaviour
     {
         SetBuffLevelGaugeState(BuffLevelGaugeState.Default);
 
-        _player.BuffLevelUpEnd.Subscribe(value => 
+        _buffCardManager._buffLevel.Subscribe(value => 
         {
             SetBuffLevelGaugeState(BuffLevelGaugeState.Update);
         });
@@ -65,12 +65,12 @@ public class BuffLevelGauge : MonoBehaviour
         switch (state)
         {
             case BuffLevelGaugeState.Default:
-                SetBuffLevelGaugeValue(_player.GetBuffLevel());
+                SetBuffLevelGaugeValue(_buffCardManager._buffLevel.Value);
 
                 break;
 
             case BuffLevelGaugeState.Update:
-                SetBuffLevelGaugeValue(_player.GetBuffLevel());
+                SetBuffLevelGaugeValue(_buffCardManager._buffLevel.Value);
 
                 break;
 
