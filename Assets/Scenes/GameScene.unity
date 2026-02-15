@@ -7938,6 +7938,10 @@ PrefabInstance:
       propertyPath: _enemyCreater
       value: 
       objectReference: {fileID: 1077135057}
+    - target: {fileID: 3943933033300137122, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
+      propertyPath: _buffCardManager
+      value: 
+      objectReference: {fileID: 1450575841}
     - target: {fileID: 5866953343145949927, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
       propertyPath: m_IsActive
       value: 1

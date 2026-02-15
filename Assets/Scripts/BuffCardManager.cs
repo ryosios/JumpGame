@@ -52,7 +52,7 @@ public class BuffCardManager : MonoBehaviour
     public ReactiveProperty<int> _buffLevel = new ReactiveProperty<int>(1);
 
     /// <summary> バフのマックス値 </summary>
-    private int _buffLevelMaxValue = 50;
+    public int _buffLevelMaxValue {get;} = 50;
 
     private void Awake()
     {

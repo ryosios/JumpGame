@@ -43,6 +43,9 @@ public class BuffCard : MonoBehaviour
     /// <summary> BuffEnemyCountカードが選択されたとき </summary>
     public Subject<BuffPlayerBounce> CardSelectedBuffPlayerBounce = new Subject<BuffPlayerBounce>();
 
+    /// <summary> BuffCardManager </summary>
+    [SerializeField] private BuffCardManager _buffCardManager;
+
     [SerializeField] private Button _thisButton;
     public Button ThisButton  => _thisButton;
 
@@ -121,48 +124,50 @@ public class BuffCard : MonoBehaviour
                 //カードにセット予定の能力（_buffBasesActive）を子クラスの種類で振り分けて発火
                 CardSelected.OnNext(this);
 
-                foreach (var buffBaseActive in _buffBasesActive)
-                {                   
-
-                    if (buffBaseActive is BuffAddTime buffAddTime)
+                if(_buffCardManager._buffLevel.Value < _buffCardManager._buffLevelMaxValue)
+                {//バフマックス値より下回っているなら
+                    foreach (var buffBaseActive in _buffBasesActive)
                     {
-                        CardSelectedBuffAddTime.OnNext(buffAddTime);
-                        
-                    }
-                    if (buffBaseActive is BuffPlayerSize buffPlayerSize)
-                    {
-                        CardSelectedBuffPlayerSize.OnNext(buffPlayerSize);                        
+
+                        if (buffBaseActive is BuffAddTime buffAddTime)
+                        {
+                            CardSelectedBuffAddTime.OnNext(buffAddTime);
+
+                        }
+                        if (buffBaseActive is BuffPlayerSize buffPlayerSize)
+                        {
+                            CardSelectedBuffPlayerSize.OnNext(buffPlayerSize);
+
+                        }
+                        if (buffBaseActive is BuffStaminaRecovery buffStaminaRecovery)
+                        {
+                            CardSelectedBuffStaminaRecovery.OnNext(buffStaminaRecovery);
+
+                        }
+                        if (buffBaseActive is BuffMaxSelectCard buffMaxSelectCard)
+                        {
+                            CardSelectedBuffMaxSelectCard.OnNext(buffMaxSelectCard);
+
+                        }
+                        if (buffBaseActive is BuffPlayerSpeed buffPlayerSpeed)
+                        {
+                            CardSelectedBuffPlayerSpeed.OnNext(buffPlayerSpeed);
+
+                        }
+                        if (buffBaseActive is BuffEnemyCount buffEnemyCount)
+                        {
+                            CardSelectedBuffEnemyCount.OnNext(buffEnemyCount);
+
+                        }
+                        if (buffBaseActive is BuffPlayerBounce buffPlayerBounce)
+                        {
+                            CardSelectedBuffPlayerBounce.OnNext(buffPlayerBounce);
+
+                        }
+
 
                     }
-                    if (buffBaseActive is BuffStaminaRecovery buffStaminaRecovery)
-                    {
-                        CardSelectedBuffStaminaRecovery.OnNext(buffStaminaRecovery);
-
-                    }
-                    if (buffBaseActive is BuffMaxSelectCard buffMaxSelectCard)
-                    {
-                        CardSelectedBuffMaxSelectCard.OnNext(buffMaxSelectCard);
-
-                    }
-                    if (buffBaseActive is BuffPlayerSpeed buffPlayerSpeed)
-                    {
-                        CardSelectedBuffPlayerSpeed.OnNext(buffPlayerSpeed);
-
-                    }
-                    if (buffBaseActive is BuffEnemyCount buffEnemyCount)
-                    {
-                        CardSelectedBuffEnemyCount.OnNext(buffEnemyCount);
-
-                    }
-                    if (buffBaseActive is BuffPlayerBounce buffPlayerBounce)
-                    {
-                        CardSelectedBuffPlayerBounce.OnNext(buffPlayerBounce);
-
-                    }
-
-
-                }
-                
+                }               
 
                 break;
 
