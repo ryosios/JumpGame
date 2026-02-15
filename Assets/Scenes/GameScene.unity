@@ -5294,6 +5294,7 @@ MonoBehaviour:
   _attackCollision: {fileID: 1307355846}
   _arrowTrans: {fileID: 1358359982}
   _playerCollision: {fileID: 158079073}
+  _gameMaster: {fileID: 1987969082}
   _buffCardManager: {fileID: 1450575841}
   _playerCollider: {fileID: 158079074}
   _skeletonAnimation: {fileID: 813395458}

@@ -92,6 +92,8 @@ public class Player : MonoBehaviour
     /// <summary> 子のコリジョン取得用 </summary>
     [SerializeField] PlayerCollisionPresenter _playerCollision;
 
+    /// <summary> GameMaster </summary>
+    [SerializeField] private GameMaster _gameMaster;
 
     //バフ関連
     /// <summary> プレイヤーのレベル（強化段階） </summary>
@@ -194,6 +196,12 @@ public class Player : MonoBehaviour
                 SetPlayerState(PlayerState.BuffStaminaRecovery);
             }).AddTo(this);
 
+        }).AddTo(this);
+
+        _gameMaster.ResultStart.Subscribe(_=> 
+        {//リザルト開始時の処理
+            _audioManager.StopMusic(_directionAudioHolder.HolderAudio);
+        
         }).AddTo(this);
     }
 
