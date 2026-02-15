@@ -39,6 +39,11 @@ public class TweenResultRoot : MonoBehaviour
 
     private float _delay = 0f;
 
+    [Header("オーディオ")]
+    [SerializeField] private AudioManager _audioManager;
+
+    [SerializeField] private AudioClipHolder _resultTitleAudioHolder;
+
     private CancellationToken _destroyToken;
 
     public bool _isDebug;
@@ -98,6 +103,8 @@ public class TweenResultRoot : MonoBehaviour
                     _effect1.Play();
                     _tweenResultRankTextRoot.PlayInAnim(_destroyToken, 0.5f).Forget();
                     _tweenResultBackOrRetry.PlayInAnim(_destroyToken,1f).Forget();
+
+                    _audioManager.PlayMusic(_resultTitleAudioHolder.HolderClip[0],_resultTitleAudioHolder.HolderAudio,false);
 
                 }).SetUpdate(true);
 

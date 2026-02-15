@@ -31,6 +31,11 @@ public class TweenTitleImage : MonoBehaviour
 
     public Subject<Unit> InEnd = new Subject<Unit>();
 
+    [Header("オーディオ")]
+    [SerializeField] private AudioManager _audioManager;
+
+    [SerializeField] private AudioClipHolder _titleImageAudioHolder;
+
     private void Awake()
     {
         _initTitleImagePos = _titleImageRect.anchoredPosition;
@@ -77,11 +82,15 @@ public class TweenTitleImage : MonoBehaviour
                 //2.5
                 _titleSequence.Insert(1.2f, _titleImageRect.DOScale(0.67f, 0.35f).SetEase(Ease.InExpo));
                 _titleSequence.Insert(1.2f, _titleImageRect.DOAnchorPosY(190f, 0.35f).SetEase(Ease.InExpo));
+                _titleSequence.InsertCallback(1.38f, () =>
+                {                  
+                    _audioManager.PlayMusic(_titleImageAudioHolder.HolderClip[0], _titleImageAudioHolder.HolderAudio, false);
+                });
 
                 _titleSequence.InsertCallback(1.5f,()=>
                 {
                     _titleImageParticle.Play();
-
+                   
                 });
 
                 break;
