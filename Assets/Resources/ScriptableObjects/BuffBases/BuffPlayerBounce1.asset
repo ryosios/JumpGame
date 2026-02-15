@@ -15,4 +15,4 @@ MonoBehaviour:
   buffName: Bounce
   descriptionValue: 0.1
   buffImageTexture: {fileID: 21300000, guid: f792e1500858f2146919bbefb5af6f17, type: 3}
-  _addPlayerBounce: 0.1
+  _addPlayerBounce: 0.05

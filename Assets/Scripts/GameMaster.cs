@@ -105,6 +105,8 @@ public class GameMaster : MonoBehaviour
         switch (state)
         {
             case GameMasterState.Default:
+                
+
                 Time.timeScale = 1;
                 //カメラを初期位置に
                 _tweenMainCamera.UpdatePos(new Vector3(0,0,-32f));

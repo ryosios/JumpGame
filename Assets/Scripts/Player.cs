@@ -30,10 +30,13 @@ public class Player : MonoBehaviour
     public Subject<Unit> EnemyCollisionExit = new Subject<Unit>();
 
     /// <summary> AudioManager </summary>
-    [SerializeField] private AudioManager _audioManager;
+    [SerializeField] private AudioManager _audioManager;   
 
     /// <summary> AudioHolder </summary>
     [SerializeField] private AudioClipHolder _playerAudioHolder;
+
+    /// <summary> AudioManager </summary>
+    [SerializeField] private AudioClipHolder _directionAudioHolder;
 
     /// <summary>  スタミナ変動したときのサブジェクト </summary>
     public Subject<float> SutaminaChange = new Subject<float>();
@@ -112,6 +115,9 @@ public class Player : MonoBehaviour
     /// <summary> フィジックマテリアル </summary>
     private PhysicsMaterial2D _playerPhysicsMaterial;
 
+    /// <summary> フィジックマテリアルの初期値 </summary>
+    private float _initPlayerPhysicsMaterialValue = 0.8f;
+
     /// <summary> _playerRigidのRigidbody2D </summary>
     [SerializeField] private CircleCollider2D _playerCollider;
 
@@ -141,9 +147,10 @@ public class Player : MonoBehaviour
 
         
         _playerPhysicsMaterial = _playerCollider.sharedMaterial;
+        _playerPhysicsMaterial.bounciness = _initPlayerPhysicsMaterialValue;
 
-        //バウンス時
-        _playerCollision.CollisionExit.Subscribe(collision =>
+         //バウンス時
+         _playerCollision.CollisionExit.Subscribe(collision =>
         {
             GetBounceCollision(collision);
             SetPlayerState(PlayerState.Bounce);
@@ -239,7 +246,7 @@ public class Player : MonoBehaviour
                 //ターゲット
 
                 //SE
-                _audioManager.PlayMusic(_playerAudioHolder.HolderClip[0],_playerAudioHolder.HolderAudio,true);
+                _audioManager.PlayMusic(_directionAudioHolder.HolderClip[0],_directionAudioHolder.HolderAudio,true);
 
                 _playerRigid.linearVelocity = Vector2.zero;
                 _playerRigid.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
@@ -271,9 +278,9 @@ public class Player : MonoBehaviour
             case PlayerState.Jump:
                 //ジャンプ
                 //SE停止
-                _audioManager.StopMusic(_playerAudioHolder.HolderAudio);
+                _audioManager.StopMusic(_directionAudioHolder.HolderAudio);
 
-                _audioManager.PlayMusic(_playerAudioHolder.HolderClip[3], _playerAudioHolder.HolderAudio);
+                _audioManager.PlayMusic(_directionAudioHolder.HolderClip[1], _directionAudioHolder.HolderAudio);
 
                 _rotateSequence?.Kill();
                 _rotationArrowRootTrans.gameObject.SetActive(false);
@@ -332,12 +339,12 @@ public class Player : MonoBehaviour
                     ApplyRandomAttachment(_skeletonAnimation, _slotName, _attachments);
 
                     //SE
-                    _audioManager.PlayMusic(_playerAudioHolder.HolderClip[1], _playerAudioHolder.HolderAudio);
+                    _audioManager.PlayMusic(_playerAudioHolder.HolderClip[0], _playerAudioHolder.HolderAudio);
                 }
                 else if (_bounceCollision.gameObject.layer == 10)
                 {
                     //SE
-                    _audioManager.PlayMusic(_playerAudioHolder.HolderClip[2], _playerAudioHolder.HolderAudio);
+                    _audioManager.PlayMusic(_playerAudioHolder.HolderClip[1], _playerAudioHolder.HolderAudio);
                 }
 
                 break;
