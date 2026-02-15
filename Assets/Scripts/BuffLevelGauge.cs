@@ -16,7 +16,10 @@ public class BuffLevelGauge : MonoBehaviour
         PlayerSizeCountTextUpdate,
         PlayerSpeedCountTextUpdate,
         PlayerBounceCountTextUpdate,
-        AddTimeCountTextUpdate
+        AddTimeCountTextUpdate,
+        EnemyCountCountTextUpdate,
+        MaxSelectCardCountTextUpdate,
+        StaminaRecoveryCountTextUpdate,
     }
 
     [SerializeField] private TextMeshProUGUI _buffLevelText;
@@ -32,6 +35,12 @@ public class BuffLevelGauge : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _playerBounceCountText;
 
     [SerializeField] private TextMeshProUGUI _addTimeCountText;
+
+    [SerializeField] private TextMeshProUGUI _enemyCountCountText;
+
+    [SerializeField] private TextMeshProUGUI _maxSelectCardCountText;
+
+    [SerializeField] private TextMeshProUGUI _staminaRecoveryCountText;
 
 
     private void Awake()
@@ -66,6 +75,24 @@ public class BuffLevelGauge : MonoBehaviour
             buffCard.CardSelectedBuffAddTime.Subscribe(buffAddTimeBounce =>
             {
                 SetBuffLevelGaugeState(BuffLevelGaugeState.AddTimeCountTextUpdate);
+
+            }).AddTo(this);
+
+            buffCard.CardSelectedBuffEnemyCount.Subscribe(buffEnemyCount =>
+            {
+                SetBuffLevelGaugeState(BuffLevelGaugeState.EnemyCountCountTextUpdate);
+
+            }).AddTo(this);
+
+            buffCard.CardSelectedBuffMaxSelectCard.Subscribe(buffMaxSelectCardCount =>
+            {
+                SetBuffLevelGaugeState(BuffLevelGaugeState.MaxSelectCardCountTextUpdate);
+
+            }).AddTo(this);
+
+            buffCard.CardSelectedBuffStaminaRecovery.Subscribe(buffStaminaRecoveryCardCount =>
+            {
+                SetBuffLevelGaugeState(BuffLevelGaugeState.StaminaRecoveryCountTextUpdate);
 
             }).AddTo(this);
 
@@ -124,6 +151,30 @@ public class BuffLevelGauge : MonoBehaviour
 
                 break;
 
+            case BuffLevelGaugeState.EnemyCountCountTextUpdate:
+
+                int countTextEnemyCount = int.Parse(_enemyCountCountText.text);
+                countTextEnemyCount += 1;
+                _enemyCountCountText.text = countTextEnemyCount.ToString();
+
+                break;
+
+            case BuffLevelGaugeState.MaxSelectCardCountTextUpdate:
+
+                int countTextMaxSelectCard = int.Parse(_maxSelectCardCountText.text);
+                countTextMaxSelectCard += 1;
+                _maxSelectCardCountText.text = countTextMaxSelectCard.ToString();
+
+                break;
+
+            case BuffLevelGaugeState.StaminaRecoveryCountTextUpdate:
+
+                int countTextStaminaRecovery = int.Parse(_staminaRecoveryCountText.text);
+                countTextStaminaRecovery += 1;
+                _staminaRecoveryCountText.text = countTextStaminaRecovery.ToString();
+
+                break;
+
         }
     }
 
@@ -135,5 +186,6 @@ public class BuffLevelGauge : MonoBehaviour
     {
         _buffLevelText.text = value.ToString();
     }
+
 
 }
