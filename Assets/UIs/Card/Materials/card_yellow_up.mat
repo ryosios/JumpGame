@@ -29,7 +29,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseTexture:
-        m_Texture: {fileID: 2800000, guid: 53cc9993cf1f65c48982a0bb0e4702ea, type: 3}
+        m_Texture: {fileID: 2800000, guid: 069eae86fe0f9794eaea2327c1a99f91, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -143,7 +143,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.990566, g: 0.9531852, b: 0.60275006, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FaceTextureOffset: {r: 0, g: 0, b: 0, a: 0}
     - _FaceTextureTiling: {r: 0.38, g: 0.38, b: 0, a: 0}

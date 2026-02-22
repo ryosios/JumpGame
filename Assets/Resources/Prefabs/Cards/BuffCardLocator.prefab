@@ -71,6 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a8b3b108af63e64d9986a5a564cfe49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buffCardManager: {fileID: 0}
   _thisButton: {fileID: 7677008115017810642}
   _buffPartsTexture: {fileID: 3112312241060941467}
   _buffValueText: {fileID: 5757567247286317625}
