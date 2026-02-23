@@ -27,8 +27,16 @@ public class BuffCardManager : MonoBehaviour
     public Subject<Unit> CardSelectedEnd = new Subject<Unit>();
 
 
+    /// <summary>  バフカードが配置される場所 </summary>
+    [SerializeField] private Transform _posRoot1;
 
-    [SerializeField] private Transform _posRoot;
+    [SerializeField] private Transform _posRoot2;
+
+    [SerializeField] private Transform _posRoot3;
+
+    private Transform _posRootSelect;
+  
+
 
     [SerializeField] private BuffCard _buffCard;
 
@@ -53,6 +61,8 @@ public class BuffCardManager : MonoBehaviour
 
     /// <summary> バフのマックス値 </summary>
     public int _buffLevelMaxValue {get;} = 50;
+
+  
 
     private void Awake()
     {
@@ -105,8 +115,8 @@ public class BuffCardManager : MonoBehaviour
 
                 for (int i = 0; i < _maxSelectCardValue; i++)
                 {
-                    //アクティブになっているカードをすべて取得しておく
-                    var card = CreateCard();
+                    //カード生成＆アクティブになっているカードをすべて取得しておく
+                    var card = CreateCard(i);
                     _activeCardsList.Add(card);
                     card.tweenBuffCard.PlayInAnim(i * 0.1f);
                     
@@ -117,6 +127,7 @@ public class BuffCardManager : MonoBehaviour
                 {
                     buffCard.CardSelectedBuffMaxSelectCard.Subscribe(buffMaxSelectCard =>
                     {//バフでカード枚数が増える判定のサブジェクト
+                        //最大カードを増やす
                         SetBuffCardManagerState(BuffCardManagerState.UpdateBuffMaxSelectCard, buffMaxSelectCard);
 
                     }).AddTo(this);
@@ -176,7 +187,7 @@ public class BuffCardManager : MonoBehaviour
                 break;
 
             case BuffCardManagerState.UpdateBuffMaxSelectCard:
-                if (_maxSelectCardValue < 5) 
+                if (_maxSelectCardValue <= 15) 
                 {
                     //いったん上限5枚まで。2段目作っていいかも
                     _maxSelectCardValue += buffMaxSelectCard._addBuffMaxSelectCardValue;
@@ -188,10 +199,31 @@ public class BuffCardManager : MonoBehaviour
         }
     }
 
-    private BuffCard CreateCard()
+    /// <summary>
+    /// カードを生成
+    /// </summary>
+    /// <param name="count">インスタンスのカウント</param>
+    private BuffCard CreateCard(int count)
     {
-        BuffCard buffCardInstance = Instantiate(_buffCard, _posRoot) as BuffCard;
-        
+
+        if(count <= 5)
+        {
+            _posRoot1.gameObject.SetActive(true);
+            _posRootSelect = _posRoot1;
+        }
+        else if (count <= 10)
+        {
+            _posRoot2.gameObject.SetActive(true);
+            _posRootSelect = _posRoot2;
+        }
+        else
+        {
+            _posRoot3.gameObject.SetActive(true);
+            _posRootSelect = _posRoot3;
+        }
+
+        BuffCard buffCardInstance = Instantiate(_buffCard, _posRootSelect) as BuffCard;
+
         buffCardInstance.gameObject.SetActive(true);
         buffCardInstance.CardSelected.Subscribe( buffCard =>
         {//カードが選択された時のサブジェクト

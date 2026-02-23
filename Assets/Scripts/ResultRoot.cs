@@ -22,6 +22,8 @@ public class ResultRoot : MonoBehaviour
 
     [SerializeField] private GameMaster _gameMaster;
 
+    [SerializeField] private RectTransform _rootRect;
+
     [SerializeField] private CanvasGroup _thisGroup;
 
     [SerializeField] private TweenResultRoot _tweenResultRoot;
@@ -91,6 +93,7 @@ public class ResultRoot : MonoBehaviour
         {
             case ThisState.Default:
                 this.gameObject.SetActive(true);
+                _rootRect.gameObject.SetActive(false);
 
                 break;
 
@@ -98,6 +101,7 @@ public class ResultRoot : MonoBehaviour
                 //内容更新
                 //今回のポイントを保存
                 Debug.Log("リザルト開始");
+                _rootRect.gameObject.SetActive(true);
                 _resultPointCurrent = _enemyCountGauge.GetCurrentPoint();
 
                 //読み込み
