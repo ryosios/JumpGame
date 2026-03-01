@@ -104,7 +104,7 @@ public class BuffCard : MonoBehaviour
 
             case BuffCardState.Initialize:
                 //インスタンス化時、続けてランダムでBuffBaseの中から能力をゲットしてカードにつっこむ
-                //とりあえず能力1個
+               
                 _buffBasesActive = new();
                 int index_A = Random.Range(0, _buffBasesStock.Count);
                 int index_B = Random.Range(0, _buffBasesStock.Count);

@@ -2052,7 +2052,7 @@ AudioSource:
   m_GameObject: {fileID: 416632795}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5979704828420148530, guid: 83bbb88639c762640bc074f31872e755, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -6294,7 +6294,7 @@ AudioSource:
   m_GameObject: {fileID: 1407698899}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -3641974135295636363, guid: 83bbb88639c762640bc074f31872e755, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -7306,7 +7306,7 @@ AudioSource:
   m_GameObject: {fileID: 1621071808}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -3641974135295636363, guid: 83bbb88639c762640bc074f31872e755, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -9868,6 +9868,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 200557247}
     m_Modifications:
+    - target: {fileID: 164321632626094577, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 178618054472262433, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -9952,6 +9956,10 @@ PrefabInstance:
       propertyPath: _enemyCreater
       value: 
       objectReference: {fileID: 1077135057}
+    - target: {fileID: 3739013476472072151, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -86.347046
+      objectReference: {fileID: 0}
     - target: {fileID: 3943933033300137122, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
       propertyPath: _buffCardManager
       value: 
@@ -9976,6 +9984,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BuffCardRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 6091049707094851340, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6676089304611771597, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -9990,7 +10002,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6676089304611771597, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -998.942
+      value: -998.9421
+      objectReference: {fileID: 0}
+    - target: {fileID: 6826618822985188495, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6826618822985188495, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6826618822985188495, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6826618822985188495, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6991487995045793962, guid: 98124d1719b4c834db31919a9a1618e1, type: 3}
       propertyPath: m_IsActive
