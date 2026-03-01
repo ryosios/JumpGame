@@ -53,6 +53,12 @@ public class BuffCardManager : MonoBehaviour
     /// <summary>  敵カウントがいくつごとにカードイベントが起きるか </summary>
     private int _cardEventCount = 5;
 
+    /// <summary>  敵カウントがいくつごとにカードイベントが起きるか(上限が増えていく数) </summary>
+    private int _cardEventCountPlus = 0;
+
+    /// <summary>  何回目のカードイベントか </summary>
+    private int _cardEventCountNumber = 1;
+
 
     private BuffCard _selectedBuffCard;
 
@@ -60,7 +66,7 @@ public class BuffCardManager : MonoBehaviour
     public ReactiveProperty<int> _buffLevel = new ReactiveProperty<int>(1);
 
     /// <summary> バフのマックス値 </summary>
-    public int _buffLevelMaxValue {get;} = 50;
+    public int _buffLevelMaxValue {get;} = 99;
 
   
 
@@ -73,14 +79,26 @@ public class BuffCardManager : MonoBehaviour
         {
             Debug.Log("koko-1");
 
+            if (value != 0 && value == (_cardEventCount *_cardEventCountNumber + _cardEventCountPlus))
+            {
+                _cardEventCountPlus += 1 * _cardEventCountNumber;
+                _cardEventCountNumber += 1;
+                
+                //カードインスタンス生成（仮）
+
+                SetBuffCardManagerState(BuffCardManagerState.CardCreate);
+            }
+
+            /*
             if (value != 0 && value % _cardEventCount == 0)
             {
                 //カードインスタンス生成（仮）
                 
                 SetBuffCardManagerState(BuffCardManagerState.CardCreate);
             }
-          
-        
+            */
+
+
         }).AddTo(this);
 
     }
